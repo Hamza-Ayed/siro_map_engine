@@ -42,6 +42,28 @@ public class MapLibreMapsPlugin: NSObject, FlutterPlugin {
                 }
                 MapLibreCustomHeaders.setHeaders(headers)
                 result(nil)
+            case "setNetworkStatsEnabled":
+                guard let arguments = methodCall.arguments as? [String: Any],
+                      let enabled = arguments["enabled"] as? Bool
+                else {
+                    result(FlutterError(
+                        code: "setNetworkStatsEnabledError",
+                        message: "could not decode arguments",
+                        details: nil
+                    ))
+                    return
+                }
+                MapLibreNetworkStats.setEnabled(enabled)
+                result(nil)
+            case "getNetworkStats":
+                // Bytes are null on iOS: see MapLibreNetworkStats.
+                result([
+                    "requests": MapLibreNetworkStats.snapshot(),
+                    "bytes": NSNull(),
+                ])
+            case "resetNetworkStats":
+                MapLibreNetworkStats.reset()
+                result(nil)
             case "installOfflineMapTiles":
                 guard let arguments = methodCall.arguments as? [String: String] else { return }
                 let tilesdb = arguments["tilesdb"]

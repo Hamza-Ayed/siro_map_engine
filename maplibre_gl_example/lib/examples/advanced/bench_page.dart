@@ -28,8 +28,8 @@ import 'bench_stats.dart';
 /// - camera steps sent and steps skipped because the previous move had not
 ///   completed yet.
 ///
-/// Network requests are not measured here. That needs a native hook in the
-/// Android and iOS plugins, so the result records `"network": "not_measured"`.
+/// Network totals come from the plugin's network counter: requests always,
+/// bytes on Android only (iOS reports null for bytes).
 class BenchPage extends ExamplePage {
   const BenchPage({super.key})
     : super(
@@ -108,7 +108,17 @@ class _BenchBodyState extends State<_BenchBody> {
       (_) => _sampleRss(),
     );
     _sampleRss();
+    unawaited(_startNetworkCount());
     unawaited(_loadRoute());
+  }
+
+  Future<void> _startNetworkCount() async {
+    try {
+      await setNetworkStatsEnabled(true);
+      await resetNetworkStats();
+    } on Object {
+      // Counting is best-effort: the run still reports timings without it.
+    }
   }
 
   @override
@@ -118,6 +128,8 @@ class _BenchBodyState extends State<_BenchBody> {
     _cameraTimer?.cancel();
     _finishTimer?.cancel();
     _wall.stop();
+    // Leave counting off for the other examples, which rebuild nothing themselves.
+    unawaited(setNetworkStatsEnabled(false).catchError((_) {}));
     super.dispose();
   }
 
@@ -195,7 +207,7 @@ class _BenchBodyState extends State<_BenchBody> {
     _runStart = _wall.elapsed;
     _measuring = true;
     _cameraTimer = Timer.periodic(_cameraInterval, (_) => _cameraTick());
-    _finishTimer = Timer(_runDuration, _finish);
+    _finishTimer = Timer(_runDuration, () => unawaited(_finish()));
     setState(() {});
   }
 
@@ -252,12 +264,13 @@ class _BenchBodyState extends State<_BenchBody> {
   int? get _maxRssBytes =>
       _rssBytes.isEmpty ? null : _rssBytes.reduce((a, b) => a > b ? a : b);
 
-  void _finish() {
+  Future<void> _finish() async {
     _cameraTimer?.cancel();
     _memoryTimer?.cancel();
     _sampleRss();
     _measuring = false;
     _runEnd = _wall.elapsed;
+    final network = await _readNetworkStats();
 
     final runDuration = _runEnd - _runStart;
     final result = <String, Object?>{
@@ -287,12 +300,21 @@ class _BenchBodyState extends State<_BenchBody> {
       'rssStartMb': _mb(_rssAtRunStart),
       'rssMaxMb': _mb(_maxRssBytes),
       'rssEndMb': _mb(_lastRssBytes),
-      'network': 'not_measured',
+      'network': network,
     };
     setState(() {
       _resultJson = const JsonEncoder.withIndent('  ').convert(result);
       _done = true;
     });
+  }
+
+  Future<Map<String, Object?>?> _readNetworkStats() async {
+    try {
+      final stats = await getNetworkStats();
+      return {'requests': stats.requests, 'bytes': stats.bytes};
+    } on Object catch (e) {
+      return {'error': '$e'};
+    }
   }
 
   static double? _round(double? value) {

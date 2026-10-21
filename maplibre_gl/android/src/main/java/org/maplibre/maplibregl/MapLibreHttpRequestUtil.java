@@ -52,8 +52,10 @@ abstract class MapLibreHttpRequestUtil {
     }
   }
 
-  private static void rebuildClient() {
+  static void rebuildClient() {
     OkHttpClient.Builder builder = new OkHttpClient.Builder();
+    // Counts requests while MapLibreNetworkStats is enabled; a no-op otherwise.
+    builder.addNetworkInterceptor(MapLibreNetworkStats.INTERCEPTOR);
 
     // Apply dispatcher configuration
     if (currentMaxRequests != null || currentMaxRequestsPerHost != null) {

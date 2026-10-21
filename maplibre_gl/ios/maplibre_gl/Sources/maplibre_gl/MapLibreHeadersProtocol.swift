@@ -108,13 +108,20 @@ final class MapLibreHeadersProtocol: URLProtocol {
         guard URLProtocol.property(forKey: handledKey, in: request) == nil else {
             return false
         }
+        let scheme = request.url?.scheme?.lowercased() ?? ""
+        guard scheme == "http" || scheme == "https" else {
+            return false
+        }
+        // Counted before the header check, so the total covers every request
+        // MapLibre makes through this session, not only the ones that get
+        // custom headers.
+        MapLibreNetworkStats.recordRequest()
         // Nothing to inject, so leave the request on the normal loading path
         // instead of routing it through this protocol for no reason.
         guard MapLibreCustomHeaders.hasCustomHeaders() else {
             return false
         }
-        let scheme = request.url?.scheme?.lowercased() ?? ""
-        return scheme == "http" || scheme == "https"
+        return true
     }
 
     override class func canonicalRequest(for request: URLRequest) -> URLRequest {

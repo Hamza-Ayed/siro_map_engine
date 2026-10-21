@@ -65,6 +65,67 @@ Future<void> setHttpHeaders(Map<String, String> headers) {
   });
 }
 
+/// Turns network counting on or off for the whole process. Off by default.
+///
+/// While it is on, [getNetworkStats] reports the requests the map makes
+/// (tiles, styles, sprites and glyphs). On Android, turning it on rebuilds the
+/// HTTP client the way [setHttpHeaders] does, so headers set per map with
+/// `setCustomHeaders` are replaced by the global ones until they are set again.
+///
+/// Android and iOS only. On Android, [NetworkStats.bytes] counts response
+/// Content-Length, so a chunked response adds nothing to it. On iOS, bytes are
+/// always `null`.
+///
+/// Example:
+/// ```dart
+/// await setNetworkStatsEnabled(true);
+/// await resetNetworkStats();
+/// // ... use the map ...
+/// final stats = await getNetworkStats();
+/// print('${stats.requests} requests');
+/// ```
+Future<void> setNetworkStatsEnabled(bool enabled) {
+  return _globalChannel.invokeMethod(
+    'setNetworkStatsEnabled',
+    <String, dynamic>{
+      'enabled': enabled,
+    },
+  );
+}
+
+/// Returns the network totals counted since the last [resetNetworkStats], or
+/// since counting was turned on. See [setNetworkStatsEnabled].
+Future<NetworkStats> getNetworkStats() async {
+  final raw = await _globalChannel.invokeMapMethod<String, dynamic>(
+    'getNetworkStats',
+  );
+  return NetworkStats(
+    requests: (raw?['requests'] as num?)?.toInt() ?? 0,
+    bytes: (raw?['bytes'] as num?)?.toInt(),
+  );
+}
+
+/// Sets the network totals back to zero.
+Future<void> resetNetworkStats() {
+  return _globalChannel.invokeMethod('resetNetworkStats');
+}
+
+/// Network totals returned by [getNetworkStats].
+class NetworkStats {
+  /// Creates the totals. [bytes] is `null` when the platform cannot count them.
+  const NetworkStats({required this.requests, this.bytes});
+
+  /// HTTP(S) requests counted.
+  final int requests;
+
+  /// Response bytes counted, or `null` where the platform does not count them
+  /// (iOS).
+  final int? bytes;
+
+  @override
+  String toString() => 'NetworkStats(requests: $requests, bytes: $bytes)';
+}
+
 Future<List<OfflineRegion>> mergeOfflineRegions(String path) async {
   final String regionsJson = await _globalChannel.invokeMethod(
     'mergeOfflineRegions',

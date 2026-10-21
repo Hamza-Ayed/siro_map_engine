@@ -18,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
@@ -90,6 +91,22 @@ class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
       case "setHttpHeaders":
         Map<String, String> headers = (Map<String, String>) methodCall.argument("headers");
         MapLibreHttpRequestUtil.setHttpHeaders(headers, result);
+        break;
+      case "setNetworkStatsEnabled":
+        MapLibreNetworkStats.setEnabled(methodCall.argument("enabled"));
+        // The client has to be rebuilt to pick up (or drop) the counting interceptor.
+        MapLibreHttpRequestUtil.rebuildClient();
+        result.success(null);
+        break;
+      case "getNetworkStats":
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("requests", MapLibreNetworkStats.requestCount());
+        stats.put("bytes", MapLibreNetworkStats.byteCount());
+        result.success(stats);
+        break;
+      case "resetNetworkStats":
+        MapLibreNetworkStats.reset();
+        result.success(null);
         break;
       case "downloadOfflineRegion#setup":
         String channelName = methodCall.argument("channelName");

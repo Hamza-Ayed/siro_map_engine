@@ -1,0 +1,27 @@
+{
+  "scenario": "amman_ring_road_8km",
+  "routeLengthM": 8072,
+  "platform": "iOS",
+  "buildMode": "debug",
+  "style": "https://demotiles.maplibre.org/style.json",
+  "firstStyleLoadedMs": 606.26,
+  "routeReadyMs": 661.99,
+  "firstMapIdleMs": 3215.8,
+  "firstCameraIdleMs": 417.76,
+  "runSeconds": 120.02,
+  "cameraStepsSent": 1199,
+  "cameraTicksSkipped": 0,
+  "frames": 129,
+  "fps": 1.07,
+  "jankFrames": 128,
+  "frameBuildMsMean": 1.41,
+  "frameRasterMsMean": 1.7,
+  "frameTotalMsP95": 26.8,
+  "rssStartMb": 127.83,
+  "rssMaxMb": 239.36,
+  "rssEndMb": 64.94,
+  "network": {
+    "requests": 23,
+    "bytes": null
+  }
+}

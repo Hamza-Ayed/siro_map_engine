@@ -36,6 +36,7 @@ public class MapLibreCustomHttpInterceptor {
   private static OkHttpClient.Builder getOkHttpClient() {
     try {
       return new OkHttpClient.Builder()
+          .addNetworkInterceptor(MapLibreNetworkStats.INTERCEPTOR)
           .addNetworkInterceptor(
               chain -> {
                 Request.Builder builder = chain.request().newBuilder();

@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## Unreleased
+
+### Added
+* **Network counter**: `setNetworkStatsEnabled(bool)`, `getNetworkStats()` and `resetNetworkStats()` count the HTTP(S) requests the map makes (tiles, styles, sprites, glyphs). Counting is off by default. `NetworkStats` reports `requests` on Android and iOS, and `bytes` on Android only (Content-Length, so chunked responses add nothing); iOS reports `bytes` as null. On Android, turning counting on rebuilds the HTTP client as `setHttpHeaders` does, so per-map headers from `setCustomHeaders` are replaced until set again.
+
 ## [0.27.1](https://github.com/maplibre/flutter-maplibre-gl/compare/v0.27.0...v0.27.1)
 
 ### Fixed
