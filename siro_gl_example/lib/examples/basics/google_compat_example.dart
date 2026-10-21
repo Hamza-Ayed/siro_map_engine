@@ -37,6 +37,8 @@ class _GoogleCompatBodyState extends State<_GoogleCompatBody> {
   GoogleMapController? _map;
   Set<Polyline> _polylines = {};
   SiroPlace? _picked;
+  final Set<Marker> _tapped = {};
+  bool _night = false;
   String? _status;
 
   @override
@@ -83,6 +85,22 @@ class _GoogleCompatBodyState extends State<_GoogleCompatBody> {
         GoogleMap(
           initialCameraPosition: const CameraPosition(target: _amman, zoom: 10),
           onMapCreated: (controller) => _map = controller,
+          colorScheme: _night ? MapColorScheme.dark : MapColorScheme.light,
+          onTap:
+              (position) => setState(() {
+                _tapped.add(
+                  Marker(
+                    markerId: MarkerId('tap-${_tapped.length}'),
+                    position: position,
+                    infoWindow: InfoWindow(
+                      title: 'Dropped pin',
+                      snippet:
+                          '${position.latitude.toStringAsFixed(4)}, '
+                          '${position.longitude.toStringAsFixed(4)}',
+                    ),
+                  ),
+                );
+              }),
           polylines: _polylines,
           polygons: {
             const Polygon(
@@ -109,11 +127,17 @@ class _GoogleCompatBodyState extends State<_GoogleCompatBody> {
             ),
           },
           markers: {
-            const Marker(markerId: MarkerId('amman'), position: _amman),
+            const Marker(
+              markerId: MarkerId('amman'),
+              position: _amman,
+              infoWindow: InfoWindow(title: 'Amman', snippet: 'Jordan'),
+            ),
+            ..._tapped,
             if (_picked != null)
               Marker(
                 markerId: const MarkerId('picked'),
                 position: _picked!.position,
+                infoWindow: InfoWindow(title: _picked!.displayName),
               ),
           },
         ),
@@ -126,6 +150,15 @@ class _GoogleCompatBodyState extends State<_GoogleCompatBody> {
             near: _amman,
             country: 'JO',
             onSelected: _onPlacePicked,
+          ),
+        ),
+        Positioned(
+          top: 76,
+          right: 12,
+          child: FilterChip(
+            label: Text(_night ? 'Night' : 'Day'),
+            selected: _night,
+            onSelected: (value) => setState(() => _night = value),
           ),
         ),
         if (_status != null)
