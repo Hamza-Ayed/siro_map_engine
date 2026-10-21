@@ -85,3 +85,15 @@ List<LatLng> geodesicLine(List<LatLng> points, {double stepMeters = 50000}) {
   }
   return out;
 }
+
+/// Google's dash pattern in pixels, as the engine's dash array in line-width
+/// units. Alternating dash and gap lengths; a zero-length item is a dot. An
+/// odd count repeats, as in Google, and a single item is doubled, because a
+/// dash array needs an even count. Returns null for no pattern.
+List<double>? dashArrayFor(List<double> patternPixels, int width) {
+  if (patternPixels.isEmpty) return null;
+  final unit = width <= 0 ? 1.0 : width.toDouble();
+  var items = patternPixels.map((p) => math.max(p.abs(), 0.1) / unit).toList();
+  if (items.length.isOdd) items = [...items, ...items];
+  return items;
+}

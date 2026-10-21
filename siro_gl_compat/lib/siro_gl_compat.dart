@@ -19,7 +19,8 @@ export 'package:siro_gl/siro_gl.dart'
         SiroAttributionButton;
 
 export 'src/geocoder.dart';
-export 'src/geometry.dart' show colorToCss, geodesicCircle, geodesicLine;
+export 'src/geometry.dart'
+    show colorToCss, dashArrayFor, geodesicCircle, geodesicLine;
 export 'src/google_map.dart';
 export 'src/search_bar.dart';
 export 'src/support_types.dart';

@@ -200,6 +200,8 @@ class _GoogleMapState extends State<GoogleMap> {
   final List<Symbol> _symbols = [];
   final Map<String, Object> _tapTargets = {};
   final Set<String> _addedImages = {};
+  final List<String> _dashLayers = [];
+  final List<String> _dashSources = [];
 
   MarkerId? _infoMarker;
   Offset? _infoOffset;
@@ -407,7 +409,17 @@ class _GoogleMapState extends State<GoogleMap> {
     if (_freshStyle) {
       _freshStyle = false;
       _addedImages.clear();
+      _dashLayers.clear();
+      _dashSources.clear();
     } else {
+      for (final layer in _dashLayers) {
+        await map.removeLayer(layer);
+      }
+      for (final source in _dashSources) {
+        await map.removeSource(source);
+      }
+      _dashLayers.clear();
+      _dashSources.clear();
       await map.removeLines(_lines);
       await map.removeFills(_fills);
       await map.removeCircles(_dots);
@@ -458,6 +470,10 @@ class _GoogleMapState extends State<GoogleMap> {
           ..sort((a, b) => a.zIndex.compareTo(b.zIndex));
     for (final polyline in polylines) {
       if (polyline.points.length < 2) continue;
+      if (polyline.patterns.isNotEmpty) {
+        await _addDashed(map, polyline);
+        continue;
+      }
       final line = await map.addLine(
         LineOptions(
           geometry:
@@ -485,6 +501,52 @@ class _GoogleMapState extends State<GoogleMap> {
     }
 
     if (_infoMarker != null) unawaited(_updateInfoOffset());
+  }
+
+  /// A dashed polyline. Dash arrays are constant per layer in the engine, so
+  /// each dashed line is its own GeoJSON source and line layer.
+  Future<void> _addDashed(SiroMapController map, Polyline polyline) async {
+    final id = polyline.polylineId.value;
+    final dash = dashArrayFor(
+      [for (final item in polyline.patterns) item.length],
+      polyline.width,
+    );
+    final points =
+        polyline.geodesic ? geodesicLine(polyline.points) : polyline.points;
+    final sourceId = 'siro-dash-src-$id';
+    final layerId = 'siro-dash-lyr-$id';
+    await map.addGeoJsonSource(sourceId, {
+      'type': 'FeatureCollection',
+      'features': [
+        {
+          'type': 'Feature',
+          'properties': <String, dynamic>{},
+          'geometry': {
+            'type': 'LineString',
+            'coordinates': [
+              for (final p in points) [p.longitude, p.latitude],
+            ],
+          },
+        },
+      ],
+    });
+    _dashSources.add(sourceId);
+    await map.addLineLayer(
+      sourceId,
+      layerId,
+      LineLayerProperties(
+        lineColor: colorToCss(polyline.color),
+        lineWidth: polyline.width.toDouble(),
+        lineDasharray: dash,
+        lineJoin: switch (polyline.jointType) {
+          JointType.round => 'round',
+          JointType.bevel => 'bevel',
+          JointType.mitered => 'miter',
+        },
+      ),
+      enableInteraction: false,
+    );
+    _dashLayers.add(layerId);
   }
 
   Future<void> _addMarker(SiroMapController map, Marker marker) async {
