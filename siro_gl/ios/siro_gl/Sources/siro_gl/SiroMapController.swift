@@ -1448,6 +1448,31 @@ class SiroMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, Siro
                 result(featuresReply(leaves, methodName: "getClusterLeaves"))
             }
 
+        case "layer#getVisibility":
+            guard let arguments = methodCall.arguments as? [String: Any],
+                  let layerId = arguments["layerId"] as? String
+            else {
+                result(FlutterError(
+                    code: "INVALID_ARGUMENT",
+                    message: "getLayerVisibility needs a 'layerId' string.",
+                    details: nil
+                ))
+                return
+            }
+            guard let layer = mapView.style?.layer(withIdentifier: layerId) else {
+                result(MethodCallError.layerNotFound(layerId: layerId).flutterError)
+                return
+            }
+            result(layer.isVisible)
+
+        case "source#setFeatureState", "source#getFeatureState", "source#removeFeatureState":
+            // The MapLibre iOS SDK has no feature-state API.
+            result(FlutterError(
+                code: "UNSUPPORTED",
+                message: "Feature state is not available on iOS: the MapLibre iOS SDK has no feature-state API.",
+                details: nil
+            ))
+
         case "layer#setVisibility":
             guard let arguments = methodCall.arguments as? [String: Any] else { return }
             guard let layerId = arguments["layerId"] as? String else { return }

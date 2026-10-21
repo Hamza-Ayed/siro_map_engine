@@ -26,6 +26,12 @@ enum DragEventType { start, drag, end }
 
 enum HoverEventType { enter, move, leave }
 
+/// Turns forced offline mode on or off for the plugin's map requests.
+///
+/// On Android this disconnects the plugin's connectivity receiver. On iOS the
+/// MapLibre SDK has no such switch, so the plugin fails the style, tile, sprite
+/// and glyph requests itself while this is on. Offline packs are not changed
+/// either way: this only stops new network requests.
 Future<dynamic> setOffline(bool offline) => _globalChannel.invokeMethod(
   'setOffline',
   <String, dynamic>{'offline': offline},

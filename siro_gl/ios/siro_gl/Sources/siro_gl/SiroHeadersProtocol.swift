@@ -116,6 +116,10 @@ final class SiroHeadersProtocol: URLProtocol {
         // MapLibre makes through this session, not only the ones that get
         // custom headers.
         SiroNetworkStats.recordRequest()
+        // Forced offline has to see every request, so claim them all.
+        if SiroForcedOffline.isEnabled {
+            return true
+        }
         // Nothing to inject, so leave the request on the normal loading path
         // instead of routing it through this protocol for no reason.
         guard SiroCustomHeaders.hasCustomHeaders() else {
@@ -129,6 +133,10 @@ final class SiroHeadersProtocol: URLProtocol {
     }
 
     override func startLoading() {
+        if SiroForcedOffline.isEnabled {
+            client?.urlProtocol(self, didFailWithError: URLError(.notConnectedToInternet))
+            return
+        }
         let mutable = (request as NSURLRequest).mutableCopy() as! NSMutableURLRequest
         URLProtocol.setProperty(true, forKey: Self.handledKey, in: mutable)
 

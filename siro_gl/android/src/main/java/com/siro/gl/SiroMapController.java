@@ -2920,6 +2920,26 @@ final class SiroMapController
           result.success(reply);
           break;
         }
+        case "layer#getVisibility":
+        {
+          if (style == null || !style.isFullyLoaded()) {
+            result.error(
+                "STYLE_NOT_READY",
+                "Style is null or not fully loaded. Has onStyleLoaded() already been invoked?",
+                null);
+            break;
+          }
+          String layerId = call.argument("layerId");
+          Layer layer = style.getLayer(layerId);
+          if (layer == null) {
+            result.error("LAYER_NOT_FOUND", "No layer with id " + layerId, null);
+            break;
+          }
+          // A layer with no visibility set is visible.
+          String value = layer.getVisibility().getValue();
+          result.success(value == null || !Property.NONE.equals(value));
+          break;
+        }
         case "layer#setVisibility":
         {
           if (style == null || !style.isFullyLoaded()) {

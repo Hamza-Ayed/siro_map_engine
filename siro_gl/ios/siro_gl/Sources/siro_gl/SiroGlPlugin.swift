@@ -37,11 +37,30 @@ public class SiroGlPlugin: NSObject, FlutterPlugin {
                         message: "could not decode arguments",
                         details: nil
                     ))
-                    result(nil)
                     return
                 }
                 SiroCustomHeaders.setHeaders(headers)
                 result(nil)
+            case "setOffline":
+                // MapLibre iOS has no forced-offline switch. See SiroForcedOffline.
+                guard let arguments = methodCall.arguments as? [String: Any],
+                      let offline = arguments["offline"] as? Bool
+                else {
+                    result(FlutterError(
+                        code: "setOfflineError",
+                        message: "could not decode arguments",
+                        details: nil
+                    ))
+                    return
+                }
+                SiroForcedOffline.setEnabled(offline)
+                result(nil)
+            case "updateOfflineRegionMetadata":
+                result(FlutterError(
+                    code: "UNSUPPORTED",
+                    message: "MapLibre iOS cannot change an offline region's metadata in place. Delete the region and download it again with the new metadata.",
+                    details: nil
+                ))
             case "setNetworkStatsEnabled":
                 guard let arguments = methodCall.arguments as? [String: Any],
                       let enabled = arguments["enabled"] as? Bool

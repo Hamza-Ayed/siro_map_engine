@@ -138,7 +138,7 @@ class SiroExampleApp extends StatelessWidget {
         ].where((p) => p.slug == _initialExampleSlug()).firstOrNull;
 
     return MaterialApp(
-      title: 'MapLibre Examples',
+      title: 'Siro GL Examples',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -310,7 +310,7 @@ class _MapsDemoState extends State<MapsDemo> {
       body: CustomScrollView(
         slivers: [
           const SliverAppBar.large(
-            title: Text('MapLibre Examples'),
+            title: Text('Siro GL Examples'),
             floating: true,
             snap: true,
           ),
@@ -369,14 +369,14 @@ class _MapsDemoState extends State<MapsDemo> {
                   ),
                   child: AboutListTile(
                     icon: Icon(Icons.info),
-                    applicationName: "MapLibre GL Flutter",
+                    applicationName: "Siro GL",
                     aboutBoxChildren: [
                       Text(
-                        'MapLibre GL Flutter is an open-source Flutter plugin for embedding interactive maps using the MapLibre GL Native library.',
+                        'Siro GL is a Flutter plugin for embedding interactive maps. It is built on the MapLibre GL Native library, which is credited in THIRD_PARTY_LICENSES.',
                       ),
                       SizedBox(height: 8),
                       Text(
-                        'This example app showcases various features and capabilities of the MapLibre GL Flutter plugin through interactive examples.',
+                        'This example app showcases the features of the Siro GL plugin through interactive examples.',
                       ),
                     ],
                   ),

@@ -75,6 +75,7 @@ class _BenchBodyState extends State<_BenchBody> {
   double? _routeReadyMs;
   double? _firstMapIdleMs;
   double? _firstCameraIdleMs;
+  double? _cameraIdleAfterStyleMs;
 
   bool _measuring = false;
   bool _done = false;
@@ -103,10 +104,11 @@ class _BenchBodyState extends State<_BenchBody> {
     super.initState();
     _wall.start();
     SchedulerBinding.instance.addTimingsCallback(_onFrameTimings);
-    _memoryTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) => _sampleRss(),
-    );
+    _memoryTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      _sampleRss();
+      // Refresh the status line, which shows the camera step while a run is on.
+      if (_measuring && mounted) setState(() {});
+    });
     _sampleRss();
     unawaited(_startNetworkCount());
     unawaited(_loadRoute());
@@ -177,6 +179,12 @@ class _BenchBodyState extends State<_BenchBody> {
 
   void _onCameraIdle() {
     _firstCameraIdleMs ??= _elapsedMs();
+    // The first idle before the style loads is the engine's own start-up
+    // settle. This one is the first idle after the style, which is what the
+    // name suggests.
+    if (_firstStyleLoadedMs != null) {
+      _cameraIdleAfterStyleMs ??= _elapsedMs();
+    }
   }
 
   /// Adds the route once the style and the route data are both ready, then
@@ -288,6 +296,7 @@ class _BenchBodyState extends State<_BenchBody> {
       'routeReadyMs': _round(_routeReadyMs),
       'firstMapIdleMs': _round(_firstMapIdleMs),
       'firstCameraIdleMs': _round(_firstCameraIdleMs),
+      'cameraIdleAfterStyleMs': _round(_cameraIdleAfterStyleMs),
       'runSeconds': _round(runDuration.inMicroseconds / 1e6),
       'cameraStepsSent': _cameraSteps,
       'cameraTicksSkipped': _cameraSkipped,

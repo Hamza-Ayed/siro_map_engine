@@ -52,6 +52,7 @@ step "format"                dart format --set-exit-if-changed .
 step "analyze"               dart run melos run analyze-all --no-select
 step "test io"               dart run melos run test:io --no-select
 step "test scripts"          dart run melos run test:scripts --no-select
+step "test example"        sh -c 'cd siro_gl_example && flutter test'
 if [ "${SKIP_WEB:-0}" != "1" ]; then
   step "test web"            dart run melos run test:web --no-select
 fi
