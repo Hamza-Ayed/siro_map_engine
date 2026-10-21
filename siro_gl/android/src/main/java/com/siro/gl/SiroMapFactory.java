@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.content.Context;
 
@@ -19,7 +19,7 @@ import java.util.WeakHashMap;
  * Platform-view factory for {@code com.siro.gl/map}.
  *
  * <p>Beyond the standard {@link PlatformViewFactory} responsibilities, this class
- * keeps a weak registry of every {@link MapLibreMapController} it has produced so
+ * keeps a weak registry of every {@link SiroMapController} it has produced so
  * that the plugin can broadcast Flutter {@code ActivityAware} events to all live
  * controllers when the host activity is attached, detached, or recreated.
  *
@@ -31,20 +31,20 @@ import java.util.WeakHashMap;
  * iteration to defend against re-entrant mutations (e.g. a controller disposing
  * itself in response to a lifecycle callback).
  */
-public class MapLibreMapFactory extends PlatformViewFactory {
+public class SiroMapFactory extends PlatformViewFactory {
 
   private final BinaryMessenger messenger;
-  private final MapLibreMapsPlugin.LifecycleProvider lifecycleProvider;
+  private final SiroGlPlugin.LifecycleProvider lifecycleProvider;
   /**
    * Weakly-referenced registry of all controllers produced by this factory. Used
    * to fan out activity attach/detach/rebound notifications. Entries vanish
    * automatically when the controller is garbage-collected.
    */
-  private final Set<MapLibreMapController> controllers =
-      Collections.newSetFromMap(new WeakHashMap<MapLibreMapController, Boolean>());
+  private final Set<SiroMapController> controllers =
+      Collections.newSetFromMap(new WeakHashMap<SiroMapController, Boolean>());
 
-  public MapLibreMapFactory(
-      BinaryMessenger messenger, MapLibreMapsPlugin.LifecycleProvider lifecycleProvider) {
+  public SiroMapFactory(
+      BinaryMessenger messenger, SiroGlPlugin.LifecycleProvider lifecycleProvider) {
     super(StandardMessageCodec.INSTANCE);
     this.messenger = messenger;
     this.lifecycleProvider = lifecycleProvider;
@@ -54,7 +54,7 @@ public class MapLibreMapFactory extends PlatformViewFactory {
   @Override
   public PlatformView create(Context context, int id, Object args) {
     Map<String, Object> params = (Map<String, Object>) args;
-    final MapLibreMapBuilder builder = new MapLibreMapBuilder();
+    final SiroMapBuilder builder = new SiroMapBuilder();
 
     Convert.interpretMapLibreMapOptions(params.get("options"), builder, context);
     if (params.containsKey("initialCameraPosition")) {
@@ -70,7 +70,7 @@ public class MapLibreMapFactory extends PlatformViewFactory {
       builder.setStyleString(styleString);
     }
 
-    final MapLibreMapController controller =
+    final SiroMapController controller =
         builder.build(id, context, messenger, lifecycleProvider);
     controllers.add(controller);
     return controller;
@@ -78,10 +78,10 @@ public class MapLibreMapFactory extends PlatformViewFactory {
 
   /**
    * Notify every live controller that the plugin has (re)attached to an activity.
-   * Triggered from {@link MapLibreMapsPlugin#onAttachedToActivity}.
+   * Triggered from {@link SiroGlPlugin#onAttachedToActivity}.
    */
   void onActivityAttached() {
-    for (MapLibreMapController controller : new ArrayList<>(controllers)) {
+    for (SiroMapController controller : new ArrayList<>(controllers)) {
       controller.onActivityAttached();
     }
   }
@@ -90,10 +90,10 @@ public class MapLibreMapFactory extends PlatformViewFactory {
    * Notify every live controller that the plugin is being fully detached from the
    * activity (no config change in progress). Controllers will save what state they
    * can and tear down the native {@link io.flutter.plugin.platform.PlatformView} resources.
-   * Triggered from {@link MapLibreMapsPlugin#onDetachedFromActivity}.
+   * Triggered from {@link SiroGlPlugin#onDetachedFromActivity}.
    */
   void onActivityDetached() {
-    for (MapLibreMapController controller : new ArrayList<>(controllers)) {
+    for (SiroMapController controller : new ArrayList<>(controllers)) {
       controller.onActivityDetached();
     }
   }
@@ -104,10 +104,10 @@ public class MapLibreMapFactory extends PlatformViewFactory {
    * activity has already destroyed each controller's map view by the time this
    * fires; controllers will recreate the {@link io.flutter.plugin.platform.PlatformView}
    * against the fresh activity context. Triggered from
-   * {@link MapLibreMapsPlugin#onReattachedToActivityForConfigChanges}.
+   * {@link SiroGlPlugin#onReattachedToActivityForConfigChanges}.
    */
   void onActivityRebound() {
-    for (MapLibreMapController controller : new ArrayList<>(controllers)) {
+    for (SiroMapController controller : new ArrayList<>(controllers)) {
       controller.onActivityRebound();
     }
   }

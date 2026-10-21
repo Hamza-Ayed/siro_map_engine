@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -218,7 +218,7 @@ static LocationEngineRequest toLocationEngineRequest(Object o) {
     return (String) o;
   }
 
-  static void interpretMapLibreMapOptions(Object o, MapLibreMapOptionsSink sink, Context context) {
+  static void interpretMapLibreMapOptions(Object o, SiroMapOptionsSink sink, Context context) {
     final DisplayMetrics metrics = context.getResources().getDisplayMetrics();
     final Map<?, ?> data = toMap(o);
 

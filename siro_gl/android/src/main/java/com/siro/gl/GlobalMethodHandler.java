@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.content.Context;
 import android.util.Log;
@@ -65,7 +65,7 @@ class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
 
   @Override
   public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
-    MapLibreUtils.getMapLibre(context);
+    SiroUtils.getMapLibre(context);
 
     switch (methodCall.method) {
       case "installOfflineMapTiles":
@@ -90,22 +90,22 @@ class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
         break;
       case "setHttpHeaders":
         Map<String, String> headers = (Map<String, String>) methodCall.argument("headers");
-        MapLibreHttpRequestUtil.setHttpHeaders(headers, result);
+        SiroHttpRequestUtil.setHttpHeaders(headers, result);
         break;
       case "setNetworkStatsEnabled":
-        MapLibreNetworkStats.setEnabled(methodCall.argument("enabled"));
+        SiroNetworkStats.setEnabled(methodCall.argument("enabled"));
         // The client has to be rebuilt to pick up (or drop) the counting interceptor.
-        MapLibreHttpRequestUtil.rebuildClient();
+        SiroHttpRequestUtil.rebuildClient();
         result.success(null);
         break;
       case "getNetworkStats":
         Map<String, Object> stats = new HashMap<>();
-        stats.put("requests", MapLibreNetworkStats.requestCount());
-        stats.put("bytes", MapLibreNetworkStats.byteCount());
+        stats.put("requests", SiroNetworkStats.requestCount());
+        stats.put("bytes", SiroNetworkStats.byteCount());
         result.success(stats);
         break;
       case "resetNetworkStats":
-        MapLibreNetworkStats.reset();
+        SiroNetworkStats.reset();
         result.success(null);
         break;
       case "downloadOfflineRegion#setup":
@@ -170,11 +170,11 @@ class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
           Integer maxRequests = maxRequestsNum != null ? maxRequestsNum.intValue() : null;
           Integer maxRequestsPerHost =
               maxRequestsPerHostNum != null ? maxRequestsPerHostNum.intValue() : null;
-          MapLibreHttpRequestUtil.setMaxConcurrentRequests(maxRequests, maxRequestsPerHost, result);
+          SiroHttpRequestUtil.setMaxConcurrentRequests(maxRequests, maxRequestsPerHost, result);
           break;
         }
       case "preWarm":
-        // MapLibreUtils.getMapLibre(context) at line 67 already triggers
+        // SiroUtils.getMapLibre(context) at line 67 already triggers
         // MapLibre.getInstance(context) on every method call. This case
         // exists as an explicit, documented entry point for pre-warming.
         result.success(null);

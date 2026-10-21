@@ -1,4 +1,4 @@
-group 'org.maplibre.maplibregl'
+group 'com.siro.gl'
 version '1.0-SNAPSHOT'
 
 buildscript {
@@ -37,7 +37,7 @@ if (project.extensions.findByName('kotlin') == null) {
 
 android {
     if (project.android.hasProperty("namespace")) {
-        namespace 'org.maplibre.maplibregl'
+        namespace 'com.siro.gl'
     }
     compileSdkVersion 36
     buildToolsVersion "36.0.0"

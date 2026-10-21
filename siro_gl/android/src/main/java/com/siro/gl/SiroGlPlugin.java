@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -21,14 +21,14 @@ import org.maplibre.android.log.Logger;
  * the map. A Texture drawn using MapLibreMap bitmap snapshots can then be shown instead of the
  * overlay.
  */
-public class MapLibreMapsPlugin implements FlutterPlugin, ActivityAware {
+public class SiroGlPlugin implements FlutterPlugin, ActivityAware {
 
   static FlutterAssets flutterAssets;
   private Lifecycle lifecycle;
   private Context context;
-  private MapLibreMapFactory mapFactory;
+  private SiroMapFactory mapFactory;
 
-  public MapLibreMapsPlugin() {
+  public SiroGlPlugin() {
     // no-op
   }
 
@@ -51,7 +51,7 @@ public class MapLibreMapsPlugin implements FlutterPlugin, ActivityAware {
         .registerViewFactory(
             "com.siro.gl/map",
             mapFactory =
-                new MapLibreMapFactory(
+                new SiroMapFactory(
                     binding.getBinaryMessenger(),
                     new LifecycleProvider() {
                       @Nullable

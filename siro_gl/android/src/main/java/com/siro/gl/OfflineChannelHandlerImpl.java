@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import androidx.annotation.Nullable;
 import com.google.gson.Gson;

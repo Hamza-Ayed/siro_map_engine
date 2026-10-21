@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import org.maplibre.android.module.http.HttpRequestUtil;
 import io.flutter.plugin.common.MethodChannel;
@@ -7,7 +7,7 @@ import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
-abstract class MapLibreHttpRequestUtil {
+abstract class SiroHttpRequestUtil {
 
   private static Map<String, String> currentHeaders;
   private static Integer currentMaxRequests;
@@ -54,8 +54,8 @@ abstract class MapLibreHttpRequestUtil {
 
   static void rebuildClient() {
     OkHttpClient.Builder builder = new OkHttpClient.Builder();
-    // Counts requests while MapLibreNetworkStats is enabled; a no-op otherwise.
-    builder.addNetworkInterceptor(MapLibreNetworkStats.INTERCEPTOR);
+    // Counts requests while SiroNetworkStats is enabled; a no-op otherwise.
+    builder.addNetworkInterceptor(SiroNetworkStats.INTERCEPTOR);
 
     // Apply dispatcher configuration
     if (currentMaxRequests != null || currentMaxRequestsPerHost != null) {

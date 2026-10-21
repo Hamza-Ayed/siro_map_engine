@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.content.Context;
 import android.os.SystemClock;

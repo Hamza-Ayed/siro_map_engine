@@ -209,7 +209,7 @@ jobs:
       - name: Configure the Android module
         working-directory: .github/gradle-compat
         run: >
-          gradle :maplibre_gl:help
+          gradle :siro_gl:help
           -PagpVersion=${{ matrix.agp }}
           -PkgpVersion=${{ matrix.kgp }}
           -PexpectKotlinOwner=${{ matrix.owner }}

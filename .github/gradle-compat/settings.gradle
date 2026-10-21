@@ -3,5 +3,5 @@
 // See README.md in this directory.
 rootProject.name = 'gradle-compat'
 
-include ':maplibre_gl'
-project(':maplibre_gl').projectDir = file('../../siro_gl/android')
+include ':siro_gl'
+project(':siro_gl').projectDir = file('../../siro_gl/android')

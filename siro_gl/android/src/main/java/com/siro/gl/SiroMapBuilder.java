@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.content.Context;
 import android.view.Gravity;
@@ -13,7 +13,7 @@ import org.maplibre.android.location.engine.LocationEngineRequest;
 import org.maplibre.android.maps.MapLibreMapOptions;
 import io.flutter.plugin.common.BinaryMessenger;
 
-class MapLibreMapBuilder implements MapLibreMapOptionsSink {
+class SiroMapBuilder implements SiroMapOptionsSink {
   public final String TAG = getClass().getSimpleName();
   private final MapLibreMapOptions options =
       new MapLibreMapOptions().attributionEnabled(true).logoEnabled(false).textureMode(false);
@@ -31,14 +31,14 @@ class MapLibreMapBuilder implements MapLibreMapOptionsSink {
   private boolean hybridCompositionActive = false;
   private Integer attributionButtonColor = null;
 
-  MapLibreMapController build(
+  SiroMapController build(
       int id,
       Context context,
       BinaryMessenger messenger,
-      MapLibreMapsPlugin.LifecycleProvider lifecycleProvider) {
+      SiroGlPlugin.LifecycleProvider lifecycleProvider) {
 
-    final MapLibreMapController controller =
-        new MapLibreMapController(
+    final SiroMapController controller =
+        new SiroMapController(
             id, 
             context, 
             messenger, 

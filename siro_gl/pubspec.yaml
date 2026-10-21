@@ -48,10 +48,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: org.maplibre.maplibregl
-        pluginClass: MapLibreMapsPlugin
+        package: com.siro.gl
+        pluginClass: SiroGlPlugin
       ios:
-        pluginClass: MapLibreMapsPlugin
+        pluginClass: SiroGlPlugin
       web:
         default_package: siro_gl_web
 

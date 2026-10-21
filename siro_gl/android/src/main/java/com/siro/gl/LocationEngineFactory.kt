@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl
+package com.siro.gl
 
 import android.content.Context
 import com.google.android.gms.common.ConnectionResult
@@ -28,7 +28,7 @@ class LocationEngineFactory {
             val locationEngineImpl = if (isGooglePlayServicesAvailable(context)) {
                 GMSLocationEngine(context)
             } else {
-                MapLibreGPSLocationEngine(context)
+                SiroGpsLocationEngine(context)
             }
             return LocationEngineProxy(locationEngineImpl)
         }

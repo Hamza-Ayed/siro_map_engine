@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -130,7 +130,7 @@ import io.flutter.plugin.platform.PlatformView;
  * {@code map#onStyleLoaded} fires for the new MapView. {@link #recreateMapViewIfNecessary()}
  * lists both sides in full.
  *
- * <p>{@link MapLibreMapFactory} broadcasts the activity hooks ({@link #onActivityAttached()},
+ * <p>{@link SiroMapFactory} broadcasts the activity hooks ({@link #onActivityAttached()},
  * {@link #onActivityDetached()}, {@link #onActivityRebound()}); with the
  * {@code mapViewCreated/Started/Resumed} flags they keep each MapView's lifecycle calls
  * balanced however Jetpack replays events. While the MapView is being rebuilt,
@@ -142,7 +142,7 @@ import io.flutter.plugin.platform.PlatformView;
  * the foreground.
  */
 @SuppressLint("MissingPermission")
-final class MapLibreMapController
+final class SiroMapController
     implements DefaultLifecycleObserver,
         ComponentCallbacks2,
         MapLibreMap.OnCameraIdleListener,
@@ -151,12 +151,12 @@ final class MapLibreMapController
         MapView.OnDidBecomeIdleListener,
         MapLibreMap.OnMapClickListener,
         MapLibreMap.OnMapLongClickListener,
-        MapLibreMapOptionsSink,
+        SiroMapOptionsSink,
         MethodChannel.MethodCallHandler,
         OnMapReadyCallback,
         OnCameraTrackingChangedListener,
         PlatformView {
-  private static final String TAG = "MapLibreMapController";
+  private static final String TAG = "SiroMapController";
 
   /**
    * Duration used for {@code locationComponent#setTrackingCameraOptions} when Dart
@@ -167,7 +167,7 @@ final class MapLibreMapController
 
   private final int id;
   private final MethodChannel methodChannel;
-  private final MapLibreMapsPlugin.LifecycleProvider lifecycleProvider;
+  private final SiroGlPlugin.LifecycleProvider lifecycleProvider;
   private final MapLibreMapOptions mapLibreMapOptions;
   /**
    * The {@link Lifecycle} this controller is currently observing. Used to detect
@@ -203,7 +203,7 @@ final class MapLibreMapController
    * inner {@link MapView} can be swapped out (after activity recreation) without
    * Flutter noticing. Created with {@link #applicationContext} on purpose: it lives
    * across activities, and uses no activity-themed attributes.
-   * See {@link MapLibreMapController#destroyMapViewIfNecessary()} for details.
+   * See {@link SiroMapController#destroyMapViewIfNecessary()} for details.
    */
   private FrameLayout mapViewContainer;
   private MapView mapView;
@@ -253,7 +253,7 @@ final class MapLibreMapController
       new Style.OnStyleLoaded() {
         @Override
         public void onStyleLoaded(@NonNull Style style) {
-          MapLibreMapController.this.style = style;
+          SiroMapController.this.style = style;
 
           // Called unconditionally: updateMyLocationEnabled() checks myLocationEnabled
           // itself, and enableLocationComponent() checks the permission, so a map
@@ -266,24 +266,24 @@ final class MapLibreMapController
             setCameraTargetBounds(bounds);
           }
 
-          mapLibreMap.addOnMapClickListener(MapLibreMapController.this);
-          mapLibreMap.addOnMapLongClickListener(MapLibreMapController.this);
+          mapLibreMap.addOnMapClickListener(SiroMapController.this);
+          mapLibreMap.addOnMapLongClickListener(SiroMapController.this);
 
           methodChannel.invokeMethod("map#onStyleLoaded", null);
         }
       };
 
-  MapLibreMapController(
+  SiroMapController(
       int id,
       Context context,
       BinaryMessenger messenger,
-      MapLibreMapsPlugin.LifecycleProvider lifecycleProvider,
+      SiroGlPlugin.LifecycleProvider lifecycleProvider,
       MapLibreMapOptions options,
       String styleStringInitial,
       boolean dragEnabled,
       boolean featureTapsTriggersMapClick
   ) {
-    MapLibreUtils.getMapLibre(context);
+    SiroUtils.getMapLibre(context);
     this.id = id;
     this.context = context;
     this.applicationContext =
@@ -333,7 +333,7 @@ final class MapLibreMapController
   }
 
   /**
-   * Invoked by {@link MapLibreMapFactory} when the plugin re-attaches to an activity.
+   * Invoked by {@link SiroMapFactory} when the plugin re-attaches to an activity.
    * Triggered both on first attach and after a full activity teardown (e.g. with
    * "Don't keep activities" enabled). Refreshes context references, recreates the
    * {@link MapView} if the previous one was destroyed, and rebinds the new lifecycle.
@@ -595,7 +595,7 @@ final class MapLibreMapController
         && !styleString.startsWith("https://")
         && !styleString.startsWith("mapbox://")) {
       // We are assuming that the style will be loaded from an asset here.
-      String key = MapLibreMapsPlugin.flutterAssets.getAssetFilePathByName(styleString);
+      String key = SiroGlPlugin.flutterAssets.getAssetFilePathByName(styleString);
       mapLibreMap.setStyle(new Style.Builder().fromUri("asset://" + key), onStyleLoadedCallback);
     } else {
       mapLibreMap.setStyle(new Style.Builder().fromUri(styleString), onStyleLoadedCallback);
@@ -1810,7 +1810,7 @@ final class MapLibreMapController
           if (mapLibreMap != null) {
             HashMap<String, String> headers = (HashMap<String, String>)call.argument("headers");
             List<String> filter = (List<String>)call.argument("filter");
-            MapLibreCustomHttpInterceptor.setCustomHeaders(headers, filter, result);
+            SiroCustomHttpInterceptor.setCustomHeaders(headers, filter, result);
           } else {
             result.success(null);
           }
@@ -1819,7 +1819,7 @@ final class MapLibreMapController
       case "map#getCustomHeaders":
         {
           if (mapLibreMap != null) {
-            result.success(MapLibreCustomHttpInterceptor.CustomHeaders);
+            result.success(SiroCustomHttpInterceptor.CustomHeaders);
           } else {
             result.success(null);
           }
@@ -3485,7 +3485,7 @@ final class MapLibreMapController
     // Lifecycle methods already handle resource management
   }
 
-  // MapLibreMapOptionsSink methods
+  // SiroMapOptionsSink methods
 
   @Override
   public void setCameraTargetBounds(LatLngBounds bounds) {
@@ -3819,7 +3819,7 @@ final class MapLibreMapController
       String assetPath;
       if (i == 1) {
         // If density is 1.0x then simply take the default asset path
-        assetPath = MapLibreMapsPlugin.flutterAssets.getAssetFilePathByName(imageId);
+        assetPath = SiroGlPlugin.flutterAssets.getAssetFilePathByName(imageId);
       } else {
         // Build a resolution aware asset path as follows:
         // <directory asset>/<ratio>/<image name>
@@ -3832,7 +3832,7 @@ final class MapLibreMapController
         stringBuilder.append(((float) i) + "x");
         stringBuilder.append("/");
         stringBuilder.append(imagePathList.get(imagePathList.size() - 1));
-        assetPath = MapLibreMapsPlugin.flutterAssets.getAssetFilePathByName(stringBuilder.toString());
+        assetPath = SiroGlPlugin.flutterAssets.getAssetFilePathByName(stringBuilder.toString());
       }
       // Build up a list of resolution aware asset paths.
       assetPathList.add(assetPath);
@@ -3944,17 +3944,17 @@ final class MapLibreMapController
 
     @Override
     public boolean onMoveBegin(MoveGestureDetector detector) {
-      return MapLibreMapController.this.onMoveBegin(detector);
+      return SiroMapController.this.onMoveBegin(detector);
     }
 
     @Override
     public boolean onMove(MoveGestureDetector detector, float distanceX, float distanceY) {
-      return MapLibreMapController.this.onMove(detector);
+      return SiroMapController.this.onMove(detector);
     }
 
     @Override
     public void onMoveEnd(MoveGestureDetector detector, float velocityX, float velocityY) {
-      MapLibreMapController.this.onMoveEnd(detector);
+      SiroMapController.this.onMoveEnd(detector);
     }
   }
 }

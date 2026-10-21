@@ -132,10 +132,10 @@ Future<void> main() async {
   // Ordered list of templates we render. If you add a new feature, append
   // here to keep existing diff noise minimal.
   const templates = [
-    "siro_gl/android/src/main/java/org/maplibre/maplibregl/LayerPropertyConverter.java",
+    "siro_gl/android/src/main/java/com/siro/gl/LayerPropertyConverter.java",
     "siro_gl/ios/maplibre_gl/Sources/maplibre_gl/LayerPropertyConverter.swift",
-    "maplibre_gl/lib/src/layer_expressions.dart",
-    "maplibre_gl/lib/src/layer_properties.dart",
+    "siro_gl/lib/src/layer_expressions.dart",
+    "siro_gl/lib/src/layer_properties.dart",
     "siro_gl_web/lib/src/layer_tools.dart",
     "siro_gl_platform_interface/lib/src/source_properties.dart",
   ];

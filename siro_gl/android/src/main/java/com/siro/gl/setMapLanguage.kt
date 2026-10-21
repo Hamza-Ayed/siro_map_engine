@@ -1,6 +1,6 @@
 @file:JvmName("MapLibreMapUtils")
 
-package org.maplibre.maplibregl
+package com.siro.gl
 
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.style.expressions.Expression

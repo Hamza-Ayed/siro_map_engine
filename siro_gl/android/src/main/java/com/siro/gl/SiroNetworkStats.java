@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import java.util.concurrent.atomic.AtomicLong;
 import okhttp3.Interceptor;
@@ -10,7 +10,7 @@ import okhttp3.Response;
  *
  * <p>Bytes come from Content-Length, so a chunked response adds nothing to the total.
  */
-final class MapLibreNetworkStats {
+final class SiroNetworkStats {
   private static volatile boolean enabled = false;
   private static final AtomicLong requests = new AtomicLong();
   private static final AtomicLong bytes = new AtomicLong();
@@ -31,7 +31,7 @@ final class MapLibreNetworkStats {
         return response;
       };
 
-  private MapLibreNetworkStats() {}
+  private SiroNetworkStats() {}
 
   static void setEnabled(boolean value) {
     enabled = value;

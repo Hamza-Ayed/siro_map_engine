@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import org.maplibre.android.module.http.HttpRequestUtil;
 import io.flutter.plugin.common.MethodChannel;
@@ -11,8 +11,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import android.util.Log;
 
-public class MapLibreCustomHttpInterceptor {
-  private static final String TAG = "MapLibreCustomHttpInterceptor";
+public class SiroCustomHttpInterceptor {
+  private static final String TAG = "SiroCustomHttpInterceptor";
   public static final HashMap<String, String> CustomHeaders = new HashMap<>();
   public static final List<String> Filter = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class MapLibreCustomHttpInterceptor {
   private static OkHttpClient.Builder getOkHttpClient() {
     try {
       return new OkHttpClient.Builder()
-          .addNetworkInterceptor(MapLibreNetworkStats.INTERCEPTOR)
+          .addNetworkInterceptor(SiroNetworkStats.INTERCEPTOR)
           .addNetworkInterceptor(
               chain -> {
                 Request.Builder builder = chain.request().newBuilder();

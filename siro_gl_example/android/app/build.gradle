@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "org.maplibre.example"
+    namespace "com.siro.gl.example"
     compileSdkVersion 36
     buildToolsVersion "36.0.0"
 

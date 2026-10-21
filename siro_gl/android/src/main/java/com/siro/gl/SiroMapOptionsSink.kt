@@ -1,13 +1,13 @@
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-package org.maplibre.maplibregl
+package com.siro.gl
 
 import org.maplibre.android.geometry.LatLngBounds
 import org.maplibre.android.location.engine.LocationEngineRequest
 
 /** Receiver of MapLibreMap configuration options.  */
-internal interface MapLibreMapOptionsSink {
+internal interface SiroMapOptionsSink {
     // todo: dddd replace with CameraPosition.Builder target
     fun setCameraTargetBounds(bounds: LatLngBounds)
 

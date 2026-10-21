@@ -1,4 +1,4 @@
-package org.maplibre.maplibregl;
+package com.siro.gl;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -20,13 +20,13 @@ import org.maplibre.android.location.engine.LocationEngineResult;
 import org.maplibre.android.location.engine.LocationEngineImpl;
 
 
-public class MapLibreGPSLocationEngine implements LocationEngineImpl<LocationListener> {
+public class SiroGpsLocationEngine implements LocationEngineImpl<LocationListener> {
     private static final String TAG = "GPSLocationEngine";
     final LocationManager locationManager;
 
     String currentProvider = LocationManager.PASSIVE_PROVIDER;
 
-    public MapLibreGPSLocationEngine(@NonNull Context context) {
+    public SiroGpsLocationEngine(@NonNull Context context) {
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
     }
 
