@@ -21,30 +21,32 @@ class SiroAttributionButton extends StatelessWidget {
     return IconButton(
       tooltip: 'Map data',
       icon: Icon(Icons.info_outline, color: color),
-      onPressed: () => showModalBottomSheet<void>(
-        context: context,
-        builder: (context) => SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Map data',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                const SizedBox(height: 8),
-                for (final line in attributions)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4),
-                    child: Text(line),
+      onPressed:
+          () => showModalBottomSheet<void>(
+            context: context,
+            builder:
+                (context) => SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Map data',
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        const SizedBox(height: 8),
+                        for (final line in attributions)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Text(line),
+                          ),
+                      ],
+                    ),
                   ),
-              ],
-            ),
+                ),
           ),
-        ),
-      ),
     );
   }
 }
