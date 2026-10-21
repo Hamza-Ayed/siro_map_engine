@@ -4,8 +4,8 @@
 > الحالات: ⬜ لسا · 🔄 شغّال · ✅ خلص · ⏳ بانتظار صاحب المشروع (جهاز حقيقي أو قرار) · ⛔ عائق
 
 ## الحالة الحالية
-- **آخر مهمة مكتملة:** F-02
-- **المهمة الجاية:** F-03
+- **آخر مهمة مكتملة:** F-03
+- **المهمة الجاية:** F-04
 - **الفرع:** `siro-engine/dev` (انعمل من `main` عند `25423ba`، مستودع `packages/siro_map_engine` مستقل git)
 
 ## الأوامر المعتمدة (F-01، 2026-10-21، جهاز M3 / Flutter 3.47.7 stable / Xcode 27.1)
@@ -29,6 +29,7 @@
 | build apk (example) | `flutter build apk --debug` (في `maplibre_gl_example/`) | ✅ exit 0، `build/app/outputs/flutter-apk/app-debug.apk` (الجولة الأولى فشلت، انظر العائق 1) | 537 ث |
 | build ios sim (example) | `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 flutter build ios --simulator --debug` | ✅ exit 0، `build/ios/iphonesimulator/Runner.app` (انظر العائق 2 و3) | 60 ث |
 | ci كامل (بعد QA-01) | `tool/ci.sh` | — (ما انعمل بعد) | — |
+| unit tests للمثال (F-03) | `cd maplibre_gl_example && flutter test test/bench_stats_test.dart` | ✅ 21 ناجح. ما بتدخل بـ `melos run test:io` لأن نطاقه `maplibre_gl` و`maplibre_gl_platform_interface` بس (انظر العوائق) | 2 ث |
 
 **ملاحظة:** `flutter build ios` بيكتب `Pods` integration (`project.pbxproj`، `contents.xcworkspacedata`، `Podfile.lock`، و`#include?` بالـ xcconfig). التغييرات دي تراجعت بعد كل بناء، وما انكتبت بالكوميت.
 
@@ -46,7 +47,7 @@
 |---|---|---|---|---|
 | F-01 | تجهيز البيئة | ✅ | `chore(siro-gl): F-01 … ✅` (انظر git log) | كل البوابات ناجحة على Flutter 3.47.7: analyze نظيف، test:io (302 + 226)، test:web (46 + 302 + 217)، test:scripts (16)، format (0 تغيير)، generate (0 diff)، check-style-spec ✅، build apk ✅، build ios sim ✅. العائقان 1 و2 محلولان، انظر السجل |
 | F-02 | بناء وتشغيل المثال | ✅ | (انظر git log) | iOS: `iPhone 17 Pro` (iOS 26.0، محاكي) شغّال، لقطة الخريطة الرئيسية "Full screen map" بالمسار `docs/evidence/F-02/ios-iphone17pro-full-screen-map.png` (1206×2622): الخريطة بتتحمّل والتايلز والأسماء والـ attribution ظاهرين. Android: build ✅ (F-01)، لكن **التشغيل على emulator لسا ما صار**: ما في `emulator` ولا system image مثبّتين على الجهاز، والتثبيت يحتاج موافقتك (⏳). |
-| F-03 | أداة القياس | ⬜ | | |
+| F-03 | أداة القياس | ✅ | (انظر git log) | صفحة `Bench (performance)` بالـ Advanced + مسار شارع الحزام الدائري (8072 م من OSM) + 21 اختبار وحدة. **ثلاث تشغيلات على محاكي iPhone 17 Pro (iOS 26.0، debug)**: المتوسط والانحراف بـ `BENCHMARK.md` › Baseline (simulator)، الأدلة الخام `docs/evidence/F-03/`. العداد الشبكي ما انعمل (انظر العوائق). FPS هون Flutter بس، مش الخريطة (PF-01). |
 | F-04 | خريطة الكود | ⬜ | | |
 | ID-01 | الترخيص والإشعارات | ⬜ | | |
 | ID-02 | إعادة تسمية حزم Dart | ⬜ | | |
@@ -101,9 +102,16 @@
 | 2026-10-21 | F-01 | ✅ **محلول:** ترقية Flutter من 3.41.2 لـ **3.47.7 stable** بموافقة صاحب المشروع (`flutter upgrade --force`، والقوة كانت لازمة لأن `pubspec.lock` داخل SDK اتعدّل محلياً بسطر واحد من أداة Flutter: `ffigen` من `direct main` لـ `direct dev`؛ ما في غيره). بعدها build apk نجح. **عائق 1 (Android) الأصلي:** `flutter build apk --debug` فشل بالـ Gradle: `Could not find method kotlin() … on project ':app'` عند `maplibre_gl_example/android/app/build.gradle:63`. الملف فيه تعليق "as of the Flutter 3.44 app template" (بنفس block `kotlin { compilerOptions {…} }` بعد `flutter { source }`)، وFlutter المثبّت 3.41.2. على الأرجح الكود مكتوب لقالب Flutter 3.44 والـ SDK المحلي أقدم. | (أ) ترقية Flutter SDK لـ 3.44+ على الجهاز (تثبيت أداة: **يحتاج موافقتك**)، أو (ب) تعديل `build.gradle` ليطابق 3.41 (قرار، يغيّر إعدادات الـ example). | ⏳ بانتظار قرار |
 | 2026-10-21 | F-01 | **عائق 2 (iOS):** `flutter build ios --simulator --debug` فشل بعد `pod install` (`Running Xcode build … 35 ث`): `Target debug_unpack_ios failed: Binary …/Flutter.framework/Flutter does not contain architectures "arm64 x86_64"` (Xcode 27.1). الـ framework المنسوخ في `build/ios/` فيه `x86_64 arm64` فعلاً، فالسبب مش واضح. ✅ **اختفى مع Flutter 3.47.7** (ما عاد يتكرر)، وظهر بدله عائق 3. | — | ✅ محلول بالترقية |
 | 2026-10-21 | F-01 | **عائق 3 (iOS، بعد الترقية):** `Error (Xcode): The sandbox is not in sync with the Podfile.lock`. كنت حذفت `Podfile.lock` بعد الجولة الأولى. | `pod install` في `maplibre_gl_example/ios` مع `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8`، لأن CocoaPods 1.16.2 بيفشل بدون UTF-8 (`Unicode Normalization not appropriate for ASCII-8BIT`). بعدها `flutter build ios` نجح. | ✅ محلول |
+| 2026-10-21 | F-03 | **العداد الشبكي ما انعمل.** الخطة بتطلب hook native: `MapLibreCustomHttpInterceptor` على Android و`URLProtocol` على iOS. هاي تغييرات داخل الـ plugin native، وAndroid ما بيتجرّب بدون emulator. الحقل `network` بيرجع `not_measured`. | تأجيله لـ C-06 (الهيدرات بتحتاج نفس الـ hook) أو نعمله الآن لو بدك. | ⏳ قرار |
+| 2026-10-21 | F-03 | **FPS هون = فريمات Flutter مش الخريطة.** الرسم native GL، فـ FPS الحقيقي بيحتاج `onRenderStats` (PF-01). القيمة الحالية ~1 fps وهي مش قياس للخريطة. | مثبّت بـ BENCHMARK.md كتحذير. PF-01 بيصلّحه. | ✅ موثّق |
+| 2026-10-21 | F-03 | **`firstCameraIdleMs` بيصير قبل `firstStyleLoadedMs`** (447 مقابل 938 ms بالتشغيل الأول). الـ idle الأولي للمحرك قبل الستايل، فالاسم مضلّل. | نعيد تعريفه (أول idle بعد الستايل) بتغيير لاحق، والأرقام الحالية تبقى كما هي مع التحذير. | ⏳ تحسين لاحق |
+| 2026-10-21 | F-03 | **نص الحالة ما بيتحدّث أثناء التشغيل** (بيضل "step 0 / 1200"). السبب: الـ `setState` ما بيصير مع كل خطوة كاميرا. الـ JSON صحيح (من العدادات عند الانتهاء). | نصلّحه بعد ما تخلص التشغيلات، عشان الـ build المقاس يضل نفسه. | ⏳ تجميلي |
+| 2026-10-21 | F-03 | **`melos` ما بيشمل مجلد `maplibre_gl_example/test/`.** نطاق `test:io` و`test:web` بس `maplibre_gl` و`maplibre_gl_platform_interface`. | نضيف المثال للنطاق أو نعمل `tool/ci.sh` (QA-01). | ⏳ QA-01 |
+| 2026-10-21 | F-03 | **التشغيل على الجهاز الحقيقي وAndroid ما انعملوا.** المحاكي debug فقط (Flutter ما بيدعم profile/release على محاكي iOS). | الجهاز الحقيقي بـ profile ⏳ بانتظار صاحب المشروع، وAndroid بعد تثبيت الـ emulator (موافقتك). | ⏳ |
 | 2026-10-21 | F-01 | `melos` ما على `PATH`، ومايستطيعش `melos run` يشغّل سكربتاته بدون ترك الـ PATH. الحل: shim مؤقت بالسكراتش (ما انثبّت على الجهاز). | تثبيت `melos` عالمياً (`dart pub global activate melos`) هو الحل النظيف، بس هاد **تثبيت أداة على الجهاز** فما انعمل بدون موافقتك. | ⏳ اختياري |
 
 ## يوميات الجلسات
 <!-- سطر لكل جلسة: التاريخ · المهام · النتيجة · المهمة الجاية -->
 - 2026-10-21 · F-01 · الجولة الأولى (Flutter 3.41.2): التحليل والاختبارات والتوليد ناجحة، والبناءات فشلت (عائق 1 و2). بعد موافقة صاحب المشروع رُقّي Flutter لـ 3.47.7، وأعيدت كل البوابات + build apk + build ios sim بنجاح · **المهمة الجاية:** F-02 (لقطات الشاشة على محاكي iOS وAndroid، ومسارات `docs/evidence/F-02/`).
-- 2026-10-21 · F-02 · تشغيل المثال على iPhone 17 Pro (محاكي iOS 26.0): الخريطة الرئيسية "Full screen map" ظاهرة بالتايلز، اللقطة في `docs/evidence/F-02/ios-iphone17pro-full-screen-map.png`. أذونات الموقع: اخترت "Don't Allow" (ما في حاجة للموقع بهاي اللقطة). Android: تشغيل emulator ⏳ بانتظار موافقة تثبيت. المحاكي اتقفل بعد اللقطة · **المهمة الجاية:** F-03 (أداة القياس، وبتحتاج لقطات/أرقام على المحاكي).
+- 2026-10-21 · F-02 · تشغيل المثال على iPhone 17 Pro (محاكي iOS 26.0): الخريطة الرئيسية "Full screen map" ظاهرة بالتايلز، اللقطة في `docs/evidence/F-02/ios-iphone17pro-full-screen-map.png`. أذونات الموقع: اخترت "Don't Allow" (ما في حاجة للموقع بهاي اللقطة). Android: تشغيل emulator ⏳ بانتظار موافقة تثبيت. المحاكي اتقفل بعد اللقطة.
+- 2026-10-21 · F-03 · بناء الأداة، 21 اختبار وحدة ناجحة، analyze نظيف، format بدون تغيير، build apk ✅، build ios sim ✅. ثلاث تشغيلات على المحاكي (كل واحد بعد إعادة تشغيل التطبيق)، النتايج بـ BENCHMARK.md. **المهمة الجاية:** F-04 (خريطة الكود، توثيق بدون تعديل كود).

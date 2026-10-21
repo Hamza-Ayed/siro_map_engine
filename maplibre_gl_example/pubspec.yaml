@@ -74,3 +74,4 @@ flutter:
     - assets/pmtiles_style.json
     - assets/sydney0.png
     - assets/sydney1.png
+    - assets/bench/amman_route.geojson
