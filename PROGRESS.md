@@ -4,11 +4,12 @@
 > الحالات: ⬜ لسا · 🔄 شغّال · ✅ خلص · ⏳ بانتظار صاحب المشروع (جهاز حقيقي أو قرار) · ⛔ عائق
 
 ## الحالة الحالية
-- **آخر مهمة مكتملة:** —
-- **المهمة الجاية:** F-01 ⛔ (البناءات متوقفة، بانتظار قرار صاحب المشروع، انظر العوائق)
+- **آخر مهمة مكتملة:** F-01
+- **المهمة الجاية:** F-02
 - **الفرع:** `siro-engine/dev` (انعمل من `main` عند `25423ba`، مستودع `packages/siro_map_engine` مستقل git)
 
-## الأوامر المعتمدة (F-01، 2026-10-21، جهاز M3 / Flutter 3.41.2 / Xcode 27.1)
+## الأوامر المعتمدة (F-01، 2026-10-21، جهاز M3 / Flutter 3.47.7 stable / Xcode 27.1)
+ملاحظة: الجولة الأولى كانت على Flutter 3.41.2 (انظر العوائق). بعد الترقية أعيد تشغيل كل البوابات على 3.47.7، والجدول يعكس الجولة الثانية.
 ملاحظات عامة:
 - المستودع هو `packages/siro_map_engine` نفسه (له `.git` خاص). الأوامر تتنفّذ من جذر الحزمة. `git add -- packages/siro_map_engine` من جذر map-saas بيضيف الحزمة كـ repo متداخل، فالكوميت بيصير من داخل الحزمة بمسارات صريحة.
 - الـ workspace بيعتمد **pub workspaces**. `melos` موجود كـ `dev_dependency` (7.8.1)، وما انثبّت شي عالمياً.
@@ -25,8 +26,8 @@
 | format check | `dart format --set-exit-if-changed .` | ✅ exit 0، 222 ملف، 0 تغيير | 0.9 ث |
 | generate | `PATH=<shim>:$PATH dart run melos run generate --no-select` | ✅ exit 0، **ما في diff** بعدها | 4 ث |
 | check-style-spec | `PATH=<shim>:$PATH dart run melos run check-style-spec --no-select` | ✅ exit 0 | — |
-| build apk (example) | `flutter build apk --debug` (في `maplibre_gl_example/`) | ⛔ فشل (انظر العائق 1) | 116 ث |
-| build ios sim (example) | `flutter build ios --simulator --debug` | ⛔ فشل (انظر العائق 2) | 64 ث |
+| build apk (example) | `flutter build apk --debug` (في `maplibre_gl_example/`) | ✅ exit 0، `build/app/outputs/flutter-apk/app-debug.apk` (الجولة الأولى فشلت، انظر العائق 1) | 537 ث |
+| build ios sim (example) | `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 flutter build ios --simulator --debug` | ✅ exit 0، `build/ios/iphonesimulator/Runner.app` (انظر العائق 2 و3) | 60 ث |
 | ci كامل (بعد QA-01) | `tool/ci.sh` | — (ما انعمل بعد) | — |
 
 **ملاحظة:** `flutter build ios` بيكتب `Pods` integration (`project.pbxproj`، `contents.xcworkspacedata`، `Podfile.lock`، و`#include?` بالـ xcconfig). التغييرات دي تراجعت بعد كل بناء، وما انكتبت بالكوميت.
@@ -43,7 +44,7 @@
 ## سجل المهام
 | ID | المهمة | الحالة | commit | الدليل / الملاحظات |
 |---|---|---|---|---|
-| F-01 | تجهيز البيئة | ⛔ | | أوامر التحليل والاختبارات والتوليد شغّالة (انظر الجدول فوق). البناءين فاشلين بسبب عدم تطابق أدوات (عائق 1 و2)، فالمهمة ما انقفلتش |
+| F-01 | تجهيز البيئة | ✅ | `chore(siro-gl): F-01 … ✅` (انظر git log) | كل البوابات ناجحة على Flutter 3.47.7: analyze نظيف، test:io (302 + 226)، test:web (46 + 302 + 217)، test:scripts (16)، format (0 تغيير)، generate (0 diff)، check-style-spec ✅، build apk ✅، build ios sim ✅. العائقان 1 و2 محلولان، انظر السجل |
 | F-02 | بناء وتشغيل المثال | ⬜ | | |
 | F-03 | أداة القياس | ⬜ | | |
 | F-04 | خريطة الكود | ⬜ | | |
@@ -97,10 +98,11 @@
 ## العوائق
 | التاريخ | المهمة | الوصف | الاقتراح | الحالة |
 |---|---|---|---|---|
-| 2026-10-21 | F-01 | **عائق 1 (Android):** `flutter build apk --debug` فشل بالـ Gradle: `Could not find method kotlin() … on project ':app'` عند `maplibre_gl_example/android/app/build.gradle:63`. الملف فيه تعليق "as of the Flutter 3.44 app template" (بنفس block `kotlin { compilerOptions {…} }` بعد `flutter { source }`)، وFlutter المثبّت 3.41.2. على الأرجح الكود مكتوب لقالب Flutter 3.44 والـ SDK المحلي أقدم. | (أ) ترقية Flutter SDK لـ 3.44+ على الجهاز (تثبيت أداة: **يحتاج موافقتك**)، أو (ب) تعديل `build.gradle` ليطابق 3.41 (قرار، يغيّر إعدادات الـ example). | ⏳ بانتظار قرار |
-| 2026-10-21 | F-01 | **عائق 2 (iOS):** `flutter build ios --simulator --debug` فشل بعد `pod install` (`Running Xcode build … 35 ث`): `Target debug_unpack_ios failed: Binary …/Flutter.framework/Flutter does not contain architectures "arm64 x86_64"` (Xcode 27.1). الـ framework المنسوخ في `build/ios/` فيه `x86_64 arm64` فعلاً، فالسبب مش واضح، ولسا ما عرفنا (ممكن تعارض Xcode 27 مع Flutter 3.41 أو خطوة النسخ). | تحقيق بـ `xcodebuild -showBuildSettings` و`-verbose`، وتجربة Flutter أحدث بعد قرار عائق 1. | ⏳ بانتظار قرار |
+| 2026-10-21 | F-01 | ✅ **محلول:** ترقية Flutter من 3.41.2 لـ **3.47.7 stable** بموافقة صاحب المشروع (`flutter upgrade --force`، والقوة كانت لازمة لأن `pubspec.lock` داخل SDK اتعدّل محلياً بسطر واحد من أداة Flutter: `ffigen` من `direct main` لـ `direct dev`؛ ما في غيره). بعدها build apk نجح. **عائق 1 (Android) الأصلي:** `flutter build apk --debug` فشل بالـ Gradle: `Could not find method kotlin() … on project ':app'` عند `maplibre_gl_example/android/app/build.gradle:63`. الملف فيه تعليق "as of the Flutter 3.44 app template" (بنفس block `kotlin { compilerOptions {…} }` بعد `flutter { source }`)، وFlutter المثبّت 3.41.2. على الأرجح الكود مكتوب لقالب Flutter 3.44 والـ SDK المحلي أقدم. | (أ) ترقية Flutter SDK لـ 3.44+ على الجهاز (تثبيت أداة: **يحتاج موافقتك**)، أو (ب) تعديل `build.gradle` ليطابق 3.41 (قرار، يغيّر إعدادات الـ example). | ⏳ بانتظار قرار |
+| 2026-10-21 | F-01 | **عائق 2 (iOS):** `flutter build ios --simulator --debug` فشل بعد `pod install` (`Running Xcode build … 35 ث`): `Target debug_unpack_ios failed: Binary …/Flutter.framework/Flutter does not contain architectures "arm64 x86_64"` (Xcode 27.1). الـ framework المنسوخ في `build/ios/` فيه `x86_64 arm64` فعلاً، فالسبب مش واضح. ✅ **اختفى مع Flutter 3.47.7** (ما عاد يتكرر)، وظهر بدله عائق 3. | — | ✅ محلول بالترقية |
+| 2026-10-21 | F-01 | **عائق 3 (iOS، بعد الترقية):** `Error (Xcode): The sandbox is not in sync with the Podfile.lock`. كنت حذفت `Podfile.lock` بعد الجولة الأولى. | `pod install` في `maplibre_gl_example/ios` مع `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8`، لأن CocoaPods 1.16.2 بيفشل بدون UTF-8 (`Unicode Normalization not appropriate for ASCII-8BIT`). بعدها `flutter build ios` نجح. | ✅ محلول |
 | 2026-10-21 | F-01 | `melos` ما على `PATH`، ومايستطيعش `melos run` يشغّل سكربتاته بدون ترك الـ PATH. الحل: shim مؤقت بالسكراتش (ما انثبّت على الجهاز). | تثبيت `melos` عالمياً (`dart pub global activate melos`) هو الحل النظيف، بس هاد **تثبيت أداة على الجهاز** فما انعمل بدون موافقتك. | ⏳ اختياري |
 
 ## يوميات الجلسات
 <!-- سطر لكل جلسة: التاريخ · المهام · النتيجة · المهمة الجاية -->
-- 2026-10-21 · F-01 · تشغيل bootstrap/analyze/test:io/test:web/test:scripts/format/generate/check-style-spec: كلها ناجحة. build apk وbuild ios فشلوا (عائق 1 و2)، والمهمة ⛔ بانتظار القرار · المهمة الجاية: F-01 (بعد القرار) ثم F-02.
+- 2026-10-21 · F-01 · الجولة الأولى (Flutter 3.41.2): التحليل والاختبارات والتوليد ناجحة، والبناءات فشلت (عائق 1 و2). بعد موافقة صاحب المشروع رُقّي Flutter لـ 3.47.7، وأعيدت كل البوابات + build apk + build ios sim بنجاح · **المهمة الجاية:** F-02 (لقطات الشاشة على محاكي iOS وAndroid، ومسارات `docs/evidence/F-02/`).
