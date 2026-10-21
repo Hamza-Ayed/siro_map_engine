@@ -31,9 +31,6 @@ class _AndroidTerrainBody extends StatefulWidget {
 }
 
 class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
-  /// The live Intaleq style, the one the Intaleq apps and the web map use.
-  static const _styleUrl = 'https://map-saas.intaleqapp.com/style.json';
-
   /// Terrarium elevation tiles from the Intaleq server. They are the AWS
   /// terrain tiles (SRTM based) cached on our server.
   static const _demTiles =
@@ -52,6 +49,24 @@ class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
   UserLocation? _fix;
   bool _centeredOnFirstFix = false;
   String? _error;
+
+  static const _terrainProperties = TerrainProperties(
+    source: _demSourceId,
+    exaggeration: 1.5,
+  );
+
+  /// The benchmark runs each condition on the same view: the tilt and terrain
+  /// are the only things that change.
+  static const List<({String name, double tilt, bool terrain})>
+  _benchConditions = [
+    (name: 'flat, no terrain', tilt: 0.0, terrain: false),
+    (name: 'flat, terrain', tilt: 0.0, terrain: true),
+    (name: 'tilted 60, no terrain', tilt: 60.0, terrain: false),
+    (name: 'tilted 60, terrain', tilt: 60.0, terrain: true),
+  ];
+
+  final List<String> _benchLines = [];
+  bool _benchRunning = false;
 
   @override
   void initState() {
@@ -82,7 +97,6 @@ class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
           maxzoom: 15,
           tileSize: 256,
           encoding: 'terrarium',
-          attribution: 'Elevation data: NASA SRTM via AWS Terrain Tiles',
         ),
       );
     } catch (error) {
@@ -125,13 +139,67 @@ class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
     });
     try {
       await controller.setTerrain(
-        on
-            ? const TerrainProperties(source: _demSourceId, exaggeration: 1.5)
-            : null,
+        on ? _terrainProperties : null,
       );
       await _flyToFix();
     } catch (error) {
       if (mounted) setState(() => _error = '$error');
+    }
+  }
+
+  /// Turns the map once around in four steps per condition and counts the
+  /// frames the engine draws, so the frame rate of each condition can be
+  /// compared on the same view.
+  Future<void> _runBenchmark() async {
+    final controller = _controller;
+    if (controller == null || _benchRunning) return;
+    final center = _fix?.position ?? _ammanCamera.target;
+    setState(() {
+      _benchRunning = true;
+      _error = null;
+      _benchLines.clear();
+    });
+    try {
+      for (final condition in _benchConditions) {
+        await controller.setTerrain(
+          condition.terrain ? _terrainProperties : null,
+        );
+        await controller.moveCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(target: center, zoom: 13, tilt: condition.tilt),
+          ),
+        );
+        // Let the tiles of the new view load before counting.
+        await Future<void>.delayed(const Duration(seconds: 6));
+        await controller.startRenderStats();
+        for (var step = 1; step <= 4; step++) {
+          await Future.wait([
+            controller.animateCamera(
+              CameraUpdate.newCameraPosition(
+                CameraPosition(
+                  target: center,
+                  zoom: 13,
+                  tilt: condition.tilt,
+                  bearing: 90.0 * step,
+                ),
+              ),
+              duration: const Duration(seconds: 3),
+            ),
+            Future<void>.delayed(const Duration(seconds: 3)),
+          ]);
+        }
+        final stats = await controller.stopRenderStats();
+        final line =
+            '${condition.name}: ${stats?.fps.toStringAsFixed(1)} fps '
+            '(${stats?.frames} frames)';
+        debugPrint('BENCH $line');
+        if (mounted) setState(() => _benchLines.add(line));
+      }
+      await controller.setTerrain(_terrain ? _terrainProperties : null);
+    } catch (error) {
+      if (mounted) setState(() => _error = '$error');
+    } finally {
+      if (mounted) setState(() => _benchRunning = false);
     }
   }
 
@@ -152,7 +220,7 @@ class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
         child: Padding(
           padding: EdgeInsets.all(24),
           child: Text(
-            'setTerrain is not available on iOS yet. The MapLibre iOS build '
+            'setTerrain is not available on iOS yet. The native iOS engine '
             'does not bind 3D terrain. Open this page on Android.',
             textAlign: TextAlign.center,
           ),
@@ -162,7 +230,7 @@ class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
 
     return MapExampleScaffold(
       map: SiroMap(
-        styleString: _styleUrl,
+        styleString: ExampleConstants.sovereignMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: _ammanCamera,
@@ -196,6 +264,19 @@ class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
               TextButton(
                 onPressed: _flyToFix,
                 child: const Text('Go to my location'),
+              ),
+            TextButton(
+              onPressed: _benchRunning ? null : _runBenchmark,
+              child: Text(
+                _benchRunning
+                    ? 'Benchmark running...'
+                    : 'Run frame rate benchmark (about 90 s)',
+              ),
+            ),
+            for (final line in _benchLines)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text(line),
               ),
             if (_error != null)
               Padding(

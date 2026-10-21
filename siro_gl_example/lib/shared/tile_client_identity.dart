@@ -17,8 +17,7 @@ import 'package:siro_gl/siro_gl.dart';
 ///
 /// Name your own app here rather than copying this string, and keep the URL
 /// pointing at something that reaches you.
-const String tileClientUserAgent =
-    'flutter-maplibre-gl-example (+https://github.com/maplibre/flutter-maplibre-gl)';
+const String tileClientUserAgent = 'siro-gl-example';
 
 /// Announces this app to every tile server the example talks to.
 ///

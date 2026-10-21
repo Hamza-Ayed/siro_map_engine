@@ -16,6 +16,7 @@ workspace:
   - siro_gl_web
   - siro_gl_example
   - siro_gl_platform_interface
+  - siro_gl_compat
 
 melos:
   scripts:

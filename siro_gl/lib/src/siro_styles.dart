@@ -1,12 +1,17 @@
 part of '../siro_gl.dart';
 
-/// MapLibre styles used mostly for demonstration.
+/// Siro's own map styles. Each one is served from our server and names no
+/// third-party host.
 abstract class SiroStyles {
-  /// A very simple MapLibre demo style that shows only countries with their
-  /// boundaries.
-  static const String demo = 'https://demotiles.maplibre.org/style.json';
+  /// Day style.
+  static const String day =
+      'https://map-saas.intaleqapp.com/siro/style-sovereign.json';
 
-  /// The OpenFreeMap liberty style
-  static const String openfreemapLiberty =
-      'https://tiles.openfreemap.org/styles/liberty';
+  /// Night style.
+  static const String night =
+      'https://map-saas.intaleqapp.com/siro/style-sovereign-night.json';
+
+  /// Tactical 3D style, with terrain.
+  static const String tactical =
+      'https://map-saas.intaleqapp.com/siro/style-sovereign-tactical.json';
 }

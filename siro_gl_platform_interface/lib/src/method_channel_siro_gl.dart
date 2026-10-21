@@ -1141,7 +1141,7 @@ class SiroMethodChannel extends SiroGlPlatform {
 
     throw UnsupportedError(
       'The custom raster-dem encoding is not available on Android and iOS '
-      'because MapLibre Native decodes only the mapbox and terrarium '
+      'because the native engine decodes only the mapbox and terrarium '
       'encodings. Use encoding: "mapbox" or "terrarium", or serve the '
       'terrain tiles in one of those encodings. Custom encoding is '
       'supported on web. This check covers addSource() only: a raster-dem '
@@ -1267,7 +1267,7 @@ class SiroMethodChannel extends SiroGlPlatform {
   void _ensureFeatureStateAvailable(String methodName) {
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       throw UnsupportedError(
-        '$methodName is not available on iOS because the MapLibre iOS SDK '
+        '$methodName is not available on iOS because the native iOS engine '
         'does not expose the feature state API yet. '
         'Feature state is supported on Android and web.',
       );
@@ -1332,7 +1332,7 @@ class SiroMethodChannel extends SiroGlPlatform {
   @override
   Future<void> setSky(SkyProperties sky) async {
     throw UnsupportedError(
-      'setSky is not available on Android and iOS because MapLibre Native '
+      'setSky is not available on Android and iOS because the native engine '
       'does not implement the sky style root object yet. '
       'The sky is supported on web.',
     );
@@ -1342,7 +1342,7 @@ class SiroMethodChannel extends SiroGlPlatform {
   Future<void> setTerrain(TerrainProperties? terrain) async {
     if (defaultTargetPlatform == TargetPlatform.iOS) {
       throw UnsupportedError(
-        'setTerrain is not available on iOS yet, because the MapLibre iOS '
+        'setTerrain is not available on iOS yet, because the native iOS engine '
         'build does not bind 3D terrain. Terrain is supported on Android and web.',
       );
     }
@@ -1352,9 +1352,28 @@ class SiroMethodChannel extends SiroGlPlatform {
   }
 
   @override
+  Future<void> startRenderStats() async {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      throw UnsupportedError('Render stats are not available on iOS yet.');
+    }
+    await _channel.invokeMethod('map#startRenderStats');
+  }
+
+  @override
+  Future<RenderStats?> stopRenderStats() async {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      throw UnsupportedError('Render stats are not available on iOS yet.');
+    }
+    final json = await _channel.invokeMethod<Map<dynamic, dynamic>>(
+      'map#stopRenderStats',
+    );
+    return json == null ? null : RenderStats.fromJson(json);
+  }
+
+  @override
   Future<void> setProjection(Object type) async {
     throw UnsupportedError(
-      'setProjection is not available on Android and iOS because MapLibre '
+      'setProjection is not available on Android and iOS because the native engine '
       'Native only renders the mercator projection. '
       'Projections are supported on web.',
     );
@@ -1364,7 +1383,7 @@ class SiroMethodChannel extends SiroGlPlatform {
   Future<void> setGlobalStateProperty(String name, Object? value) async {
     throw UnsupportedError(
       'setGlobalStateProperty is not available on Android and iOS because '
-      'MapLibre Native does not implement global state yet. '
+      'The native engine does not implement global state yet. '
       'Global state is supported on web.',
     );
   }

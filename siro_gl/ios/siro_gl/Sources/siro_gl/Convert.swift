@@ -68,6 +68,9 @@ class Convert {
         if let logoEnabled = options["logoEnabled"] as? Bool {
             delegate.setLogoEnabled(logoEnabled: logoEnabled)
         }
+        if let attributionEnabled = options["attributionEnabled"] as? Bool {
+            delegate.setAttributionEnabled(attributionEnabled: attributionEnabled)
+        }
         if let logoViewPosition = options["logoViewPosition"] as? UInt,
            let position = MLNOrnamentPosition(rawValue: logoViewPosition)
         {

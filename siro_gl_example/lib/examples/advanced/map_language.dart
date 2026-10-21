@@ -4,7 +4,7 @@ import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
-const _style = 'https://tiles.openfreemap.org/styles/liberty';
+const _style = 'https://map-saas.intaleqapp.com/siro/style-sovereign.json';
 
 const _languages = [
   _Language('English', 'en', '🇬🇧'),

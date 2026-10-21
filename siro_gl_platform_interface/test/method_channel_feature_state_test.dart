@@ -202,7 +202,7 @@ void main() {
         allOf(
           contains(methodName),
           contains('not available on iOS'),
-          contains('MapLibre iOS SDK'),
+          contains('native iOS engine'),
         ),
       ),
     );

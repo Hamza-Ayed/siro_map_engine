@@ -7,9 +7,6 @@ import 'package:permission_handler/permission_handler.dart';
 
 // PMTiles protocol registration is JS interop, so it only exists on web; the
 // native stub keeps the example compiling for Android and iOS.
-import 'pmtiles_protocol_native.dart'
-    if (dart.library.js_interop) 'pmtiles_protocol_web.dart'
-    as pmtiles_protocol;
 
 // Page system
 import 'page.dart';
@@ -20,7 +17,6 @@ import 'shared/tile_client_identity.dart';
 import 'examples/basics/full_map_example.dart';
 import 'examples/basics/multi_style_switch.dart';
 import 'examples/layers/background_layer_example.dart';
-import 'examples/layers/various_sources.dart';
 import 'examples/basics/get_map_state.dart';
 import 'examples/basics/gps_location_page.dart';
 import 'examples/basics/manual_location_source_page.dart';
@@ -32,7 +28,6 @@ import 'examples/camera/camera_bounds_example.dart';
 // Interaction examples
 import 'examples/interaction/map_controls_example.dart';
 import 'examples/interaction/map_gestures_example.dart';
-import 'examples/interaction/hover_effect_example.dart';
 
 // Annotations examples
 import 'examples/annotations/annotations_example.dart';
@@ -44,8 +39,6 @@ import 'examples/annotations/edit_annotation_draggable.dart';
 
 // Layers examples
 import 'examples/layers/circle_layer_example.dart';
-import 'examples/layers/cluster_properties_example.dart';
-import 'examples/layers/feature_state_example.dart';
 import 'examples/layers/fill_layer_example.dart';
 import 'examples/layers/line_layer_example.dart';
 import 'examples/layers/symbol_layer_example.dart';
@@ -54,9 +47,10 @@ import 'examples/layers/edit_style_layer_draggable.dart';
 
 // Advanced examples
 import 'examples/advanced/android_terrain.dart';
+import 'examples/basics/route_example.dart';
+import 'examples/basics/google_compat_example.dart';
 import 'examples/advanced/globe_terrain_sky.dart';
 import 'examples/advanced/offline_regions.dart';
-import 'examples/advanced/pmtiles.dart';
 import 'examples/advanced/translucent_full_map.dart';
 import 'examples/advanced/map_snapshot.dart';
 import 'examples/advanced/map_language.dart';
@@ -73,7 +67,6 @@ import 'examples/docs/doc_cluster.dart';
 import 'examples/docs/doc_annotation_markers.dart';
 import 'examples/docs/doc_camera.dart';
 import 'examples/docs/doc_geojson_source.dart';
-import 'examples/docs/doc_pmtiles.dart';
 import 'examples/docs/doc_heatmap.dart';
 import 'examples/docs/doc_expressions.dart';
 import 'examples/docs/doc_globe.dart';
@@ -96,9 +89,6 @@ Future<void> main() async {
     // index.html. Wait for the library, then register the protocol from Dart
     // before any map is built.
     await SiroMap.ensureWebLibraryLoaded();
-    pmtiles_protocol.registerPmTilesProtocol(
-      'https://demo-bucket.protomaps.com/v4.pmtiles',
-    );
 
     print(
       'Running with WASM: $kIsWasm, in ${kReleaseMode
@@ -194,8 +184,9 @@ class _DemoStyleGate extends StatelessWidget {
 final List<ExamplePage> _allPages = <ExamplePage>[
   // Basics
   const FullMapExample(),
+  const RouteExample(),
+  const GoogleCompatExample(),
   const MultiStyleSwitchPage(),
-  const VariousSources(),
   const GpsLocationPage(),
   const ManualLocationSourcePage(),
   const GetMapInfoPage(),
@@ -209,7 +200,6 @@ final List<ExamplePage> _allPages = <ExamplePage>[
   const MapGesturesExample(),
   // Hover Effect follows the mouse, which only exists on web. The
   // cross-platform side of feature state is the Feature State page below.
-  if (kIsWeb) const HoverEffectExample(),
 
   // Annotations
   const AnnotationsExample(),
@@ -222,18 +212,15 @@ final List<ExamplePage> _allPages = <ExamplePage>[
   // Layers
   const SymbolLayerExample(),
   const CircleLayerExample(),
-  const ClusterPropertiesExample(),
   const FillLayerExample(),
   const LineLayerExample(),
   const BackgroundLayerExample(),
   // Feature state is available on web and Android, not on iOS yet.
-  if (FeatureStateExample.isSupported) const FeatureStateExample(),
   const EditStyleLayerAnimatedExample(),
   const EditStyleLayerDraggableExample(),
 
   // Advanced
   const MapLanguageExample(),
-  const PMTilesPage(),
   // Offline regions are Android/iOS only — MapLibre GL JS has no offline API.
   const GlobeTerrainSkyPage(),
   const AndroidTerrainPage(),
@@ -256,7 +243,6 @@ final List<ExamplePage> _docPages = [
   const DocAnnotationMarkersExample(),
   const DocCameraExample(),
   const DocGeoJsonSourceExample(),
-  const DocPMTilesExample(),
   const DocHeatmapExample(),
   const DocExpressionsExample(),
   const DocGlobeExample(),
@@ -348,7 +334,7 @@ class _MapsDemoState extends State<MapsDemo> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        'Learn how to use MapLibre GL with Flutter through categorized examples.',
+                        'Learn how to use Siro GL with Flutter through categorized examples.',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
@@ -374,7 +360,7 @@ class _MapsDemoState extends State<MapsDemo> {
                     applicationName: "Siro GL",
                     aboutBoxChildren: [
                       Text(
-                        'Siro GL is a Flutter plugin for embedding interactive maps. It is built on the MapLibre GL Native library, which is credited in THIRD_PARTY_LICENSES.',
+                        'Siro GL is a Flutter plugin for embedding interactive maps. It is built on an open-source native map engine, credited in THIRD_PARTY_LICENSES.',
                       ),
                       SizedBox(height: 8),
                       Text(

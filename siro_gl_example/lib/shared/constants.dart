@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:siro_gl/siro_gl.dart';
 
 /// Common constants used across examples
@@ -60,96 +59,33 @@ class ExampleConstants {
   // Map Styles
   // ============================================================================
 
-  /// Demo map style URL (default). demotiles.maplibre.org is aggressively
-  /// rate-limited (HTTP 429); [resolveDemoMapStyle] swaps in
-  /// [fallbackMapStyle] when it is unreachable. Await [resolveDemoMapStyle]
-  /// before reading this, otherwise you may read the value the probe is
-  /// about to replace.
-  static String demoMapStyle = preferredDemoMapStyle;
+  /// The example app's map style: Siro's own style, served from our server.
+  /// Tiles, glyphs and elevation all come from our domain, so the example
+  /// shows what our users see and makes no request to a third-party host.
+  static const String demoMapStyle = sovereignMapStyle;
 
-  /// The canonical MapLibre demo style.
-  static const String preferredDemoMapStyle =
-      'https://demotiles.maplibre.org/style.json';
+  /// Siro's night style, from our server.
+  static const String sovereignNightStyle =
+      'https://map-saas.intaleqapp.com/siro/style-sovereign-night.json';
 
-  /// Fallback style used when the demo style is unreachable.
-  static const String fallbackMapStyle =
-      'https://tiles.openfreemap.org/styles/liberty';
+  /// Siro's tactical 3D style, from our server.
+  static const String sovereignTacticalStyle =
+      'https://map-saas.intaleqapp.com/siro/style-sovereign-tactical.json';
 
-  /// Font stack that exists on the glyph server of the ACTIVE demo style.
-  /// demotiles only serves "Open Sans Semibold"; OpenFreeMap only serves
-  /// Noto Sans variants; neither resolves multi-font stacks. When a symbol
-  /// layer's fonts 404, MapLibre Native never completes symbol layout for
-  /// the tile and the symbols disappear entirely, icons included.
-  static List<String> get demoFontStack =>
-      demoMapStyle == preferredDemoMapStyle
-          ? const ['Open Sans Semibold']
-          : const ['Noto Sans Regular'];
+  /// Siro's sovereign style. Its sources, glyphs and DEM are on our server;
+  /// the test in test/sovereign_style_test.dart fails if that changes.
+  static const String sovereignMapStyle =
+      'https://map-saas.intaleqapp.com/siro/style-sovereign.json';
 
-  /// Bold variant of [demoFontStack] (e.g. cluster counts). demotiles only
-  /// serves a single font, so both getters collapse there.
-  static List<String> get demoBoldFontStack =>
-      demoMapStyle == preferredDemoMapStyle
-          ? const ['Open Sans Semibold']
-          : const ['Noto Sans Bold'];
+  /// Glyph fonts we host on our server (Noto Sans, OFL).
+  static const List<String> demoFontStack = ['Noto Sans Regular'];
 
-  /// The one style probe of this session, created by the first call to
-  /// [resolveDemoMapStyle]. Every later call awaits this same future.
-  static Future<void>? _resolution;
+  /// Bold variant of [demoFontStack], used for cluster counts.
+  static const List<String> demoBoldFontStack = ['Noto Sans Bold'];
 
-  /// Probes the demo style AND its tile endpoint, falling back to
-  /// [fallbackMapStyle] when either fails. Probing the style alone is not
-  /// enough: GitHub Pages' edge cache can serve style.json with 200 while
-  /// the tile paths are already rate-limited with 429, which would render
-  /// the style background with no tiles.
-  ///
-  /// The probe runs at most once per session: the first caller starts it,
-  /// everyone else awaits the same future and gets the same answer, so the
-  /// resolved style is sticky and the app never puts a second burst on a
-  /// limiter that rejects bursts. Awaiting this is therefore cheap, and safe
-  /// to do from a widget that rebuilds.
-  ///
-  /// Start it early, but do not block the first frame on it: it can take
-  /// seconds when demotiles is unreachable.
-  static Future<void> resolveDemoMapStyle() =>
-      _resolution ??= _probeDemoMapStyle();
-
-  static Future<void> _probeDemoMapStyle() async {
-    // Probe with a small CONCURRENT burst: the limiter tends to pass
-    // isolated requests while rejecting bursts, and a real map load is a
-    // burst of style + sprite + glyphs + tiles.
-    const probes = [
-      preferredDemoMapStyle,
-      'https://demotiles.maplibre.org/tiles/tiles.json',
-      'https://demotiles.maplibre.org/tiles/0/0/0.pbf',
-    ];
-    const timeout = Duration(seconds: 4);
-    // package:http works on every platform, web included, where a CORS or
-    // rate-limit failure surfaces as an exception and lands in the fallback.
-    final client = http.Client();
-    try {
-      final statuses = await Future.wait(
-        probes.map((url) async {
-          final response = await client.get(Uri.parse(url)).timeout(timeout);
-          return response.statusCode;
-        }),
-      );
-      final failed = statuses.indexWhere((code) => code >= 400);
-      if (failed != -1) {
-        demoMapStyle = fallbackMapStyle;
-        debugPrint(
-          'demo style unreachable (${probes[failed]}: '
-          'HTTP ${statuses[failed]}); falling back to $fallbackMapStyle',
-        );
-      }
-    } catch (error) {
-      demoMapStyle = fallbackMapStyle;
-      debugPrint(
-        'demo style unreachable ($error); falling back to $fallbackMapStyle',
-      );
-    } finally {
-      client.close();
-    }
-  }
+  /// Kept so the startup code keeps its shape. Nothing needs probing now:
+  /// the style is ours, and a failed load shows as an error, not a fallback.
+  static Future<void> resolveDemoMapStyle() async {}
 
   /// Style asset paths
   static const String rasterStyleAsset = 'assets/raster_style.json';
@@ -190,9 +126,10 @@ class ExampleConstants {
   // Camera Positions
   // ============================================================================
 
-  /// Default camera position
+  /// Default camera position: Amman, inside the 11-country data coverage.
   static CameraPosition defaultCameraPosition = toCameraPosition(
-    const LatLng(0.0, 0.0),
+    const LatLng(31.9539, 35.9106),
+    10,
   );
 
   /// Camera position for Sydney

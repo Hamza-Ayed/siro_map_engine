@@ -2273,7 +2273,7 @@ class SiroMapController extends ChangeNotifier {
   /// atmosphere above the horizon.
   ///
   /// **Platform support**: web only. Android and iOS throw an
-  /// [UnsupportedError], since MapLibre Native does not implement the sky
+  /// [UnsupportedError], since the native engine does not implement the sky
   /// yet.
   ///
   /// The returned [Future] completes after the change has been made on the
@@ -2289,12 +2289,26 @@ class SiroMapController extends ChangeNotifier {
   /// style, added with `addSource`.
   ///
   /// **Platform support**: web and Android. iOS throws an [UnsupportedError],
-  /// since the MapLibre iOS build does not bind 3D terrain yet.
+  /// since the native iOS build does not bind 3D terrain yet.
   ///
   /// The returned [Future] completes after the change has been made on the
   /// platform side.
   Future<void> setTerrain(TerrainProperties? terrain) async {
     await _maplibrePlatform.setTerrain(terrain);
+  }
+
+  /// Starts counting the frames the map engine draws, to measure the map's own
+  /// frame rate. Call [stopRenderStats] to read the result.
+  ///
+  /// **Platform support**: Android. iOS and web throw an [UnsupportedError].
+  Future<void> startRenderStats() async {
+    await _maplibrePlatform.startRenderStats();
+  }
+
+  /// Stops the count started by [startRenderStats] and returns the frames the
+  /// engine drew since, or null if no count was running.
+  Future<RenderStats?> stopRenderStats() {
+    return _maplibrePlatform.stopRenderStats();
   }
 
   /// Sets the style's `projection` root object.
@@ -2303,7 +2317,7 @@ class SiroMapController extends ChangeNotifier {
   /// or an expression interpolating between them by zoom.
   ///
   /// **Platform support**: web only. Android and iOS throw an
-  /// [UnsupportedError], since MapLibre Native only renders the mercator
+  /// [UnsupportedError], since the native engine only renders the mercator
   /// projection.
   ///
   /// The returned [Future] completes after the change has been made on the
@@ -2328,7 +2342,7 @@ class SiroMapController extends ChangeNotifier {
   /// be restyled from a single switch.
   ///
   /// **Platform support**: web only. Android and iOS throw an
-  /// [UnsupportedError], since MapLibre Native does not implement global
+  /// [UnsupportedError], since the native engine does not implement global
   /// state yet.
   ///
   /// The returned [Future] completes after the change has been made on the

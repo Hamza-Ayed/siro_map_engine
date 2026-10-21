@@ -145,6 +145,10 @@ class SiroMapBuilder implements SiroMapOptionsSink {
   }
 
   @Override
+  public void setAttributionEnabled(boolean attributionEnabled) {
+    options.attributionEnabled(attributionEnabled);
+  }
+
   public void setLogoEnabled(boolean logoEnabled) {
     options.logoEnabled(logoEnabled);
   }

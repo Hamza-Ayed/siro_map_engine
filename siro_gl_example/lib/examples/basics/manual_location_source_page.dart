@@ -275,8 +275,7 @@ class _ManualLocationSourceBodyState extends State<_ManualLocationSourceBody> {
 
     return MapExampleScaffold(
       map: SiroMap(
-        styleString:
-            "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+        styleString: ExampleConstants.sovereignMapStyle,
         onMapCreated: _onMapCreated,
         onUserLocationUpdated: _onUserLocationUpdated,
         // App-provided location source: no permission required, the native

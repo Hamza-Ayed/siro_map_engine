@@ -208,6 +208,12 @@ final class SiroMapController
    */
   private FrameLayout mapViewContainer;
   private MapView mapView;
+
+  /** Frame counters for {@code map#startRenderStats}. Touched on the main thread only. */
+  private MapView.OnDidFinishRenderingFrameListener renderStatsListener;
+
+  private long renderStatsStartNs;
+  private long renderStatsFrames;
   private MapLibreMap mapLibreMap;
   private boolean trackCameraPosition = false;
   private boolean myLocationEnabled = false;
@@ -2963,6 +2969,34 @@ final class SiroMapController
           break;
 
         }
+        case "map#startRenderStats":
+        {
+          if (renderStatsListener != null) {
+            mapView.removeOnDidFinishRenderingFrameListener(renderStatsListener);
+          }
+          renderStatsFrames = 0;
+          renderStatsStartNs = System.nanoTime();
+          renderStatsListener = (fully, encodingTime, renderingTime) -> renderStatsFrames++;
+          mapView.addOnDidFinishRenderingFrameListener(renderStatsListener);
+
+          result.success(null);
+          break;
+        }
+        case "map#stopRenderStats":
+        {
+          if (renderStatsListener == null) {
+            result.success(null);
+            break;
+          }
+          mapView.removeOnDidFinishRenderingFrameListener(renderStatsListener);
+          renderStatsListener = null;
+
+          Map<String, Object> stats = new HashMap<>();
+          stats.put("frames", renderStatsFrames);
+          stats.put("elapsedMs", (System.nanoTime() - renderStatsStartNs) / 1_000_000.0);
+          result.success(stats);
+          break;
+        }
         case "map#setTerrain":
         {
           if (style == null || !style.isFullyLoaded()) {
@@ -3638,6 +3672,10 @@ final class SiroMapController
   }
 
   @Override
+  public void setAttributionEnabled(boolean attributionEnabled) {
+    mapLibreMap.getUiSettings().setAttributionEnabled(attributionEnabled);
+  }
+
   public void setLogoEnabled(boolean logoEnabled) {
     mapLibreMap.getUiSettings().setLogoEnabled(logoEnabled);
   }

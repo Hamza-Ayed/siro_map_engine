@@ -100,9 +100,9 @@ class _DocGlobeBodyState extends State<_DocGlobeBody> {
           // field painted underneath shows through as the night sky.
           if (_stars) CustomPaint(painter: _StarFieldPainter(_background)),
           SiroMap(
-            // Pinned to OpenFreeMap Liberty rather than the resolved demo
-            // style: a hero image should look the same on every visit.
-            styleString: ExampleConstants.fallbackMapStyle,
+            // Pinned to the sovereign style: a hero image should look the same
+            // on every visit, and it must not depend on a third-party host.
+            styleString: ExampleConstants.sovereignMapStyle,
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,
             initialCameraPosition: const CameraPosition(

@@ -32,19 +32,19 @@ final List<OfflineRegionDefinition> regionDefinitions = [
     bounds: hawaiiBounds,
     minZoom: 3.0,
     maxZoom: 8.0,
-    mapStyleUrl: SiroStyles.openfreemapLiberty,
+    mapStyleUrl: SiroStyles.day,
   ),
   OfflineRegionDefinition(
     bounds: santiagoBounds,
     minZoom: 10.0,
     maxZoom: 16.0,
-    mapStyleUrl: SiroStyles.openfreemapLiberty,
+    mapStyleUrl: SiroStyles.day,
   ),
   OfflineRegionDefinition(
     bounds: aucklandBounds,
     minZoom: 13.0,
     maxZoom: 16.0,
-    mapStyleUrl: SiroStyles.openfreemapLiberty,
+    mapStyleUrl: SiroStyles.day,
   ),
 ];
 

@@ -1,0 +1,20 @@
+name: siro_gl_compat
+description: Google Maps Flutter compatible API on top of Siro GL. Switching from google_maps_flutter is one import change.
+version: 0.1.0
+publish_to: none
+resolution: workspace
+
+environment:
+  sdk: '>=3.7.0 <4.0.0'
+  flutter: '>=3.29.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.6.0
+  siro_gl:
+    path: ../siro_gl
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter

@@ -15,6 +15,7 @@ part 'src/channels.dart';
 part 'src/circle.dart';
 part 'src/global_platform.dart';
 part 'src/line.dart';
+part 'src/render_stats.dart';
 part 'src/location.dart';
 part 'src/location_source.dart';
 part 'src/siro_js_source.dart';

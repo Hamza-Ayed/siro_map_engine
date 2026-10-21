@@ -336,6 +336,17 @@ class FakeMapLibrePlatform extends SiroGlPlatform {
   }
 
   @override
+  Future<void> startRenderStats() async {
+    calls.add(PlatformCall('startRenderStats', []));
+  }
+
+  @override
+  Future<RenderStats?> stopRenderStats() async {
+    calls.add(PlatformCall('stopRenderStats', []));
+    return const RenderStats(frames: 90, elapsedMs: 3000);
+  }
+
+  @override
   Future<void> setProjection(Object type) async {
     calls.add(PlatformCall('setProjection', [type]));
   }

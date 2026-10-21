@@ -11,7 +11,7 @@ import '../../shared/constants.dart';
 /// by switching between different style configurations, allowing users to see
 /// how the same geographic data can be rendered with various themes and styling options.
 ///
-/// The styles include a remote style, an embedded minimal style, and styles loaded from assets.
+/// The styles are Siro's day, night and tactical 3D styles.
 class MultiStyleSwitchPage extends ExamplePage {
   const MultiStyleSwitchPage({super.key})
     : super(
@@ -38,18 +38,11 @@ class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
 
   CameraPosition? _lastCamera;
 
-  // Demo styles
-  static String get _remoteStyle => ExampleConstants.demoMapStyle;
-  static const String _embeddedMinimalStyle =
-      '{"version":8,"glyphs":"https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf","sources":{},"layers":[{"id":"background","type":"background","paint":{"background-color":"#90EE90"}}]}';
-  static const String _assetStyle = 'assets/style.json';
-  static const String _rasterAssetStyle = 'assets/raster_style.json';
-
+  // Siro's own styles, all served from our server.
   late final List<_StyleEntry> _styles = [
-    _StyleEntry('Remote demo style', _remoteStyle),
-    const _StyleEntry('Empty JSON string', _embeddedMinimalStyle),
-    const _StyleEntry('Asset style', _assetStyle),
-    const _StyleEntry('Raster asset style', _rasterAssetStyle),
+    const _StyleEntry('Day', ExampleConstants.sovereignMapStyle),
+    const _StyleEntry('Night', ExampleConstants.sovereignNightStyle),
+    const _StyleEntry('Tactical 3D', ExampleConstants.sovereignTacticalStyle),
   ];
 
   Future<void> _applyStyle(int index) async {
@@ -65,7 +58,7 @@ class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
         'MultiStyleSwitchPage: Failed to set style ${entry.label}: $e\n$st',
       );
       // Fallback to remote style
-      await _controller!.setStyle(_remoteStyle);
+      await _controller!.setStyle(ExampleConstants.sovereignMapStyle);
       _currentIndex = 0;
     }
   }

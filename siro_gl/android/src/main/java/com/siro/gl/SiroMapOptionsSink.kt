@@ -38,6 +38,8 @@ internal interface SiroMapOptionsSink {
 
     fun setLogoEnabled(logoEnabled: Boolean)
 
+    fun setAttributionEnabled(attributionEnabled: Boolean)
+
     fun setLogoViewGravity(gravity: Int)
 
     fun setLogoViewMargins(x: Int, y: Int)

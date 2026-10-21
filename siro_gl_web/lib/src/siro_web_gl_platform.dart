@@ -1898,6 +1898,16 @@ class SiroMapController extends SiroGlPlatform implements SiroMapOptionsSink {
   }
 
   @override
+  Future<void> startRenderStats() async {
+    throw UnsupportedError('Render stats are not available on web.');
+  }
+
+  @override
+  Future<RenderStats?> stopRenderStats() async {
+    throw UnsupportedError('Render stats are not available on web.');
+  }
+
+  @override
   Future<void> setProjection(Object type) async {
     _map.setProjection(<String, dynamic>{'type': type});
   }

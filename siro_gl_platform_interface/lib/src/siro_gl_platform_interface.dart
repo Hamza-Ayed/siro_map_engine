@@ -470,6 +470,14 @@ abstract class SiroGlPlatform {
   /// null.
   Future<void> setTerrain(TerrainProperties? terrain);
 
+  /// Starts counting the frames the map engine draws. Android only for now;
+  /// other platforms throw [UnsupportedError].
+  Future<void> startRenderStats();
+
+  /// Stops counting and returns the frames drawn since [startRenderStats], or
+  /// null if counting was not started.
+  Future<RenderStats?> stopRenderStats();
+
   /// Sets the style's `projection` root object.
   Future<void> setProjection(Object type);
 

@@ -2925,6 +2925,10 @@ class SiroMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, Siro
         }
     }
 
+    func setAttributionEnabled(attributionEnabled: Bool) {
+        mapView.attributionButton.isHidden = !attributionEnabled
+    }
+
     func setLogoEnabled(logoEnabled: Bool) {
         mapView.logoView.isHidden = !logoEnabled
     }

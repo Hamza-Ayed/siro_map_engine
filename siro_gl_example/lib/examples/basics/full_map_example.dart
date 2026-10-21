@@ -25,30 +25,7 @@ class _FullMapBody extends StatefulWidget {
 }
 
 class _FullMapBodyState extends State<_FullMapBody> {
-  SiroMapController? _mapController;
-  bool _canInteractWithMap = false;
-  bool canReset = false;
-
-  void _onMapCreated(SiroMapController controller) {
-    _mapController = controller;
-    setState(() => _canInteractWithMap = true);
-  }
-
-  Future<void> _moveCameraToSanFrancisco() async {
-    await _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        ExampleConstants.sanFranciscoCameraPosition,
-      ),
-    );
-    setState(() => canReset = true);
-  }
-
-  Future<void> _resetCamera() async {
-    await _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(ExampleConstants.defaultCameraPosition),
-    );
-    setState(() => canReset = false);
-  }
+  void _onMapCreated(SiroMapController controller) {}
 
   @override
   Widget build(BuildContext context) {
@@ -57,23 +34,11 @@ class _FullMapBodyState extends State<_FullMapBody> {
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         initialCameraPosition: ExampleConstants.defaultCameraPosition,
-        logoEnabled: true,
+        logoEnabled: false,
         trackCameraPosition: true,
         compassEnabled: true,
         myLocationEnabled: true,
       ),
-      floatingActionButton: ExampleButton(
-        label: canReset ? 'Reset camera' : 'Go to San Francisco',
-        icon: canReset ? Icons.refresh : Icons.flight_takeoff,
-        onPressed:
-            _canInteractWithMap
-                ? canReset
-                    ? _resetCamera
-                    : _moveCameraToSanFrancisco
-                : null,
-        style: ExampleButtonStyle.tonal,
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

@@ -59,14 +59,12 @@ class _GlobeTerrainSkyBodyState extends State<_GlobeTerrainSkyBody> {
       _demSourceId,
       const RasterDemSourceProperties(
         tiles: [
-          'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png',
+          'https://map-saas.intaleqapp.com/api/tactical/dem/{z}/{x}/{y}.png',
         ],
         minzoom: 0,
         maxzoom: 15,
         tileSize: 256,
         encoding: 'terrarium',
-        attribution:
-            '<a href="https://registry.opendata.aws/terrain-tiles/">Elevation data © AWS Terrain Tiles</a>',
       ),
     );
     await _applySky();

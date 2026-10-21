@@ -52,6 +52,8 @@ import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 import 'src/offline_export_stub.dart'
     if (dart.library.io) 'src/offline_export_io.dart';
 
+export 'src/siro_attribution.dart';
+
 import 'src/siro_cache_files_stub.dart'
     if (dart.library.io) 'src/siro_cache_files_io.dart';
 
@@ -90,6 +92,7 @@ export 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart'
         PlatformLocationSource,
         RasterDemSourceProperties,
         RasterSourceProperties,
+        RenderStats,
         ScaleControlPosition,
         ScaleControlUnit,
         SiroGlPlatform,

@@ -14,7 +14,7 @@ class SiroMap extends StatefulWidget {
   const SiroMap({
     super.key,
     this.initialCameraPosition,
-    this.styleString = SiroStyles.demo,
+    this.styleString = SiroStyles.day,
     this.onMapCreated,
     this.onStyleLoadedCallback,
     this.locationEnginePlatforms = LocationEnginePlatforms.defaultPlatform,
@@ -35,6 +35,7 @@ class SiroMap extends StatefulWidget {
     this.myLocationTrackingMode = MyLocationTrackingMode.none,
     this.myLocationRenderMode = MyLocationRenderMode.normal,
     this.logoEnabled = false,
+    this.attributionEnabled = true,
     this.debugOverlay = false,
     this.logoViewPosition,
     this.logoViewMargins,
@@ -246,6 +247,11 @@ class SiroMap extends StatefulWidget {
   /// True if the MapLibre logo should be shown on the map.
   /// Defaults to false.
   final bool logoEnabled;
+
+  /// True if the native attribution button is shown. When false, the map draws
+  /// no attribution of its own: show your own attribution, for example with
+  /// [SiroAttributionSheet].
+  final bool attributionEnabled;
 
   /// Shows [SiroDebugOverlay] over the map: Flutter frame rate, network
   /// requests, and the offline database size. For tuning, not for release.
@@ -616,6 +622,7 @@ class SiroMapOptions {
     this.myLocationTrackingMode,
     this.myLocationRenderMode,
     this.logoEnabled,
+    this.attributionEnabled,
     this.logoViewPosition,
     this.logoViewMargins,
     this.compassViewPosition,
@@ -652,6 +659,7 @@ class SiroMapOptions {
         myLocationTrackingMode: map.myLocationTrackingMode,
         myLocationRenderMode: map.myLocationRenderMode,
         logoEnabled: map.logoEnabled,
+        attributionEnabled: map.attributionEnabled,
         logoViewPosition: map.logoViewPosition,
         logoViewMargins: map.logoViewMargins,
         compassViewPosition: map.compassViewPosition,
@@ -694,6 +702,7 @@ class SiroMapOptions {
   final MyLocationRenderMode? myLocationRenderMode;
 
   final bool? logoEnabled;
+  final bool? attributionEnabled;
 
   final LogoViewPosition? logoViewPosition;
 
@@ -766,6 +775,7 @@ class SiroMapOptions {
     addIfNonNull('myLocationTrackingMode', myLocationTrackingMode?.index);
     addIfNonNull('myLocationRenderMode', myLocationRenderMode?.index);
     addIfNonNull('logoEnabled', logoEnabled);
+    addIfNonNull('attributionEnabled', attributionEnabled);
     addIfNonNull('logoViewPosition', logoViewPosition?.index);
     addIfNonNull('logoViewMargins', pointToArray(logoViewMargins));
     addIfNonNull('compassViewPosition', compassViewPosition?.index);

@@ -362,6 +362,16 @@ void main() {
       expect(calls[1].positionalArgs.first, isNull);
     });
 
+    test('render stats delegate to platform and return the count', () async {
+      await controller.startRenderStats();
+      final stats = await controller.stopRenderStats();
+
+      expect(platform.callsFor('startRenderStats').length, 1);
+      expect(platform.callsFor('stopRenderStats').length, 1);
+      expect(stats?.frames, 90);
+      expect(stats?.fps, 30);
+    });
+
     test('setProjection delegates to platform', () async {
       await controller.setProjection('globe');
 

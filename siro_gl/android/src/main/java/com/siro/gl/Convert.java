@@ -291,6 +291,10 @@ static LocationEngineRequest toLocationEngineRequest(Object o) {
     if (logoEnabled != null) {
       sink.setLogoEnabled(toBoolean(logoEnabled));
     }
+    final Object attributionEnabled = data.get("attributionEnabled");
+    if (attributionEnabled != null) {
+      sink.setAttributionEnabled(toBoolean(attributionEnabled));
+    }
     final Object logoViewGravity = data.get("logoViewPosition");
     if (logoViewGravity != null) {
       sink.setLogoViewGravity(toInt(logoViewGravity));

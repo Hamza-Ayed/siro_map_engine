@@ -287,7 +287,7 @@ class _GpsLocationBodyState extends State<_GpsLocationBody> {
                       (_supportsTrackingCamera
                           ? 'Pitch the camera and keep following the user. '
                               'Needs a tracking mode other than None.'
-                          : 'Not available on web: maplibre-gl-js has no '
+                          : 'Not available on web: the web map engine has no '
                               'location component to pitch a tracking camera.'),
                 ),
                 contentPadding: EdgeInsets.zero,
