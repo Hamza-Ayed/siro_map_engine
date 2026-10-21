@@ -1,24 +1,24 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('MethodChannel Snapshot', () {
-    late MapLibreMethodChannel platform;
+    late SiroMethodChannel platform;
     late List<MethodCall> methodCalls;
 
     /// Fake PNG bytes returned by the mock method channel.
     final fakePng = Uint8List.fromList([0x89, 0x50, 0x4E, 0x47]);
 
     setUp(() async {
-      platform = MapLibreMethodChannel();
+      platform = SiroMethodChannel();
       methodCalls = [];
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -67,7 +67,7 @@ void main() {
     test('takeSnapshot throws when platform returns null', () async {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async => null,
           );
 

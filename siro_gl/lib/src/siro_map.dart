@@ -2,19 +2,19 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
 enum AnnotationType { fill, line, circle, symbol }
 
-typedef MapCreatedCallback = void Function(MapLibreMapController controller);
+typedef MapCreatedCallback = void Function(SiroMapController controller);
 
 /// Shows a MapLibre map.
-/// Also refer to the documentation of [maplibre_gl] and [MapLibreMapController].
-class MapLibreMap extends StatefulWidget {
-  const MapLibreMap({
+/// Also refer to the documentation of [maplibre_gl] and [SiroMapController].
+class SiroMap extends StatefulWidget {
+  const SiroMap({
     super.key,
     this.initialCameraPosition,
-    this.styleString = MapLibreStyles.demo,
+    this.styleString = SiroStyles.demo,
     this.onMapCreated,
     this.onStyleLoadedCallback,
     this.locationEnginePlatforms = LocationEnginePlatforms.defaultPlatform,
@@ -85,7 +85,7 @@ class MapLibreMap extends StatefulWidget {
   ///
   /// Defaults to [PlatformLocationSource], the device's location engine. Use
   /// [ManualLocationSource] to drive the puck from your own fixes, pushed with
-  /// [MapLibreMapController.updateManualLocation]; that mode needs no location
+  /// [SiroMapController.updateManualLocation]; that mode needs no location
   /// permission and works on Android, iOS and web.
   ///
   /// Only has an effect when [myLocationEnabled] is true, and is read when the
@@ -202,10 +202,10 @@ class MapLibreMap extends StatefulWidget {
   /// This takes presedence over zoomGesturesEnabled. Only supported for web.
   final bool? doubleClickZoomEnabled;
 
-  /// True if you want to be notified of map camera movements by the [MapLibreMapController]. Default is false.
+  /// True if you want to be notified of map camera movements by the [SiroMapController]. Default is false.
   ///
-  /// If this is set to true and the user pans/zooms/rotates the map, [MapLibreMapController] (which is a [ChangeNotifier])
-  /// will notify it's listeners and you can then get the new [MapLibreMapController].cameraPosition.
+  /// If this is set to true and the user pans/zooms/rotates the map, [SiroMapController] (which is a [ChangeNotifier])
+  /// will notify it's listeners and you can then get the new [SiroMapController].cameraPosition.
   final bool trackCameraPosition;
 
   /// True if a "My Location" layer should be shown on the map.
@@ -357,28 +357,28 @@ class MapLibreMap extends StatefulWidget {
   /// from the native view. See the
   /// [architecture guide](https://maplibre.org/flutter-maplibre-gl/concepts/architecture/#platform-view-mode-android).
   ///
-  /// Assign it before the first [MapLibreMap] is built, ideally before
+  /// Assign it before the first [SiroMap] is built, ideally before
   /// `runApp()`; maps already on screen keep the mode they were created with.
   static bool get useHybridComposition =>
-      MapLibreMethodChannel.useHybridComposition;
+      SiroMethodChannel.useHybridComposition;
 
   static set useHybridComposition(bool useHybridComposition) =>
-      MapLibreMethodChannel.useHybridComposition = useHybridComposition;
+      SiroMethodChannel.useHybridComposition = useHybridComposition;
 
   /// Where the web implementation loads MapLibre GL JS from.
   ///
   /// Leave it unset and the plugin injects the build it is tested against, so
   /// `web/index.html` needs no `<script>` or `<link>` tag. Assign a
-  /// [MapLibreJsSource] to point the plugin at a self-hosted copy
-  /// ([MapLibreJsSource.urls]), or to tell it the page loads the library
-  /// itself ([MapLibreJsSource.preloaded]).
+  /// [SiroJsSource] to point the plugin at a self-hosted copy
+  /// ([SiroJsSource.urls]), or to tell it the page loads the library
+  /// itself ([SiroJsSource.preloaded]).
   ///
-  /// Assign it before the first [MapLibreMap] is built; once the library is on
+  /// Assign it before the first [SiroMap] is built; once the library is on
   /// the page, changing it has no effect. Ignored on Android and iOS.
-  static MapLibreJsSource? get webLibrarySource => MapLibreJsSource.configured;
+  static SiroJsSource? get webLibrarySource => SiroJsSource.configured;
 
-  static set webLibrarySource(MapLibreJsSource? value) =>
-      MapLibreJsSource.configured = value;
+  static set webLibrarySource(SiroJsSource? value) =>
+      SiroJsSource.configured = value;
 
   /// Starts up the map engine early, so its initialization overlaps app
   /// start-up instead of delaying the first map.
@@ -390,7 +390,7 @@ class MapLibreMap extends StatefulWidget {
   ///
   /// ```dart
   /// void main() {
-  ///   MapLibreMap.preWarm(); // fire-and-forget
+  ///   SiroMap.preWarm(); // fire-and-forget
   ///   runApp(const MyApp());
   /// }
   /// ```
@@ -416,13 +416,13 @@ class MapLibreMap extends StatefulWidget {
     if (kIsWeb || ServicesBinding.rootIsolateToken != null) {
       WidgetsFlutterBinding.ensureInitialized();
     }
-    return MapLibreGlobalPlatform.instance.preWarm();
+    return SiroGlobalPlatform.instance.preWarm();
   }
 
   /// Completes once MapLibre GL JS is on the page and the `maplibregl` global
   /// is usable. Completes immediately on Android and iOS.
   ///
-  /// Most apps never need this: every [MapLibreMap] awaits the same future
+  /// Most apps never need this: every [SiroMap] awaits the same future
   /// before building its map, so the library is already there by the time your
   /// map callbacks run. Await it when your own JS interop has to reach
   /// `maplibregl` before any map exists, for example to register a protocol
@@ -433,7 +433,7 @@ class MapLibreMap extends StatefulWidget {
   /// ```dart
   /// Future<void> main() async {
   ///   if (kIsWeb) {
-  ///     await MapLibreMap.ensureWebLibraryLoaded();
+  ///     await SiroMap.ensureWebLibraryLoaded();
   ///     registerMyProtocol(); // maplibregl is now usable from JS interop
   ///   }
   ///   runApp(const MyApp());
@@ -442,19 +442,19 @@ class MapLibreMap extends StatefulWidget {
   ///
   /// Where the library comes from is configured with [webLibrarySource].
   static Future<void> ensureWebLibraryLoaded() =>
-      MapLibreGlobalPlatform.instance.ensureLibraryLoaded();
+      SiroGlobalPlatform.instance.ensureLibraryLoaded();
 
   @override
   State createState() => _MapLibreMapState();
 }
 
-class _MapLibreMapState extends State<MapLibreMap> {
-  final Completer<MapLibreMapController> _controller =
-      Completer<MapLibreMapController>();
-  MapLibreMapController? _mapController;
+class _MapLibreMapState extends State<SiroMap> {
+  final Completer<SiroMapController> _controller =
+      Completer<SiroMapController>();
+  SiroMapController? _mapController;
 
-  late MapLibreMapOptions _maplibreMapOptions;
-  final MapLibrePlatform _maplibrePlatform = MapLibrePlatform.createInstance();
+  late SiroMapOptions _maplibreMapOptions;
+  final SiroGlPlatform _maplibrePlatform = SiroGlPlatform.createInstance();
 
   /// Set in [dispose], which also tears the platform down. Creating a map is
   /// asynchronous and can outlive the widget that asked for it, so everything
@@ -471,7 +471,7 @@ class _MapLibreMapState extends State<MapLibreMap> {
       if (widget.initialCameraPosition != null)
         'initialCameraPosition': widget.initialCameraPosition!.toMap(),
       'styleString': widget.styleString,
-      'options': MapLibreMapOptions.fromWidget(widget).toMap(),
+      'options': SiroMapOptions.fromWidget(widget).toMap(),
       'dragEnabled': widget.dragEnabled,
       if (widget.iosLongClickDuration != null)
         'iosLongClickDurationMilliseconds':
@@ -489,7 +489,7 @@ class _MapLibreMapState extends State<MapLibreMap> {
   @override
   void initState() {
     super.initState();
-    _maplibreMapOptions = MapLibreMapOptions.fromWidget(widget);
+    _maplibreMapOptions = SiroMapOptions.fromWidget(widget);
   }
 
   @override
@@ -511,9 +511,9 @@ class _MapLibreMapState extends State<MapLibreMap> {
   }
 
   @override
-  void didUpdateWidget(MapLibreMap oldWidget) {
+  void didUpdateWidget(SiroMap oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final newOptions = MapLibreMapOptions.fromWidget(widget);
+    final newOptions = SiroMapOptions.fromWidget(widget);
     final updates = _maplibreMapOptions.updatesMap(newOptions);
 
     if (updates.isNotEmpty) {
@@ -532,7 +532,7 @@ class _MapLibreMapState extends State<MapLibreMap> {
   }
 
   Future<void> onPlatformViewCreated(int id) async {
-    final controller = MapLibreMapController(
+    final controller = SiroMapController(
       maplibrePlatform: _maplibrePlatform,
       initialCameraPosition: widget.initialCameraPosition,
       onStyleLoadedCallback: () async {
@@ -580,7 +580,7 @@ class _MapLibreMapState extends State<MapLibreMap> {
   }
 }
 
-/// Configuration options for the MapLibreMap user interface.
+/// Configuration options for the SiroMap user interface.
 ///
 /// When used to change configuration, null values will be interpreted as
 /// "do not change this configuration option".
@@ -588,8 +588,8 @@ class _MapLibreMapState extends State<MapLibreMap> {
 /// This class is exposed only for testing purposes; it is not intended to be
 /// used as part of the public API of this library.
 @visibleForTesting
-class MapLibreMapOptions {
-  MapLibreMapOptions({
+class SiroMapOptions {
+  SiroMapOptions({
     this.compassEnabled,
     this.cameraTargetBounds,
     this.styleString,
@@ -621,7 +621,7 @@ class MapLibreMapOptions {
     this.featureTapsTriggersMapClick,
   });
 
-  MapLibreMapOptions.fromWidget(MapLibreMap map)
+  SiroMapOptions.fromWidget(SiroMap map)
     : this(
         locationEnginePlatforms: map.locationEnginePlatforms,
         locationSource: map.locationSource,
@@ -781,7 +781,7 @@ class MapLibreMapOptions {
     return optionsMap;
   }
 
-  Map<String, dynamic> updatesMap(MapLibreMapOptions newOptions) {
+  Map<String, dynamic> updatesMap(SiroMapOptions newOptions) {
     final prevOptionsMap = toMap();
     final newOptionsMap = newOptions.toMap();
 

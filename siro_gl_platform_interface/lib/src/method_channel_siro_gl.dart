@@ -1,9 +1,9 @@
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
-class MapLibreMethodChannel extends MapLibrePlatform {
+class SiroMethodChannel extends SiroGlPlatform {
   late MethodChannel _channel;
 
-  /// Backing field of `MapLibreMap.useHybridComposition`, which is the
+  /// Backing field of `SiroMap.useHybridComposition`, which is the
   /// documented way to set this and explains what each value selects. Android
   /// only: `false` keeps the map on a `SurfaceView`, `true` moves it to a
   /// `TextureView` via MapLibre's `textureMode`.
@@ -131,7 +131,7 @@ class MapLibreMethodChannel extends MapLibrePlatform {
 
   @override
   Future<void> initPlatform(int id) async {
-    _channel = MethodChannel('plugins.flutter.io/maplibre_gl_$id');
+    _channel = MethodChannel('$siroMapChannelPrefix$id');
     _channel.setMethodCallHandler(_handleMethodCall);
     await _channel.invokeMethod('map#waitForMap');
   }
@@ -146,7 +146,7 @@ class MapLibreMethodChannel extends MapLibrePlatform {
       creationParams['options']?['useHybridComposition'] = useHybridComposition;
       if (useHybridComposition) {
         return PlatformViewLink(
-          viewType: 'plugins.flutter.io/maplibre_gl',
+          viewType: siroMapViewType,
           surfaceFactory: (context, controller) {
             return AndroidViewSurface(
               controller: controller as AndroidViewController,
@@ -159,7 +159,7 @@ class MapLibreMethodChannel extends MapLibrePlatform {
           onCreatePlatformView: (params) {
             final controller = PlatformViewsService.initAndroidView(
               id: params.id,
-              viewType: 'plugins.flutter.io/maplibre_gl',
+              viewType: siroMapViewType,
               layoutDirection: TextDirection.ltr,
               creationParams: creationParams,
               creationParamsCodec: const StandardMessageCodec(),
@@ -177,7 +177,7 @@ class MapLibreMethodChannel extends MapLibrePlatform {
         );
       } else {
         return AndroidView(
-          viewType: 'plugins.flutter.io/maplibre_gl',
+          viewType: siroMapViewType,
           onPlatformViewCreated: onPlatformViewCreated,
           gestureRecognizers: gestureRecognizers,
           creationParams: creationParams,
@@ -186,7 +186,7 @@ class MapLibreMethodChannel extends MapLibrePlatform {
       }
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
       return UiKitView(
-        viewType: 'plugins.flutter.io/maplibre_gl',
+        viewType: siroMapViewType,
         onPlatformViewCreated: onPlatformViewCreated,
         gestureRecognizers: gestureRecognizers,
         creationParams: creationParams,
@@ -1145,7 +1145,7 @@ class MapLibreMethodChannel extends MapLibrePlatform {
       'encodings. Use encoding: "mapbox" or "terrarium", or serve the '
       'terrain tiles in one of those encodings. Custom encoding is '
       'supported on web. This check covers addSource() only: a raster-dem '
-      'source declared inside MapLibreMap.styleString never reaches it and '
+      'source declared inside SiroMap.styleString never reaches it and '
       'is decoded as mapbox without any error.',
     );
   }
@@ -1508,8 +1508,8 @@ class MapLibreMethodChannel extends MapLibrePlatform {
 }
 
 /// Normalizes a style entry (a layer or a source, in MapLibre style-spec form)
-/// into the one shape [MapLibrePlatform.getLayerProperties] and
-/// [MapLibrePlatform.getSourceProperties] promise on every platform.
+/// into the one shape [SiroGlPlatform.getLayerProperties] and
+/// [SiroGlPlatform.getSourceProperties] promise on every platform.
 ///
 /// The problem this solves is that JavaScript has a single number type. A style
 /// that writes `4` and one that writes `4.0` are the same value in the browser,

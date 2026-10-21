@@ -35,9 +35,9 @@ class MarkerJsImpl extends EventedJsImpl {
 
 extension MarkerJsImplExtension on MarkerJsImpl {
   ///  Attaches the marker to a map
-  ///  @param {MapLibreMap} map
+  ///  @param {SiroMap} map
   ///  @returns {Marker} `this`
-  external MarkerJsImpl addTo(MapLibreMapJsImpl map);
+  external MarkerJsImpl addTo(JsMapImpl map);
 
   ///  Removes the marker from a map
   ///  @example

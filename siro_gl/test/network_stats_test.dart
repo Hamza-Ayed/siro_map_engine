@@ -1,11 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const channel = MethodChannel('plugins.flutter.io/maplibre_gl');
+  const channel = MethodChannel(siroGlobalChannelName);
   late List<MethodCall> calls;
   late Object? statsReply;
 

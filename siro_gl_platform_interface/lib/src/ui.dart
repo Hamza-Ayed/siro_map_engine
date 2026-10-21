@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
 /// The camera mode, which determines how the map camera will track the rendered location.
 enum MyLocationTrackingMode { none, tracking, trackingCompass, trackingGps }
@@ -35,7 +35,7 @@ enum ScaleControlPosition { topLeft, topRight, bottomLeft, bottomRight }
 enum ScaleControlUnit { metric, imperial, nautical }
 
 /// Bounds for the map camera target.
-/// Used with [MapLibreMapOptions] to wrap a [LatLngBounds] value. This allows
+/// Used with [SiroMapOptions] to wrap a [LatLngBounds] value. This allows
 /// distinguishing between specifying an unbounded target (null `LatLngBounds`)
 /// from not specifying anything (null `CameraTargetBounds`).
 @immutable
@@ -71,7 +71,7 @@ class CameraTargetBounds {
 }
 
 /// Preferred bounds for map camera zoom level.
-/// Used with [MapLibreMapOptions] to wrap min and max zoom. This allows
+/// Used with [SiroMapOptions] to wrap min and max zoom. This allows
 /// distinguishing between specifying unbounded zooming (null [minZoom] and
 /// [maxZoom]) from not specifying anything (null [MinMaxZoomPreference]).
 @immutable

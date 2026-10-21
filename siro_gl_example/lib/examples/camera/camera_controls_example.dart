@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,14 +24,14 @@ class _CameraControlsBody extends StatefulWidget {
 }
 
 class _CameraControlsBodyState extends State<_CameraControlsBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   bool _isAnimated = true;
   bool _useEase = false;
   // null = platform default (each platform's historical easeCamera curve).
   CameraAnimationInterpolation? _interpolation;
   CameraPosition? _currentPosition;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -109,7 +109,7 @@ class _CameraControlsBodyState extends State<_CameraControlsBody> {
     final bearing = _currentPosition?.bearing.toStringAsFixed(0) ?? '--';
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onCameraIdle: _onCameraIdle,

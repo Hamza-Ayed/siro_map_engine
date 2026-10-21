@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,7 +24,7 @@ class _DocFillLayerBody extends StatefulWidget {
 }
 
 class _DocFillLayerBodyState extends State<_DocFillLayerBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'regions-source';
   static const _fillLayerId = 'regions-fill';
@@ -86,7 +86,7 @@ class _DocFillLayerBodyState extends State<_DocFillLayerBody> {
     },
   ];
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -135,7 +135,7 @@ class _DocFillLayerBodyState extends State<_DocFillLayerBody> {
   Widget build(BuildContext context) {
     return MapExampleScaffold(
       mapOnly: true,
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

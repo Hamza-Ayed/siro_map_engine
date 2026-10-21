@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'helpers/fake_platform.dart';
 
@@ -11,11 +11,11 @@ void main() {
 
   setUp(() {
     platform = FakeMapLibrePlatform();
-    final previousFactory = MapLibrePlatform.createInstance;
+    final previousFactory = SiroGlPlatform.createInstance;
     addTearDown(() {
-      MapLibrePlatform.createInstance = previousFactory;
+      SiroGlPlatform.createInstance = previousFactory;
     });
-    MapLibrePlatform.createInstance = () => platform;
+    SiroGlPlatform.createInstance = () => platform;
   });
 
   group('LocationEnginePlatforms in creationParams', () {
@@ -24,7 +24,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: MapLibreMap(
+          home: SiroMap(
             initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
           ),
         ),
@@ -41,7 +41,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: MapLibreMap(
+          home: SiroMap(
             initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
             locationEnginePlatforms: const LocationEnginePlatforms.android(
               enableHighAccuracy: true,
@@ -65,7 +65,7 @@ void main() {
         // First: default (no high accuracy)
         await tester.pumpWidget(
           MaterialApp(
-            home: MapLibreMap(
+            home: SiroMap(
               initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
             ),
           ),
@@ -78,7 +78,7 @@ void main() {
         // Second: high accuracy
         await tester.pumpWidget(
           MaterialApp(
-            home: MapLibreMap(
+            home: SiroMap(
               initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
               locationEnginePlatforms: const LocationEnginePlatforms.android(
                 enableHighAccuracy: true,
@@ -100,7 +100,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: MapLibreMap(
+          home: SiroMap(
             initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
             myLocationEnabled: true,
           ),
@@ -117,7 +117,7 @@ void main() {
     ) async {
       await tester.pumpWidget(
         MaterialApp(
-          home: MapLibreMap(
+          home: SiroMap(
             initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
             myLocationTrackingMode: MyLocationTrackingMode.tracking,
           ),
@@ -132,7 +132,7 @@ void main() {
 
   group('Tracking mode delegation', () {
     test('updateMyLocationTrackingMode delegates to platform', () async {
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -152,7 +152,7 @@ void main() {
     });
 
     test('cycling through all tracking modes', () async {
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -178,7 +178,7 @@ void main() {
     test('onUserLocationUpdated fires from platform event', () {
       UserLocation? received;
 
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -214,7 +214,7 @@ void main() {
     test('multiple location updates are all received', () {
       final locations = <UserLocation>[];
 
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -246,7 +246,7 @@ void main() {
     });
 
     test('location update without callback does not crash', () {
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -275,7 +275,7 @@ void main() {
     test('onCameraTrackingDismissed fires from platform event', () {
       var dismissed = false;
 
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -295,7 +295,7 @@ void main() {
     test('onCameraTrackingChanged reports mode transitions', () {
       final modes = <MyLocationTrackingMode>[];
 
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,

@@ -1,6 +1,6 @@
 import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -45,11 +45,11 @@ class _MapLanguageBody extends StatefulWidget {
 }
 
 class _MapLanguageBodyState extends State<_MapLanguageBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   _Language _selected = _languages.first;
   bool _ready = false;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -70,7 +70,7 @@ class _MapLanguageBodyState extends State<_MapLanguageBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         initialCameraPosition: const CameraPosition(
           target: ExampleConstants.london,
           zoom: 5,

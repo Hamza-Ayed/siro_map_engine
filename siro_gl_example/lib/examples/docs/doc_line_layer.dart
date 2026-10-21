@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,7 +24,7 @@ class _DocLineLayerBody extends StatefulWidget {
 }
 
 class _DocLineLayerBodyState extends State<_DocLineLayerBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'route-source';
   static const _layerId = 'route-layer';
@@ -43,7 +43,7 @@ class _DocLineLayerBodyState extends State<_DocLineLayerBody> {
     [132.04, 43.13], // Vladivostok
   ];
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -92,7 +92,7 @@ class _DocLineLayerBodyState extends State<_DocLineLayerBody> {
   Widget build(BuildContext context) {
     return MapExampleScaffold(
       mapOnly: true,
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

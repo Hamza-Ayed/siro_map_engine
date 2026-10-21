@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
 /// A pair of latitude and longitude coordinates, stored as degrees.
 @immutable
@@ -235,7 +235,7 @@ class UserLocation {
 }
 
 /// An app-provided location update, pushed into the map's user-location
-/// component via `MapLibreMapController.updateManualLocation`.
+/// component via `SiroMapController.updateManualLocation`.
 ///
 /// Requires the map to be created with
 /// `locationSource: ManualLocationSource()` and `myLocationEnabled: true`.

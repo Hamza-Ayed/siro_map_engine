@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'helpers/fake_platform.dart';
 
@@ -9,13 +9,13 @@ void main() {
 
   group('locationSource serialization', () {
     test('defaults to "platform" token in options', () {
-      final options = MapLibreMapOptions.fromWidget(MapLibreMap());
+      final options = SiroMapOptions.fromWidget(SiroMap());
       expect(options.toMap()['locationSource'], 'platform');
     });
 
     test('ManualLocationSource serializes to "manual" token in options', () {
-      final options = MapLibreMapOptions.fromWidget(
-        MapLibreMap(
+      final options = SiroMapOptions.fromWidget(
+        SiroMap(
           myLocationEnabled: true,
           locationSource: const ManualLocationSource(),
         ),
@@ -27,13 +27,13 @@ void main() {
       tester,
     ) async {
       final platform = FakeMapLibrePlatform();
-      final previousFactory = MapLibrePlatform.createInstance;
-      addTearDown(() => MapLibrePlatform.createInstance = previousFactory);
-      MapLibrePlatform.createInstance = () => platform;
+      final previousFactory = SiroGlPlatform.createInstance;
+      addTearDown(() => SiroGlPlatform.createInstance = previousFactory);
+      SiroGlPlatform.createInstance = () => platform;
 
       await tester.pumpWidget(
         MaterialApp(
-          home: MapLibreMap(
+          home: SiroMap(
             myLocationEnabled: true,
             locationSource: const ManualLocationSource(),
           ),
@@ -49,11 +49,11 @@ void main() {
 
   group('controller.updateManualLocation', () {
     late FakeMapLibrePlatform platform;
-    late MapLibreMapController controller;
+    late SiroMapController controller;
 
     setUp(() {
       platform = FakeMapLibrePlatform();
-      controller = MapLibreMapController(
+      controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,

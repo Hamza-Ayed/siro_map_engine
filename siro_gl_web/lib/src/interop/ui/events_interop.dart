@@ -15,8 +15,8 @@ extension MapMouseEventJsImplExtension on MapMouseEventJsImpl {
   /// The event type.
   external String get type;
 
-  /// The `MapLibreMap` object that fired the event.
-  external MapLibreMapJsImpl get target;
+  /// The `SiroMap` object that fired the event.
+  external JsMapImpl get target;
 
   /// The DOM event which caused the map event.
   external MouseEvent get originalEvent;
@@ -49,8 +49,8 @@ extension MapTouchEventJsImplExtension on MapTouchEventJsImpl {
   /// The event type.
   external String get type;
 
-  /// The `MapLibreMap` object that fired the event.
-  external MapLibreMapJsImpl get target;
+  /// The `SiroMap` object that fired the event.
+  external JsMapImpl get target;
 
   /// The DOM event which caused the map event.
   external TouchEvent get originalEvent;

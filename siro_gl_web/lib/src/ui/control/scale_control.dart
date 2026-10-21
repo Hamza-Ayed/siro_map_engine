@@ -39,7 +39,7 @@ class ScaleControl extends JsObjectWrapper<ScaleControlJsImpl> {
   ScaleControl.fromJsObject(super.jsObject) : super.fromJsObject();
 
   /// Add this control to the given [map].
-  dynamic onAdd(MapLibreMap map) => jsObject.onAdd(map.jsObject);
+  dynamic onAdd(SiroMap map) => jsObject.onAdd(map.jsObject);
 
   /// Remove this control from the map.
   dynamic onRemove() => jsObject.onRemove();

@@ -20,7 +20,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:web/web.dart' as web;
 
 void main() {
@@ -35,13 +35,13 @@ void main() {
     }
 
     const target = LatLng(37.33233141, -122.0312186);
-    final controllerCompleter = Completer<MapLibreMapController>();
+    final controllerCompleter = Completer<SiroMapController>();
     final styleLoadedCompleter = Completer<void>();
 
     await tester.pumpWidget(
       MaterialApp(
         home: Scaffold(
-          body: MapLibreMap(
+          body: SiroMap(
             styleString: 'assets/style.json',
             locationSource: const ManualLocationSource(),
             myLocationEnabled: true,

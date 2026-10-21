@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'helpers/fake_platform.dart';
 
@@ -11,11 +11,11 @@ void main() {
 
   setUp(() {
     platform = FakeMapLibrePlatform();
-    final previousFactory = MapLibrePlatform.createInstance;
+    final previousFactory = SiroGlPlatform.createInstance;
     addTearDown(() {
-      MapLibrePlatform.createInstance = previousFactory;
+      SiroGlPlatform.createInstance = previousFactory;
     });
-    MapLibrePlatform.createInstance = () => platform;
+    SiroGlPlatform.createInstance = () => platform;
   });
 
   group('initialCameraPosition', () {
@@ -28,7 +28,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        MaterialApp(home: MapLibreMap(initialCameraPosition: camera)),
+        MaterialApp(home: SiroMap(initialCameraPosition: camera)),
       );
 
       final params = platform.lastCreationParams;
@@ -45,7 +45,7 @@ void main() {
     });
 
     testWidgets('is omitted from creationParams when null', (tester) async {
-      await tester.pumpWidget(MaterialApp(home: MapLibreMap()));
+      await tester.pumpWidget(MaterialApp(home: SiroMap()));
 
       final params = platform.lastCreationParams;
       expect(params, isNotNull);
@@ -60,11 +60,11 @@ void main() {
           '{"version":8,"sources":{},"layers":[{"id":"bg","type":"background","paint":{"background-color":"#fff"}}]}';
 
       platform.triggerPlatformViewCreated = true;
-      MapLibreMapController? controller;
+      SiroMapController? controller;
 
       await tester.pumpWidget(
         MaterialApp(
-          home: MapLibreMap(
+          home: SiroMap(
             styleString: noCameraStyle,
             onMapCreated: (c) => controller = c,
           ),
@@ -98,7 +98,7 @@ void main() {
       const camera = CameraPosition(target: LatLng(0, 0));
 
       await tester.pumpWidget(
-        MaterialApp(home: MapLibreMap(initialCameraPosition: camera)),
+        MaterialApp(home: SiroMap(initialCameraPosition: camera)),
       );
 
       final params = platform.lastCreationParams!;
@@ -115,7 +115,7 @@ void main() {
 
   group('onStyleLoaded manager disposal', () {
     test('disposes old managers and re-creates them on style reload', () async {
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         annotationOrder: AnnotationType.values,
         annotationConsumeTapEvents: AnnotationType.values,
@@ -147,7 +147,7 @@ void main() {
 
   group('Controller initialCameraPosition', () {
     test('cameraPosition is null when initialCameraPosition is null', () {
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         annotationOrder: AnnotationType.values,
         annotationConsumeTapEvents: AnnotationType.values,
@@ -160,7 +160,7 @@ void main() {
     test('cameraPosition matches provided initialCameraPosition', () {
       const camera = CameraPosition(target: LatLng(10, 20), zoom: 5);
 
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: camera,
         annotationOrder: AnnotationType.values,
@@ -174,7 +174,7 @@ void main() {
     test('null camera with no style camera — '
         'platform reports default position on idle', () {
       // Neither initialCameraPosition nor style camera is set.
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         annotationOrder: AnnotationType.values,
         annotationConsumeTapEvents: AnnotationType.values,
@@ -198,7 +198,7 @@ void main() {
         'platform reports style position on idle', () {
       // initialCameraPosition is null; style has center/zoom.
       // The platform should use the style camera and report it back.
-      final controller = MapLibreMapController(
+      final controller = SiroMapController(
         maplibrePlatform: platform,
         annotationOrder: AnnotationType.values,
         annotationConsumeTapEvents: AnnotationType.values,

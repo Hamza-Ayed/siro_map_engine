@@ -38,7 +38,7 @@ class AttributionControl extends JsObjectWrapper<AttributionControlJsImpl> {
         AttributionControlJsImpl(options.jsObject),
       );
 
-  onAdd(MapLibreMap map) => jsObject.onAdd(map.jsObject);
+  onAdd(SiroMap map) => jsObject.onAdd(map.jsObject);
 
   onRemove() => jsObject.onRemove();
 

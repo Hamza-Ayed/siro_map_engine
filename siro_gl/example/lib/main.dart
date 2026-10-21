@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 void main() {
   runApp(const _ExampleApp());
@@ -25,13 +25,13 @@ class _ExampleHomePage extends StatefulWidget {
 }
 
 class _ExampleHomePageState extends State<_ExampleHomePage> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('maplibre_gl minimal example')),
-      body: MapLibreMap(
+      body: SiroMap(
         // ignore: avoid_redundant_argument_values --- EXAMPLE ---
         styleString: 'https://demotiles.maplibre.org/style.json',
         onMapCreated: (c) => _controller = c,

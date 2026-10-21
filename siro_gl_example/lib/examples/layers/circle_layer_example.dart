@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -26,7 +26,7 @@ class _CircleLayerBody extends StatefulWidget {
 }
 
 class _CircleLayerBodyState extends State<_CircleLayerBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'circle_source';
   static const _layerId = 'circle_layer';
@@ -48,7 +48,7 @@ class _CircleLayerBodyState extends State<_CircleLayerBody> {
     super.initState();
   }
 
-  Future<void> _onMapCreated(MapLibreMapController controller) async {
+  Future<void> _onMapCreated(SiroMapController controller) async {
     setState(() => _controller = controller);
   }
 
@@ -150,7 +150,7 @@ class _CircleLayerBodyState extends State<_CircleLayerBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

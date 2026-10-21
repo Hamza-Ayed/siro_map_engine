@@ -1,4 +1,4 @@
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
 Map<String, dynamic> buildFeatureCollection(
   List<Map<String, dynamic>> features,

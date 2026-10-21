@@ -1,8 +1,8 @@
 // ignore_for_file: deprecated_member_use --- IGNORE ---
 
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
-extension MapLibreColorConversion on Color {
+extension SiroColorConversion on Color {
   String toHexStringRGB() {
     final r = red.toRadixString(16).padLeft(2, '0');
     final g = green.toRadixString(16).padLeft(2, '0');

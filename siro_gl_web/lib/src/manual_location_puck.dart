@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 import 'package:siro_gl_web/src/geo/lng_lat.dart';
 import 'package:siro_gl_web/src/ui/camera.dart';
 import 'package:siro_gl_web/src/ui/map.dart';
@@ -26,7 +26,7 @@ class ManualLocationPuck {
     required void Function(bool) onTrackingChanged,
   }) : _onTrackingChanged = onTrackingChanged;
 
-  final MapLibreMap _map;
+  final SiroMap _map;
 
   /// Called when tracking turns on/off, so the controller can forward the
   /// platform `onCameraTrackingChanged` callback.

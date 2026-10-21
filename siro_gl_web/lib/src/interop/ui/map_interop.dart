@@ -18,12 +18,12 @@ import 'package:siro_gl_web/src/interop/ui/handler/keyboard_interop.dart';
 import 'package:siro_gl_web/src/interop/ui/handler/scroll_zoom_interop.dart';
 import 'package:siro_gl_web/src/interop/ui/handler/touch_zoom_rotate_interop.dart';
 
-///  The `MapLibreMap` object represents the map on your page. It exposes methods
+///  The `SiroMap` object represents the map on your page. It exposes methods
 ///  and properties that enable you to programmatically change the map,
 ///  and fires events as users interact with it.
 ///
-///  You create a `MapLibreMap` by specifying a `container` and other options.
-///  Then MapLibre JS JS initializes the map on the page and returns your `MapLibreMap`
+///  You create a `SiroMap` by specifying a `container` and other options.
+///  Then MapLibre JS JS initializes the map on the page and returns your `SiroMap`
 ///  object.
 ///
 ///  ```dart
@@ -48,11 +48,11 @@ import 'package:siro_gl_web/src/interop/ui/handler/touch_zoom_rotate_interop.dar
 ///  @see [Display a map](https://maplibre.org/maplibre-gl-js/docs/examples/simple-map/)
 @JS('Map')
 @staticInterop
-class MapLibreMapJsImpl extends CameraJsImpl {
-  external factory MapLibreMapJsImpl(MapOptionsJsImpl options);
+class JsMapImpl extends CameraJsImpl {
+  external factory JsMapImpl(MapOptionsJsImpl options);
 }
 
-extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
+extension JsMapImplExtension on JsMapImpl {
   external StyleJsImpl get style;
   external JSAny? get painter;
 
@@ -90,12 +90,12 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param {IControl} control The {@link IControl} to add.
   ///  @param {string} [position] position on the map to which the control will be added.
   ///  Valid values are `'top-left'`, `'top-right'`, `'bottom-left'`, and `'bottom-right'`. Defaults to `'top-right'`.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Add zoom and rotation controls to the map.
   ///  map.addControl(new NavigationControl());
   ///  @see [Display map navigation controls](https://maplibre.org/maplibre-gl-js/docs/examples/navigation/)
-  external MapLibreMapJsImpl addControl(
+  external JsMapImpl addControl(
     IControlJsImpl? control, [
     String? position,
   ]);
@@ -103,7 +103,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  Removes the control from the map.
   ///
   ///  @param {IControl} control The {@link IControl} to remove.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Define a new navigation control.
   ///  var navigation = new NavigationControl();
@@ -111,7 +111,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  map.addControl(navigation);
   ///  // Remove zoom and rotation controls from the map.
   ///  map.removeControl(navigation);
-  external MapLibreMapJsImpl removeControl(IControlJsImpl? control);
+  external JsMapImpl removeControl(IControlJsImpl? control);
 
   ///  Resizes the map according to the dimensions of its
   ///  `container` element.
@@ -123,13 +123,13 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param eventData Additional properties to be passed to `movestart`, `move`, `resize`, and `moveend`
   ///    events that get triggered as a result of resize. This can be useful for differentiating the
   ///    source of an event (for example, user-initiated or programmatically-triggered events).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Resize the map when the map container is shown
   ///  // after being initially hidden with CSS.
   ///  var mapDiv = document.getElementById('map');
   ///  if (mapDiv.style.visibility === true) map.resize();
-  external MapLibreMapJsImpl resize([JSAny? eventData]);
+  external JsMapImpl resize([JSAny? eventData]);
 
   ///  Returns the map's geographical bounds. When the bearing or pitch is non-zero, the visible region is not
   ///  an axis-aligned rectangle, and the result is the smallest bounds that encompasses the visible region.
@@ -152,7 +152,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  remaining within the bounds.
   ///
   ///  @param {LngLatBoundsLike | null | undefined} bounds The maximum bounds to set. If `null` or `undefined` is provided, the function removes the map's maximum bounds.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Define bounds that conform to the `LngLatBoundsLike` object.
   ///  var bounds = [
@@ -161,7 +161,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  ];
   ///  // Set the map's max bounds.
   ///  map.setMaxBounds(bounds);
-  external MapLibreMapJsImpl setMaxBounds(LngLatBoundsJsImpl? bounds);
+  external JsMapImpl setMaxBounds(LngLatBoundsJsImpl? bounds);
 
   ///  Sets or clears the map's minimum zoom level.
   ///  If the map's current zoom level is lower than the new minimum,
@@ -174,10 +174,10 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///
   ///  @param {number | null | undefined} minZoom The minimum zoom level to set (-2 - 24).
   ///    If `null` or `undefined` is provided, the function removes the current minimum zoom (i.e. sets it to -2).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setMinZoom(12.25);
-  external MapLibreMapJsImpl setMinZoom([num? minZoom]);
+  external JsMapImpl setMinZoom([num? minZoom]);
 
   ///  Returns the map's minimum allowable zoom level.
   ///
@@ -192,10 +192,10 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///
   ///  @param {number | null | undefined} maxZoom The maximum zoom level to set.
   ///    If `null` or `undefined` is provided, the function removes the current maximum zoom (sets it to 22).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setMaxZoom(18.75);
-  external MapLibreMapJsImpl setMaxZoom([num? maxZoom]);
+  external JsMapImpl setMaxZoom([num? maxZoom]);
 
   ///  Returns the map's maximum allowable zoom level.
   ///
@@ -210,8 +210,8 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///
   ///  @param {number | null | undefined} minPitch The minimum pitch to set (0-60).
   ///    If `null` or `undefined` is provided, the function removes the current minimum pitch (i.e. sets it to 0).
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setMinPitch([num? minPitch]);
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setMinPitch([num? minPitch]);
 
   ///  Returns the map's minimum allowable pitch.
   ///
@@ -224,8 +224,8 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///
   ///  @param {number | null | undefined} maxPitch The maximum pitch to set.
   ///    If `null` or `undefined` is provided, the function removes the current maximum pitch (sets it to 60).
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setMaxPitch([num? maxPitch]);
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setMaxPitch([num? maxPitch]);
 
   ///  Returns the map's maximum allowable pitch.
   ///
@@ -252,11 +252,11 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  map and the other on the left edge of the map) at every zoom level.
   ///
   ///  `undefined` is treated as `true`, `null` is treated as `false`.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setRenderWorldCopies(true);
   ///  @see [Render world copies](https://maplibre.org/maplibre-gl-js/docs/examples/render-world-copies/)
-  external MapLibreMapJsImpl setRenderWorldCopies([bool? renderWorldCopies]);
+  external JsMapImpl setRenderWorldCopies([bool? renderWorldCopies]);
 
   ///  Returns a {@link Point} representing pixel coordinates, relative to the map's `container`,
   ///  that correspond to the specified geographical location.
@@ -307,18 +307,18 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  feature in this layer will trigger the listener. The event will have a `features` property containing
   ///  an array of the matching features.
   ///  @param {Function} listener The function to be called when the event is fired.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   // Defined in evented.dart
-  //external MapLibreMap on(String type, [dynamic layerIdOrListener, Listener listener]);
+  //external SiroMap on(String type, [dynamic layerIdOrListener, Listener listener]);
 
-  ///  Removes an event listener for layer-specific events previously added with `MapLibreMap#on`.
+  ///  Removes an event listener for layer-specific events previously added with `SiroMap#on`.
   ///
   ///  @param {string} type The event type previously used to install the listener.
   ///  @param {string} layerId The layer ID previously used to install the listener.
   ///  @param {Function} listener The function previously installed as a listener.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   // Defined in evented.dart
-  //external MapLibreMap off(String type, [dynamic layerIdOrListener, Listener listener]);
+  //external SiroMap off(String type, [dynamic layerIdOrListener, Listener listener]);
 
   ///  Returns an array of [GeoJSON](http://geojson.org/)
   ///  [Feature objects](https://tools.ietf.org/html/rfc7946#section-3.2)
@@ -326,7 +326,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///
   ///  @param `{PointLike|Array<PointLike>}` [geometry] - The geometry of the query region:
   ///  either a single point or southwest and northeast points describing a bounding box.
-  ///  Omitting this parameter (i.e. calling [MapLibreMap.queryRenderedFeatures] with zero arguments,
+  ///  Omitting this parameter (i.e. calling [SiroMap.queryRenderedFeatures] with zero arguments,
   ///  or with only a [options] argument) is equivalent to passing a bounding box encompassing the entire
   ///  map viewport.
   ///  @param {Object} [options]
@@ -414,7 +414,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @returns {Array<Object>} An array of [GeoJSON](http://geojson.org/)
   ///  [Feature objects](https://tools.ietf.org/html/rfc7946#section-3.2).
   ///
-  ///  In contrast to [MapLibreMap.queryRenderedFeatures], this function returns all features matching the query parameters,
+  ///  In contrast to [SiroMap.queryRenderedFeatures], this function returns all features matching the query parameters,
   ///  whether or not they are rendered by the current style (i.e. visible). The domain of the query includes all currently-loaded
   ///  vector tiles and GeoJSON source tiles: this function does not check tiles outside the currently
   ///  visible viewport.
@@ -455,10 +455,10 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///    In these ranges, font settings from the map's style will be ignored, except for font-weight keywords (light/regular/medium/bold).
   ///    Set to `false`, to enable font settings from the map's style for these glyph ranges.
   ///    Forces a full update.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @see [Change a map's style](https://maplibre.org/maplibre-gl-js/docs/examples/setstyle/)
-  external MapLibreMapJsImpl setStyle(JSAny? style, [JSAny? options]);
+  external JsMapImpl setStyle(JSAny? style, [JSAny? options]);
 
   ///  Returns the map's MapLibre style object, which can be used to recreate the map's style.
   ///
@@ -495,11 +495,11 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  MapLibre Style Specification's [source definition](https://maplibre.org/maplibre-style-spec/#sources) or
   ///  [CanvasSourceOptions].
   ///  @fires source.add
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @see Vector source: [Show and hide layers](https://maplibre.org/maplibre-gl-js/docs/examples/toggle-layers/)
   ///  @see GeoJSON source: [Add live realtime data](https://maplibre.org/maplibre-gl-js/docs/examples/live-geojson/)
   ///  @see Raster DEM source: [Add hillshading](https://maplibre.org/maplibre-gl-js/docs/examples/hillshade/)
-  external MapLibreMapJsImpl addSource(String id, JSAny source);
+  external JsMapImpl addSource(String id, JSAny source);
 
   ///  Returns a Boolean indicating whether the source is loaded.
   ///
@@ -518,7 +518,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   external bool areTilesLoaded();
 
   ///  Adds a/// *custom source type**(#Custom Sources), making it available for use with
-  ///  [MapLibreMap.addSource].
+  ///  [SiroMap.addSource].
   ///  @private
   ///  @param {string} name The name of the source type; source definition objects use this name in the `{type: ...}` field.
   ///  @param {Function} SourceType A {@link Source} constructor.
@@ -532,7 +532,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  Removes a source from the map's style.
   ///
   ///  @param {string} id The ID of the source to remove.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.removeSource('bathymetry-data');
   external void removeSource(String id);
@@ -555,7 +555,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  [`background-pattern`](https://maplibre.org/maplibre-style-spec/#paint-background-background-pattern),
   ///  [`fill-pattern`](https://maplibre.org/maplibre-style-spec/#paint-fill-fill-pattern),
   ///  or [`line-pattern`](https://maplibre.org/maplibre-style-spec/#paint-line-line-pattern).
-  ///  A {@link MapLibreMap#error} event will be fired if there is not enough space in the sprite to add this image.
+  ///  A {@link SiroMap#error} event will be fired if there is not enough space in the sprite to add this image.
   ///
   ///  @param id The ID of the image.
   ///  @param image The image as an `HTMLImageElement`, `ImageData`, or object with `width`, `height`, and `data`
@@ -645,7 +645,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  if (map.hasImage('cat')) map.removeImage('cat');
   external void removeImage(String id);
 
-  ///  Load an image from an external URL to be used with `MapLibreMap#addImage`. External
+  ///  Load an image from an external URL to be used with `SiroMap#addImage`. External
   ///  domains must support [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
   ///
   ///  @param {string} url The URL of the image file. Image file must be in png, webp, or jpg format.
@@ -685,24 +685,24 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param {string} [beforeId] The ID of an existing layer to insert the new layer before.
   ///    If this argument is omitted, the layer will be appended to the end of the layers array.
   ///
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @see [Create and style clusters](https://maplibre.org/maplibre-gl-js/docs/examples/cluster/)
   ///  @see [Add a vector tile source](https://maplibre.org/maplibre-gl-js/docs/examples/vector-source/)
   ///  @see [Add a WMS source](https://maplibre.org/maplibre-gl-js/docs/examples/wms/)
-  external MapLibreMapJsImpl addLayer(JSAny layer, [String? beforeId]);
+  external JsMapImpl addLayer(JSAny layer, [String? beforeId]);
 
   ///  Moves a layer to a different z-position.
   ///
   ///  @param {string} id The ID of the layer to move.
   ///  @param {string} [beforeId] The ID of an existing layer to insert the new layer before.
   ///    If this argument is omitted, the layer will be appended to the end of the layers array.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @example
   ///  // Move a layer with ID 'label' before the layer with ID 'waterways'.
   ///  map.moveLayer('label', 'waterways');
-  external MapLibreMapJsImpl moveLayer(String id, String beforeId);
+  external JsMapImpl moveLayer(String id, String beforeId);
 
   ///  Removes the layer with the given ID from the map's style.
   ///
@@ -742,11 +742,11 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param {string} layerId The ID of the layer to which the zoom extent will be applied.
   ///  @param {number} minzoom The minimum zoom to set (0-24).
   ///  @param {number} maxzoom The maximum zoom to set (0-24).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @example
   ///  map.setLayerZoomRange('my-layer', 2, 5);
-  external MapLibreMapJsImpl setLayerZoomRange(
+  external JsMapImpl setLayerZoomRange(
     String layerId,
     num minzoom,
     num maxzoom,
@@ -760,14 +760,14 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if the filter conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
   ///
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setFilter('my-layer', ['==', 'name', 'USA']);
   ///
   ///  @see [Filter features within map view](https://maplibre.org/maplibre-gl-js/docs/examples/filter-features-within-map-view/)
   ///  @see [Highlight features containing similar data](https://maplibre.org/maplibre-gl-js/docs/examples/query-similar-features/)
   ///  @see [Create a timeline animation](https://maplibre.org/maplibre-gl-js/docs/examples/timeline-animation/)
-  external MapLibreMapJsImpl setFilter(
+  external JsMapImpl setFilter(
     String layerId,
     JSAny filter, [
     StyleSetterOptionsJsImpl? options,
@@ -787,7 +787,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///    Must be of a type appropriate for the property, as defined in the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if `value` conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setPaintProperty('my-layer', 'fill-color', '#faafee');
   ///  @see [Change a layer's color with buttons](https://maplibre.org/maplibre-gl-js/docs/examples/color-switcher/)
@@ -814,10 +814,10 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param {*} value The value of the layout property. Must be of a type appropriate for the property, as defined in the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if `value` conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setLayoutProperty('my-layer', 'visibility', 'none');
-  external MapLibreMapJsImpl setLayoutProperty(
+  external JsMapImpl setLayoutProperty(
     String layerId,
     String name,
     JSAny? value, [
@@ -836,8 +836,8 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param light Light properties to set. Must conform to the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/#light).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if the filter conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setLight(
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setLight(
     JSAny light, [
     StyleSetterOptionsJsImpl? options,
   ]);
@@ -847,8 +847,8 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @param sky Sky properties to set. Must conform to the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/sky/).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if the sky conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setSky(
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setSky(
     JSAny sky, [
     StyleSetterOptionsJsImpl? options,
   ]);
@@ -856,19 +856,19 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  Loads a 3D terrain mesh, based on a "raster-dem" source.
   ///
   ///  @param {Object | null} terrain The terrain to set, or `null` to remove the terrain.
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setTerrain(JSAny? terrain);
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setTerrain(JSAny? terrain);
 
   ///  Sets the map's projection.
   ///
   ///  @param {Object | null} projection A projection definition object, or `null` to reset to the default mercator projection.
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setProjection(JSAny? projection);
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setProjection(JSAny? projection);
 
   ///  Sets one property of the style's global state, read by the `global-state` expression.
   ///
-  ///  @returns {MapLibreMap} `this`
-  external MapLibreMapJsImpl setGlobalStateProperty(String name, JSAny? value);
+  ///  @returns {SiroMap} `this`
+  external JsMapImpl setGlobalStateProperty(String name, JSAny? value);
 
   ///  Returns the value of the light object.
   ///
@@ -880,7 +880,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  cast to an integer.
   ///
   ///  @param {Object} feature Feature identifier. Feature objects returned from
-  ///  [MapLibreMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
+  ///  [SiroMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
   ///  @param {string | number} feature.id Unique id of the feature.
   ///  @param {string} feature.source The Id of the vector source or GeoJSON source for the feature.
   ///  @param {string} `feature.sourceLayer` (optional) /// For vector tile sources, the sourceLayer is
@@ -900,7 +900,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  Features are identified by their `id` attribute, which must be an integer or a string that can be
   ///  cast to an integer.
   ///  @param {Object} target Identifier of where to set state: can be a source, a feature, or a specific key of feature.
-  ///  Feature objects returned from [MapLibreMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
+  ///  Feature objects returned from [SiroMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
   ///  @param {string | number} target.id (optional) Unique id of the feature. Optional if key is not specified.
   ///  @param {string} target.source The Id of the vector source or GeoJSON source for the feature.
   ///  @param {string} `target.sourceLayer` (optional) /// For vector tile sources, the sourceLayer is
@@ -916,7 +916,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  cast to an integer.
   ///
   ///  @param {Object} feature Feature identifier. Feature objects returned from
-  ///  [MapLibreMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
+  ///  [SiroMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
   ///  @param {string | number} feature.id Unique id of the feature.
   ///  @param {string} feature.source The Id of the vector source or GeoJSON source for the feature.
   ///  @param {string} `feature.sourceLayer` (optional) /// For vector tile sources, the sourceLayer is
@@ -984,7 +984,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @name showTileBoundaries
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   external bool get showTileBoundaries;
   external set showTileBoundaries(bool value);
 
@@ -996,7 +996,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @name showCollisionBoxes
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   external bool get showCollisionBoxes;
   external set showCollisionBoxes(bool value);
 
@@ -1009,7 +1009,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @name showOverdraw
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   external bool get showOverdrawInspector;
   external set showOverdrawInspector(bool value);
 
@@ -1019,7 +1019,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///  @name repaint
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   external bool get repaint;
   external set repaint(bool value);
 
@@ -1031,7 +1031,7 @@ extension MapLibreMapJsImplExtension on MapLibreMapJsImpl {
   ///
   ///  @name version
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   ///  @var {string} version
   external String get version;
 }
@@ -1241,7 +1241,7 @@ extension MapOptionsJsImplExtension on MapOptionsJsImpl {
   external JSString get localIdeographFontFamily;
   external set localIdeographFontFamily(JSString value);
 
-  /// A callback run before the MapLibreMap makes a request for an external URL. The callback can be used to modify the url, set headers, or set the credentials property for cross-origin requests.
+  /// A callback run before the SiroMap makes a request for an external URL. The callback can be used to modify the url, set headers, or set the credentials property for cross-origin requests.
   /// Expected to return an object with a `url` property and optionally `headers` and `credentials` properties.
   external JSFunction get transformRequest;
   external set transformRequest(JSFunction value);
@@ -1309,14 +1309,14 @@ extension RequestParametersJsImplExtension on RequestParametersJsImpl {
 ///   }
 ///
 ///   @override
-///   HtmlElement onAdd(MapLibreMap map) {
+///   HtmlElement onAdd(SiroMap map) {
 ///     _divElement = DivElement();
 ///     _divElement.text = 'Hello World';
 ///     return _divElement;
 ///   }
 ///
 ///   @override
-///   onRemove(MapLibreMap map) {
+///   onRemove(SiroMap map) {
 ///     _divElement.remove();
 ///   }
 /// }
@@ -1329,17 +1329,17 @@ abstract class IControlJsImpl {
 
 extension IControlJsImplExtension on IControlJsImpl {
   ///  Register a control on the map and give it a chance to register event listeners
-  ///  and resources. This method is called by {@link MapLibreMap#addControl}
+  ///  and resources. This method is called by {@link SiroMap#addControl}
   ///  internally.
-  external HtmlElement onAdd(MapLibreMapJsImpl map);
+  external HtmlElement onAdd(JsMapImpl map);
 
   ///  Unregister a control on the map and give it a chance to detach event listeners
-  ///  and resources. This method is called by {@link MapLibreMap#removeControl}
+  ///  and resources. This method is called by {@link SiroMap#removeControl}
   ///  internally.
-  external JSAny? onRemove(MapLibreMapJsImpl map);
+  external JSAny? onRemove(JsMapImpl map);
 
   ///  Optionally provide a default position for this control. If this method
-  ///  is implemented and {@link MapLibreMap#addControl} is called without the `position`
+  ///  is implemented and {@link SiroMap#addControl} is called without the `position`
   ///  parameter, the value returned by getDefaultPosition will be used as the
   ///  control's position.
   external String getDefaultPosition();

@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:siro_gl_example/util.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -28,7 +28,7 @@ class _EditAnnotationDraggableBody extends StatefulWidget {
 
 class _EditAnnotationDraggableBodyState
     extends State<_EditAnnotationDraggableBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   final Map<String, Symbol> _symbols = {};
   final Map<String, Circle> _circles = {};
@@ -41,7 +41,7 @@ class _EditAnnotationDraggableBodyState
 
   int _counter = 0;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     controller.onFeatureDrag.add(_onFeatureDrag);
     setState(() => _controller = controller);
   }
@@ -195,7 +195,7 @@ class _EditAnnotationDraggableBodyState
     final totalCount = _symbols.length + _circles.length + _fills.length;
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         initialCameraPosition: const CameraPosition(
           target: ExampleConstants.sydneyCenter,
           zoom: 14,

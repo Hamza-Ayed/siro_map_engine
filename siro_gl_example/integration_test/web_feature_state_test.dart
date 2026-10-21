@@ -22,7 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 const _sourceId = 'probe';
 const _layerId = 'probe-fill';
@@ -76,8 +76,8 @@ void main() {
 
 /// Builds a map with a two-feature GeoJSON source and a layer that renders it,
 /// and returns its controller once the source is in the style.
-Future<MapLibreMapController> _pumpMapWithSource(WidgetTester tester) async {
-  final controllerCompleter = Completer<MapLibreMapController>();
+Future<SiroMapController> _pumpMapWithSource(WidgetTester tester) async {
+  final controllerCompleter = Completer<SiroMapController>();
   final styleLoaded = Completer<void>();
 
   await tester.pumpWidget(
@@ -86,8 +86,8 @@ Future<MapLibreMapController> _pumpMapWithSource(WidgetTester tester) async {
         body: SizedBox(
           width: 400,
           height: 400,
-          child: MapLibreMap(
-            styleString: MapLibreStyles.demo,
+          child: SiroMap(
+            styleString: SiroStyles.demo,
             initialCameraPosition: const CameraPosition(
               target: LatLng(0, 0),
               zoom: 3,

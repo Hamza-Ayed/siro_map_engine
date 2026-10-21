@@ -1,4 +1,4 @@
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 /// Pure-Dart easing math used to back web's [easeCamera] `easing` callback.
 ///

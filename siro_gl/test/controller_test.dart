@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/widgets.dart' show EdgeInsets;
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'helpers/fake_platform.dart';
 
@@ -11,11 +11,11 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakeMapLibrePlatform platform;
-  late MapLibreMapController controller;
+  late SiroMapController controller;
 
   setUp(() {
     platform = FakeMapLibrePlatform();
-    controller = MapLibreMapController(
+    controller = SiroMapController(
       maplibrePlatform: platform,
       initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
       annotationOrder: AnnotationType.values,
@@ -604,7 +604,7 @@ void main() {
       Point<double>? clickPoint;
       LatLng? clickLatLng;
 
-      final clickController = MapLibreMapController(
+      final clickController = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -630,7 +630,7 @@ void main() {
     test('onMapLongClick fires from platform event', () {
       LatLng? longClickLatLng;
 
-      final longClickController = MapLibreMapController(
+      final longClickController = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -653,7 +653,7 @@ void main() {
     test('onCameraTrackingChanged fires from platform event', () {
       MyLocationTrackingMode? receivedMode;
 
-      final trackingController = MapLibreMapController(
+      final trackingController = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,

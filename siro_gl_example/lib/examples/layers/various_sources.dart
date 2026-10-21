@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -8,7 +8,7 @@ import '../../shared/shared.dart';
 class StyleInfo {
   final String name;
   final String baseStyle;
-  final Future<void> Function(MapLibreMapController) addDetails;
+  final Future<void> Function(SiroMapController) addDetails;
   final CameraPosition position;
 
   const StyleInfo({
@@ -41,11 +41,11 @@ class FullMap extends StatefulWidget {
 }
 
 class FullMapState extends State<FullMap> {
-  MapLibreMapController? controller;
+  SiroMapController? controller;
   final watercolorRasterId = "watercolorRaster";
   int selectedStyleId = 0;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => this.controller = controller);
   }
 
@@ -53,7 +53,7 @@ class FullMapState extends State<FullMap> {
   static const _nasaCityLightsTiles =
       'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_CityLights_2012/default/GoogleMapsCompatible_Level8/{z}/{y}/{x}.jpg';
 
-  static Future<void> addRaster(MapLibreMapController controller) async {
+  static Future<void> addRaster(SiroMapController controller) async {
     // NASA GIBS rather than the OpenStreetMap tile servers. OSM's tile usage
     // policy asks that its tiles not be used as the raster basemap of an
     // application, and blocks clients it cannot attribute, so an example that
@@ -81,7 +81,7 @@ class FullMapState extends State<FullMap> {
   }
 
   static Future<void> addGeojsonCluster(
-    MapLibreMapController controller,
+    SiroMapController controller,
   ) async {
     await controller.addSource(
       "earthquakes",
@@ -144,7 +144,7 @@ class FullMapState extends State<FullMap> {
     );
   }
 
-  static Future<void> addVector(MapLibreMapController controller) async {
+  static Future<void> addVector(SiroMapController controller) async {
     // OpenMapTiles-schema vector tiles without an API key. The source id is
     // namespaced: the OpenFreeMap fallback style has its own source called
     // "openmaptiles", and adding a second source with that name throws.
@@ -178,7 +178,7 @@ class FullMapState extends State<FullMap> {
     );
   }
 
-  static Future<void> addImage(MapLibreMapController controller) async {
+  static Future<void> addImage(SiroMapController controller) async {
     await controller.addSource(
       "radar",
       const ImageSourceProperties(
@@ -199,7 +199,7 @@ class FullMapState extends State<FullMap> {
     );
   }
 
-  static Future<void> addVideo(MapLibreMapController controller) async {
+  static Future<void> addVideo(SiroMapController controller) async {
     await controller.addSource(
       "video",
       const VideoSourceProperties(
@@ -223,7 +223,7 @@ class FullMapState extends State<FullMap> {
     );
   }
 
-  static Future<void> addHeatMap(MapLibreMapController controller) async {
+  static Future<void> addHeatMap(SiroMapController controller) async {
     await controller.addSource(
       'earthquakes-heatmap-source',
       const GeojsonSourceProperties(
@@ -304,7 +304,7 @@ class FullMapState extends State<FullMap> {
     );
   }
 
-  static Future<void> addCountries(MapLibreMapController controller) async {
+  static Future<void> addCountries(SiroMapController controller) async {
     // Add a simple additional layer to demonstrate layering on the default style
     // Remove existing layers/source if they exist (in case of re-loading)
     // Ids are namespaced: the demo style ships its own "countries-fill", and
@@ -350,7 +350,7 @@ class FullMapState extends State<FullMap> {
     );
   }
 
-  static Future<void> addDemHillshade(MapLibreMapController controller) async {
+  static Future<void> addDemHillshade(SiroMapController controller) async {
     // Remove existing layers/source if they exist
     try {
       await controller.removeLayer("hillshade-layer");
@@ -391,7 +391,7 @@ class FullMapState extends State<FullMap> {
   }
 
   static Future<void> addDemColorRelief(
-    MapLibreMapController controller,
+    SiroMapController controller,
   ) async {
     // Remove existing layers/source if they exist
     try {
@@ -564,7 +564,7 @@ class FullMapState extends State<FullMap> {
       ),
       body: Stack(
         children: [
-          MapLibreMap(
+          SiroMap(
             styleString: styleInfo.baseStyle,
             onMapCreated: _onMapCreated,
             initialCameraPosition: styleInfo.position,

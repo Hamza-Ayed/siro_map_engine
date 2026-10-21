@@ -1,4 +1,4 @@
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
 /// Properties of the style's `sky` root object.
 class SkyProperties {

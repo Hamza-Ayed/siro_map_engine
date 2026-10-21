@@ -1,13 +1,13 @@
-part of '../maplibre_gl_web.dart';
+part of '../siro_gl_web.dart';
 
 class Convert {
   /// Interprets the map options and applies them to the sink.
   ///
   /// [ignoreStyle] if true, will not apply styleString changes.
-  /// This is useful when the style is handled separately (like MapLibreMap initialization).
+  /// This is useful when the style is handled separately (like SiroMap initialization).
   static void interpretMapLibreMapOptions(
     Map<String, dynamic> options,
-    MapLibreMapOptionsSink sink, {
+    SiroMapOptionsSink sink, {
     bool ignoreStyle = false,
   }) {
     if (options.containsKey('cameraTargetBounds')) {
@@ -136,7 +136,7 @@ class Convert {
 
   static CameraOptions toCameraOptions(
     CameraUpdate cameraUpdate,
-    MapLibreMap mapLibreMap,
+    SiroMap mapLibreMap,
   ) {
     final List<dynamic> json = cameraUpdate.toJson();
     final type = json[0] as String;

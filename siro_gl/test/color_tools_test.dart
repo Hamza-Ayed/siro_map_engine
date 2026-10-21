@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 void main() {
-  group('MapLibreColorConversion', () {
+  group('SiroColorConversion', () {
     test('red converts to #ff0000', () {
       expect(const Color(0xFFFF0000).toHexStringRGB(), '#ff0000');
     });

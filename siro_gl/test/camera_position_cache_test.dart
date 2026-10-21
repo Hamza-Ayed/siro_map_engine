@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'helpers/fake_platform.dart';
 
@@ -12,13 +12,13 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakeMapLibrePlatform platform;
-  late MapLibreMapController controller;
+  late SiroMapController controller;
 
   const good = CameraPosition(target: LatLng(48.85, 2.35), zoom: 12);
 
   setUp(() {
     platform = FakeMapLibrePlatform();
-    controller = MapLibreMapController(
+    controller = SiroMapController(
       maplibrePlatform: platform,
       initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
       annotationOrder: AnnotationType.values,
@@ -29,16 +29,16 @@ void main() {
 
   group('isFiniteCameraPosition', () {
     test('accepts an ordinary camera', () {
-      expect(MapLibreMapController.isFiniteCameraPosition(good), isTrue);
+      expect(SiroMapController.isFiniteCameraPosition(good), isTrue);
     });
 
     test('rejects null', () {
-      expect(MapLibreMapController.isFiniteCameraPosition(null), isFalse);
+      expect(SiroMapController.isFiniteCameraPosition(null), isFalse);
     });
 
     test('rejects a NaN zoom', () {
       expect(
-        MapLibreMapController.isFiniteCameraPosition(
+        SiroMapController.isFiniteCameraPosition(
           const CameraPosition(target: LatLng(0, 0), zoom: double.nan),
         ),
         isFalse,
@@ -47,7 +47,7 @@ void main() {
 
     test('rejects an infinite zoom', () {
       expect(
-        MapLibreMapController.isFiniteCameraPosition(
+        SiroMapController.isFiniteCameraPosition(
           const CameraPosition(target: LatLng(0, 0), zoom: double.infinity),
         ),
         isFalse,
@@ -56,13 +56,13 @@ void main() {
 
     test('rejects a non-finite bearing or tilt', () {
       expect(
-        MapLibreMapController.isFiniteCameraPosition(
+        SiroMapController.isFiniteCameraPosition(
           const CameraPosition(target: LatLng(0, 0), bearing: double.nan),
         ),
         isFalse,
       );
       expect(
-        MapLibreMapController.isFiniteCameraPosition(
+        SiroMapController.isFiniteCameraPosition(
           const CameraPosition(target: LatLng(0, 0), tilt: double.nan),
         ),
         isFalse,
@@ -71,13 +71,13 @@ void main() {
 
     test('rejects a non-finite target', () {
       expect(
-        MapLibreMapController.isFiniteCameraPosition(
+        SiroMapController.isFiniteCameraPosition(
           const CameraPosition(target: LatLng(double.nan, 2.35)),
         ),
         isFalse,
       );
       expect(
-        MapLibreMapController.isFiniteCameraPosition(
+        SiroMapController.isFiniteCameraPosition(
           const CameraPosition(target: LatLng(48.85, double.nan)),
         ),
         isFalse,
@@ -107,7 +107,7 @@ void main() {
 
     test('a non-finite camera move is not forwarded to onCameraMove', () {
       final seen = <CameraPosition>[];
-      final observed = MapLibreMapController(
+      final observed = SiroMapController(
         maplibrePlatform: platform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,

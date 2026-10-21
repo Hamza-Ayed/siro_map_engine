@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -48,7 +48,7 @@ class _ManualLocationSourceBodyState extends State<_ManualLocationSourceBody> {
   static const LatLng _center = LatLng(37.33233141, -122.0312186);
   static const double _radiusDeg = 0.0015;
 
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   Timer? _timer;
   bool _simulating = false;
 
@@ -75,7 +75,7 @@ class _ManualLocationSourceBodyState extends State<_ManualLocationSourceBody> {
     super.dispose();
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -274,7 +274,7 @@ class _ManualLocationSourceBodyState extends State<_ManualLocationSourceBody> {
     final hasController = _controller != null;
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString:
             "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
         onMapCreated: _onMapCreated,

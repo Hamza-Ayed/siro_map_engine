@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -48,7 +48,7 @@ class _DocGlobeBodyState extends State<_DocGlobeBody> {
   late final bool _stars;
   late final Color _background;
 
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   Timer? _spinTimer;
   double _longitude = 10;
 
@@ -61,7 +61,7 @@ class _DocGlobeBodyState extends State<_DocGlobeBody> {
     _background = bg == null ? _docsiteBackground : Color(0xFF000000 | bg);
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -99,7 +99,7 @@ class _DocGlobeBodyState extends State<_DocGlobeBody> {
           // The map canvas is transparent around the globe, so the star
           // field painted underneath shows through as the night sky.
           if (_stars) CustomPaint(painter: _StarFieldPainter(_background)),
-          MapLibreMap(
+          SiroMap(
             // Pinned to OpenFreeMap Liberty rather than the resolved demo
             // style: a hero image should look the same on every visit.
             styleString: ExampleConstants.fallbackMapStyle,

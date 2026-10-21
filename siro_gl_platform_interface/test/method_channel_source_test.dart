@@ -2,22 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('MethodChannel Source', () {
-    late MapLibreMethodChannel platform;
+    late SiroMethodChannel platform;
     late List<MethodCall> methodCalls;
 
     setUp(() async {
-      platform = MapLibreMethodChannel();
+      platform = SiroMethodChannel();
       methodCalls = [];
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -96,7 +96,7 @@ void main() {
     // MapLibre Native decodes only mapbox and terrarium, and would read custom
     // tiles as mapbox-encoded: plausible map, wrong elevations. The message has
     // to say that only addSource() is checked, because the same encoding inside
-    // MapLibreMap.styleString still falls back to mapbox silently.
+    // SiroMap.styleString still falls back to mapbox silently.
     test('addSource rejects the custom raster-dem encoding', () async {
       expect(
         () => platform.addSource(
@@ -301,7 +301,7 @@ void main() {
       () async {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(
-              const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+              const MethodChannel('${siroMapChannelPrefix}0'),
               (methodCall) async {
                 methodCalls.add(methodCall);
                 if (methodCalls.length == 1) {
@@ -326,10 +326,10 @@ void main() {
   // The heuristic deciding whether to offload is where correctness lives: an
   // area with a huge single ring must be treated as large even though its
   // top-level `coordinates` array holds one entry (#366).
-  group('MapLibreMethodChannel.isLargeGeoJson', () {
+  group('SiroMethodChannel.isLargeGeoJson', () {
     test('a long LineString is large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           featureCollection(geometry('LineString', ring(2000))),
         ),
         isTrue,
@@ -338,7 +338,7 @@ void main() {
 
     test('a short LineString is not large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           featureCollection(geometry('LineString', ring(10))),
         ),
         isFalse,
@@ -347,7 +347,7 @@ void main() {
 
     test('a Polygon with one huge ring is large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           featureCollection(geometry('Polygon', [ring(50000)])),
         ),
         isTrue,
@@ -356,7 +356,7 @@ void main() {
 
     test('a MultiPolygon with one huge ring is large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           featureCollection(
             geometry('MultiPolygon', [
               [ring(50000)],
@@ -369,7 +369,7 @@ void main() {
 
     test('a MultiLineString whose lines add up is large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           featureCollection(
             geometry('MultiLineString', [
               for (var i = 0; i < 20; i++) ring(200),
@@ -382,7 +382,7 @@ void main() {
 
     test('a GeometryCollection is measured through its geometries', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           featureCollection({
             'type': 'GeometryCollection',
             'geometries': [
@@ -396,7 +396,7 @@ void main() {
 
     test('many small features add up to large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson({
+        SiroMethodChannel.isLargeGeoJson({
           'type': 'FeatureCollection',
           'features': [
             for (var i = 0; i < 30; i++)
@@ -413,7 +413,7 @@ void main() {
 
     test('a small collection is not large', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson({
+        SiroMethodChannel.isLargeGeoJson({
           'type': 'FeatureCollection',
           'features': [
             for (var i = 0; i < 5; i++)
@@ -430,31 +430,31 @@ void main() {
 
     test('a bare geometry is measured on its own', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(
+        SiroMethodChannel.isLargeGeoJson(
           geometry('Polygon', [ring(50000)]),
         ),
         isTrue,
       );
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(geometry('Point', [0.0, 0.0])),
+        SiroMethodChannel.isLargeGeoJson(geometry('Point', [0.0, 0.0])),
         isFalse,
       );
     });
 
     test('malformed payloads are treated as small instead of throwing', () {
       expect(
-        MapLibreMethodChannel.isLargeGeoJson(<String, dynamic>{}),
+        SiroMethodChannel.isLargeGeoJson(<String, dynamic>{}),
         isFalse,
       );
       expect(
-        MapLibreMethodChannel.isLargeGeoJson({
+        SiroMethodChannel.isLargeGeoJson({
           'type': 'FeatureCollection',
           'features': [null, 'nonsense', <String, dynamic>{}],
         }),
         isFalse,
       );
       expect(
-        MapLibreMethodChannel.isLargeGeoJson({
+        SiroMethodChannel.isLargeGeoJson({
           'type': 'Polygon',
           'coordinates': 'not a list',
         }),

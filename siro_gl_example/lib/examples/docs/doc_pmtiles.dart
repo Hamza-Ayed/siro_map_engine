@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,7 +24,7 @@ class _DocPMTilesBody extends StatelessWidget {
     return MapExampleScaffold(
       mapOnly: true,
       controls: const [],
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.pmtilesStyleAsset,
         initialCameraPosition: const CameraPosition(
           target: LatLng(47.0, 8.0),

@@ -8,8 +8,8 @@ import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
-import 'package:siro_gl_web/maplibre_gl_web.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
+import 'package:siro_gl_web/siro_gl_web.dart';
 import 'package:siro_gl_web/src/interop/ui/map_interop.dart';
 import 'package:siro_gl_web/src/ui/map.dart';
 import 'package:siro_gl_web/src/utils.dart';
@@ -66,9 +66,8 @@ void main() {
   }
 
   /// A controller driving [map] instead of a real one.
-  MapLibreMapController controllerFor(JSObject map) =>
-      MapLibreMapController()
-        ..debugSetMap(MapLibreMap.fromJsObject(map as MapLibreMapJsImpl));
+  SiroMapController controllerFor(JSObject map) =>
+      SiroMapController()..debugSetMap(SiroMap.fromJsObject(map as JsMapImpl));
 
   /// What [map] was handed as [name], back in Dart.
   dynamic recorded(JSObject map, String name) =>

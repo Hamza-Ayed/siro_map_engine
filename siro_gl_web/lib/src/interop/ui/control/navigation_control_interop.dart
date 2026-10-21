@@ -41,6 +41,6 @@ class NavigationControlJsImpl {
 
 extension NavigationControlJsImplExtension on NavigationControlJsImpl {
   external NavigationControlOptionsJsImpl get options;
-  external JSAny? onAdd(MapLibreMapJsImpl map);
+  external JSAny? onAdd(JsMapImpl map);
   external void onRemove();
 }

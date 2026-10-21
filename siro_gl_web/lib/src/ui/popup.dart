@@ -64,11 +64,10 @@ class Popup extends Evented {
 
   /// Adds the popup to a map.
   ///
-  /// @param {MapLibreMap} map The MapLibre JS JS map to add the popup to.
+  /// @param {SiroMap} map The MapLibre JS JS map to add the popup to.
   /// @returns {Popup} `this`
   ////
-  Popup addTo(MapLibreMap map) =>
-      Popup.fromJsObject(jsObject.addTo(map.jsObject));
+  Popup addTo(SiroMap map) => Popup.fromJsObject(jsObject.addTo(map.jsObject));
 
   /// @returns {boolean} `true` if the popup is open, `false` if it is closed.
   bool isOpen() => jsObject.isOpen();

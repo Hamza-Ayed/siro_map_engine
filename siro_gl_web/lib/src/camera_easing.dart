@@ -1,4 +1,4 @@
-part of '../maplibre_gl_web.dart';
+part of '../siro_gl_web.dart';
 
 /// Resolves a [CameraAnimationInterpolation] to a JS easing callback usable
 /// as the `easing` option of `map.easeTo`. Returns `null` when [interpolation]

@@ -9,7 +9,7 @@ public class MapLibreMapsPlugin: NSObject, FlutterPlugin {
 
     public static func register(with registrar: FlutterPluginRegistrar) {
         let instance = MapLibreMapFactory(withRegistrar: registrar)
-        registrar.register(instance, withId: "plugins.flutter.io/maplibre_gl")
+        registrar.register(instance, withId: "com.siro.gl/map")
 
         // Register the header-injection protocol before any MLNMapView is created.
         // MLNNetworkConfiguration docs require sessionConfiguration to be set before
@@ -22,7 +22,7 @@ public class MapLibreMapsPlugin: NSObject, FlutterPlugin {
         MLNNetworkConfiguration.sharedManager.sessionConfiguration = sessionConfig
 
         let channel = FlutterMethodChannel(
-            name: "plugins.flutter.io/maplibre_gl",
+            name: "com.siro.gl/global",
             binaryMessenger: registrar.messenger()
         )
 

@@ -127,7 +127,7 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
         super.init()
 
         channel = FlutterMethodChannel(
-            name: "plugins.flutter.io/maplibre_gl_\(viewId)",
+            name: "com.siro.gl/map_\(viewId)",
             binaryMessenger: registrar.messenger()
         )
         channel!

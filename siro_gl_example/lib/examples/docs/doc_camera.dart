@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,7 +24,7 @@ class _DocCameraBody extends StatefulWidget {
 }
 
 class _DocCameraBodyState extends State<_DocCameraBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   int _currentCity = 0;
 
   static const List<Map<String, Object>> _cities = [
@@ -35,7 +35,7 @@ class _DocCameraBodyState extends State<_DocCameraBody> {
     {'name': 'Rio', 'lat': -22.9068, 'lng': -43.1729, 'zoom': 10.0},
   ];
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -70,7 +70,7 @@ class _DocCameraBodyState extends State<_DocCameraBody> {
         backgroundColor: const Color(0xFF296CA8),
         foregroundColor: Colors.white,
       ),
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         initialCameraPosition: const CameraPosition(

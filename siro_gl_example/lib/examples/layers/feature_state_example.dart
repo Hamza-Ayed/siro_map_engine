@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -76,7 +76,7 @@ class _FeatureStateBody extends StatefulWidget {
 }
 
 class _FeatureStateBodyState extends State<_FeatureStateBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'states';
   static const _fillLayerId = 'state-fills';
@@ -90,7 +90,7 @@ class _FeatureStateBodyState extends State<_FeatureStateBody> {
   String? _lastTouchedName;
   Map<String, dynamic>? _lastReportedState;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -236,7 +236,7 @@ class _FeatureStateBodyState extends State<_FeatureStateBody> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

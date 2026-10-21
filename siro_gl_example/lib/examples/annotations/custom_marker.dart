@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 
@@ -33,7 +33,7 @@ class CustomMarker extends StatefulWidget {
 class CustomMarkerState extends State<CustomMarker> {
   final _rnd = Random();
 
-  MapLibreMapController? _mapController;
+  SiroMapController? _mapController;
   final _markers = <Marker>[];
   final _markerStates = <MarkerState>[];
 
@@ -41,7 +41,7 @@ class CustomMarkerState extends State<CustomMarker> {
     _markerStates.add(markerState);
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _mapController = controller);
 
     controller.addListener(() async {
@@ -95,7 +95,7 @@ class CustomMarkerState extends State<CustomMarker> {
     return Scaffold(
       body: Stack(
         children: [
-          MapLibreMap(
+          SiroMap(
             trackCameraPosition: true,
             onMapCreated: _onMapCreated,
             onMapLongClick: _onMapLongClickCallback,

@@ -3,20 +3,20 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('MethodChannel Feature State', () {
-    late MapLibreMethodChannel platform;
+    late SiroMethodChannel platform;
     late List<MethodCall> methodCalls;
 
     /// What the mocked native side replies to `source#getFeatureState`.
     Object? getFeatureStateReply;
 
     setUp(() async {
-      platform = MapLibreMethodChannel();
+      platform = SiroMethodChannel();
       methodCalls = [];
       getFeatureStateReply = null;
 
@@ -26,7 +26,7 @@ void main() {
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -169,16 +169,16 @@ void main() {
   // and nothing may reach the channel where it would no-op or come back as an
   // unrelated MissingPluginException.
   group('MethodChannel Feature State on iOS', () {
-    late MapLibreMethodChannel platform;
+    late SiroMethodChannel platform;
     late List<MethodCall> methodCalls;
 
     setUp(() async {
-      platform = MapLibreMethodChannel();
+      platform = SiroMethodChannel();
       methodCalls = [];
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async {
               methodCalls.add(methodCall);
               return null;

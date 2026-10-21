@@ -28,7 +28,7 @@ class ScaleControlJsImpl {
 
 extension ScaleControlJsImplExtension on ScaleControlJsImpl {
   external ScaleControlOptionsJsImpl? get options;
-  external JSAny? onAdd(MapLibreMapJsImpl map);
+  external JSAny? onAdd(JsMapImpl map);
   external void onRemove();
   external String getDefaultPosition();
   external void setUnit(String unit);

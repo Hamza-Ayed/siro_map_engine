@@ -15,7 +15,7 @@ class LogoControlJsImpl {
 }
 
 extension LogoControlJsImplExtension on LogoControlJsImpl {
-  external JSAny? onAdd(MapLibreMapJsImpl map);
+  external JSAny? onAdd(JsMapImpl map);
   external void onRemove();
   external JSAny? getDefaultPosition();
 }

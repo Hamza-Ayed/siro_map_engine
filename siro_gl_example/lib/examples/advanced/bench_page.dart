@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -65,7 +65,7 @@ class _BenchBody extends StatefulWidget {
 class _BenchBodyState extends State<_BenchBody> {
   final Stopwatch _wall = Stopwatch();
 
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   BenchRoute? _route;
   Map<String, dynamic>? _routeGeoJson;
   String? _loadError;
@@ -162,7 +162,7 @@ class _BenchBodyState extends State<_BenchBody> {
     }
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -349,7 +349,7 @@ class _BenchBodyState extends State<_BenchBody> {
     return Scaffold(
       body: Stack(
         children: [
-          MapLibreMap(
+          SiroMap(
             styleString: ExampleConstants.demoMapStyle,
             initialCameraPosition: const CameraPosition(
               target: _initialTarget,

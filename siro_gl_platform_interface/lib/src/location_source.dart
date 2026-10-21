@@ -2,18 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
 /// Selects which source feeds location updates into the map's user-location
 /// component (the "puck").
 ///
-/// Pass an instance to `MapLibreMap.locationSource`. It only has an effect when
+/// Pass an instance to `SiroMap.locationSource`. It only has an effect when
 /// `myLocationEnabled` is set to `true`.
 ///
 /// See also:
 ///  * [PlatformLocationSource], the default native location engine.
 ///  * [ManualLocationSource], app-provided locations pushed via
-///    `MapLibreMapController.updateManualLocation`.
+///    `SiroMapController.updateManualLocation`.
 @immutable
 sealed class LocationSource {
   const LocationSource();
@@ -31,7 +31,7 @@ class PlatformLocationSource extends LocationSource {
 /// An app-provided location source.
 ///
 /// The native location engine is disabled and the app feeds the puck itself, by
-/// calling `MapLibreMapController.updateManualLocation`. The accuracy ring, the
+/// calling `SiroMapController.updateManualLocation`. The accuracy ring, the
 /// tracking modes and `onUserLocationUpdated` keep working, and no location
 /// permission is required, since the SDK never queries the device.
 ///

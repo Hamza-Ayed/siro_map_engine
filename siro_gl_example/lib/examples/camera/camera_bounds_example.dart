@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,7 +24,7 @@ class _CameraBoundsBody extends StatefulWidget {
 }
 
 class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   LatLngBounds? _currentBounds;
   LatLngBounds? _constrainedBounds;
   double? _minZoom;
@@ -46,7 +46,7 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
     northeast: const LatLng(71.0, 40.0),
   );
 
-  Future<void> _onMapCreated(MapLibreMapController controller) async {
+  Future<void> _onMapCreated(SiroMapController controller) async {
     _controller = controller;
     await _updateInfo();
   }
@@ -128,7 +128,7 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
             : 'Loading...';
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onCameraIdle: _updateInfo,

@@ -64,9 +64,9 @@ extension PopupJsImplExtension on PopupJsImpl {
 
   /// Adds the popup to a map.
   ///
-  /// @param {MapLibreMap} map The MapLibre JS JS map to add the popup to.
+  /// @param {SiroMap} map The MapLibre JS JS map to add the popup to.
   /// @returns {Popup} `this`
-  external PopupJsImpl addTo(MapLibreMapJsImpl map);
+  external PopupJsImpl addTo(JsMapImpl map);
 
   /// @returns {boolean} `true` if the popup is open, `false` if it is closed.
   external bool isOpen();

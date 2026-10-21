@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -24,7 +24,7 @@ class _DocCircleLayerBody extends StatefulWidget {
 }
 
 class _DocCircleLayerBodyState extends State<_DocCircleLayerBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'earthquakes-source';
   static const _layerId = 'earthquakes-layer';
@@ -43,7 +43,7 @@ class _DocCircleLayerBodyState extends State<_DocCircleLayerBody> {
     {'lat': 35.3733, 'lng': -119.0187, 'mag': 3.9, 'place': 'Bakersfield'},
   ];
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -109,7 +109,7 @@ class _DocCircleLayerBodyState extends State<_DocCircleLayerBody> {
   Widget build(BuildContext context) {
     return MapExampleScaffold(
       mapOnly: true,
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

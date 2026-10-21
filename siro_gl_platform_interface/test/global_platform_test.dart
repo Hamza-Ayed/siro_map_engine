@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +11,7 @@ void main() {
     methodCalls = [];
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-          const MethodChannel('plugins.flutter.io/maplibre_gl'),
+          const MethodChannel(siroGlobalChannelName),
           (methodCall) async {
             methodCalls.add(methodCall);
             return null;
@@ -19,18 +19,18 @@ void main() {
         );
   });
 
-  group('MapLibreGlobalPlatform', () {
+  group('SiroGlobalPlatform', () {
     test('defaults to the method-channel implementation', () {
       expect(
-        MapLibreGlobalPlatform.instance,
-        isA<MapLibreGlobalMethodChannel>(),
+        SiroGlobalPlatform.instance,
+        isA<SiroGlobalMethodChannel>(),
       );
     });
   });
 
-  group('MapLibreGlobalMethodChannel', () {
+  group('SiroGlobalMethodChannel', () {
     test('preWarm sends the preWarm method call', () async {
-      await MapLibreGlobalMethodChannel().preWarm();
+      await SiroGlobalMethodChannel().preWarm();
 
       expect(methodCalls.length, 1);
       expect(methodCalls[0].method, 'preWarm');
@@ -39,13 +39,13 @@ void main() {
     test('preWarm swallows MissingPluginException', () async {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl'),
+            const MethodChannel(siroGlobalChannelName),
             (methodCall) async {
               throw MissingPluginException('not implemented');
             },
           );
 
-      await expectLater(MapLibreGlobalMethodChannel().preWarm(), completes);
+      await expectLater(SiroGlobalMethodChannel().preWarm(), completes);
     });
 
     // Android and iOS have nothing to load, so the default implementation
@@ -55,7 +55,7 @@ void main() {
       'ensureLibraryLoaded completes without touching the channel',
       () async {
         await expectLater(
-          MapLibreGlobalMethodChannel().ensureLibraryLoaded(),
+          SiroGlobalMethodChannel().ensureLibraryLoaded(),
           completes,
         );
 
@@ -64,9 +64,9 @@ void main() {
     );
   });
 
-  group('MapLibreJsSource', () {
+  group('SiroJsSource', () {
     test('cdn is the default shape with a 20 second timeout', () {
-      const source = MapLibreJsSource.cdn();
+      const source = SiroJsSource.cdn();
 
       expect(source.scriptUrl, isNull);
       expect(source.styleUrl, isNull);
@@ -75,7 +75,7 @@ void main() {
     });
 
     test('urls carries the given URLs', () {
-      const source = MapLibreJsSource.urls(
+      const source = SiroJsSource.urls(
         scriptUrl: 'https://example.com/maplibre-gl.js',
         styleUrl: 'https://example.com/maplibre-gl.css',
       );
@@ -86,7 +86,7 @@ void main() {
     });
 
     test('preloaded injects nothing', () {
-      const source = MapLibreJsSource.preloaded(timeout: Duration(seconds: 5));
+      const source = SiroJsSource.preloaded(timeout: Duration(seconds: 5));
 
       expect(source.scriptUrl, isNull);
       expect(source.styleUrl, isNull);
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('nothing is configured by default', () {
-      expect(MapLibreJsSource.configured, isNull);
+      expect(SiroJsSource.configured, isNull);
     });
   });
 }

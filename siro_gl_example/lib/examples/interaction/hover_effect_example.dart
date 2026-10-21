@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -44,7 +44,7 @@ class _HoverEffectBody extends StatefulWidget {
 }
 
 class _HoverEffectBodyState extends State<_HoverEffectBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   String? _hoveredStateName;
   String? _hoveredStateId;
 
@@ -52,7 +52,7 @@ class _HoverEffectBodyState extends State<_HoverEffectBody> {
   static const _fillLayerId = 'state-fills';
   static const _borderLayerId = 'state-borders';
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
     _setupHoverListeners();
   }
@@ -172,7 +172,7 @@ class _HoverEffectBodyState extends State<_HoverEffectBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

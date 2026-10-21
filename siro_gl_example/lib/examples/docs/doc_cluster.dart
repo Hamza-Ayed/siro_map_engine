@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -26,7 +26,7 @@ class _DocClusterBody extends StatefulWidget {
 }
 
 class _DocClusterBodyState extends State<_DocClusterBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'cluster-source';
   static const _clusterCircleId = 'cluster-circles';
@@ -36,7 +36,7 @@ class _DocClusterBodyState extends State<_DocClusterBody> {
   /// What the last cluster tap reported, shown in the banner.
   String? _lastTapMessage;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -199,11 +199,11 @@ class _DocClusterBodyState extends State<_DocClusterBody> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     // A plain Scaffold rather than MapExampleScaffold, whose map slot takes a
-    // MapLibreMap and so cannot hold the banner overlaid on the map.
+    // SiroMap and so cannot hold the banner overlaid on the map.
     return Scaffold(
       body: Stack(
         children: [
-          MapLibreMap(
+          SiroMap(
             styleString: ExampleConstants.demoMapStyle,
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,

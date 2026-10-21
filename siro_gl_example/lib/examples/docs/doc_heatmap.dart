@@ -1,6 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -25,11 +25,11 @@ class _DocHeatmapBody extends StatefulWidget {
 }
 
 class _DocHeatmapBodyState extends State<_DocHeatmapBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   static const _sourceId = 'heatmap-source';
   static const _layerId = 'heatmap-layer';
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -135,7 +135,7 @@ class _DocHeatmapBodyState extends State<_DocHeatmapBody> {
   Widget build(BuildContext context) {
     return MapExampleScaffold(
       mapOnly: true,
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

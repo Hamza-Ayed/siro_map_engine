@@ -9,8 +9,8 @@ import 'dart:js_interop_unsafe';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
-import 'package:siro_gl_web/maplibre_gl_web.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
+import 'package:siro_gl_web/siro_gl_web.dart';
 import 'package:siro_gl_web/src/global_web_platform.dart';
 import 'package:siro_gl_web/src/js_loader.dart';
 
@@ -18,74 +18,74 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() {
-    MapLibreJsLoader.debugReset();
-    MapLibreJsSource.configured = null;
+    SiroJsLoader.debugReset();
+    SiroJsSource.configured = null;
     globalContext.delete('maplibregl'.toJS);
   });
 
   tearDown(() {
-    MapLibreJsLoader.debugReset();
-    MapLibreJsSource.configured = null;
+    SiroJsLoader.debugReset();
+    SiroJsSource.configured = null;
     globalContext.delete('maplibregl'.toJS);
-    MapLibreGlobalPlatform.instance = MapLibreGlobalMethodChannel();
+    SiroGlobalPlatform.instance = SiroGlobalMethodChannel();
   });
 
-  group('MapLibreJsLoader.ensureLoaded', () {
+  group('SiroJsLoader.ensureLoaded', () {
     test('runs the work once for concurrent and repeated callers', () async {
       var calls = 0;
       final gate = Completer<void>();
-      MapLibreJsLoader.loadResources = (source) {
+      SiroJsLoader.loadResources = (source) {
         calls++;
         return gate.future;
       };
 
-      final first = MapLibreJsLoader.ensureLoaded();
-      final second = MapLibreJsLoader.ensureLoaded();
+      final first = SiroJsLoader.ensureLoaded();
+      final second = SiroJsLoader.ensureLoaded();
       gate.complete();
       await first;
       await second;
       // A call after completion must reuse the memo, not load again.
-      await MapLibreJsLoader.ensureLoaded();
+      await SiroJsLoader.ensureLoaded();
 
       expect(calls, 1);
     });
 
     test('a failure clears the memo so a later call retries', () async {
       var calls = 0;
-      MapLibreJsLoader.loadResources = (source) async {
+      SiroJsLoader.loadResources = (source) async {
         calls++;
-        throw MapLibreJsLoaderException('boom');
+        throw SiroJsLoaderException('boom');
       };
 
       await expectLater(
-        MapLibreJsLoader.ensureLoaded(),
-        throwsA(isA<MapLibreJsLoaderException>()),
+        SiroJsLoader.ensureLoaded(),
+        throwsA(isA<SiroJsLoaderException>()),
       );
 
-      MapLibreJsLoader.loadResources = (source) async {
+      SiroJsLoader.loadResources = (source) async {
         calls++;
       };
-      await MapLibreJsLoader.ensureLoaded();
+      await SiroJsLoader.ensureLoaded();
 
       expect(calls, 2);
     });
 
     test('returns immediately when the global is already present', () async {
       globalContext.setProperty('maplibregl'.toJS, JSObject());
-      MapLibreJsLoader.loadResources = (source) async {
+      SiroJsLoader.loadResources = (source) async {
         fail('loadResources must not run when maplibregl already exists');
       };
 
-      await expectLater(MapLibreJsLoader.ensureLoaded(), completes);
+      await expectLater(SiroJsLoader.ensureLoaded(), completes);
     });
 
     test('defaults to the pinned CDN source', () async {
-      MapLibreJsSource? seen;
-      MapLibreJsLoader.loadResources = (source) async {
+      SiroJsSource? seen;
+      SiroJsLoader.loadResources = (source) async {
         seen = source;
       };
 
-      await MapLibreJsLoader.ensureLoaded();
+      await SiroJsLoader.ensureLoaded();
 
       expect(seen, isNotNull);
       expect(seen!.scriptUrl, isNull);
@@ -99,10 +99,10 @@ void main() {
         // maplibre-gl-js 6 ships only ESM, and the loader imports the URL as a
         // module. A bump that pointed this back at a classic bundle would fail at
         // runtime, in a browser, on the first map.
-        expect(MapLibreJsLoader.defaultScriptUrl, endsWith('.mjs'));
-        expect(MapLibreJsLoader.defaultScriptUrl, contains(kMapLibreJsVersion));
-        expect(MapLibreJsLoader.defaultStyleUrl, endsWith('.css'));
-        expect(MapLibreJsLoader.defaultStyleUrl, contains(kMapLibreJsVersion));
+        expect(SiroJsLoader.defaultScriptUrl, endsWith('.mjs'));
+        expect(SiroJsLoader.defaultScriptUrl, contains(kMapLibreJsVersion));
+        expect(SiroJsLoader.defaultStyleUrl, endsWith('.css'));
+        expect(SiroJsLoader.defaultStyleUrl, contains(kMapLibreJsVersion));
         expect(kMapLibreJsVersion, startsWith('6.'));
       },
     );
@@ -110,12 +110,12 @@ void main() {
     test('publishes the imported namespace as the maplibregl global', () async {
       // A data: URL is a real ES module, so this exercises the import path
       // without reaching the network.
-      MapLibreJsSource.configured = const MapLibreJsSource.urls(
+      SiroJsSource.configured = const SiroJsSource.urls(
         scriptUrl: 'data:text/javascript,export const Map = class {};',
         timeout: Duration(seconds: 5),
       );
 
-      await MapLibreJsLoader.ensureLoaded();
+      await SiroJsLoader.ensureLoaded();
 
       final published = globalContext['maplibregl'] as JSObject?;
       expect(published, isNotNull);
@@ -134,14 +134,14 @@ void main() {
         // Publishing that empty namespace would break every later call.
         final existing = JSObject()..setProperty('Map'.toJS, JSObject());
         globalContext.setProperty('maplibregl'.toJS, existing);
-        MapLibreJsSource.configured = const MapLibreJsSource.urls(
+        SiroJsSource.configured = const SiroJsSource.urls(
           scriptUrl: 'data:text/javascript,globalThis.__sideEffect = true;',
           timeout: Duration(seconds: 5),
         );
 
         // The fast path in ensureLoaded would skip the import entirely, so drive
         // the real loadResources directly.
-        await MapLibreJsLoader.loadResources(MapLibreJsSource.configured!);
+        await SiroJsLoader.loadResources(SiroJsSource.configured!);
 
         expect(
           globalContext['maplibregl'],
@@ -152,15 +152,15 @@ void main() {
     );
 
     test('reports a URL that provides no library at all', () async {
-      MapLibreJsSource.configured = const MapLibreJsSource.urls(
+      SiroJsSource.configured = const SiroJsSource.urls(
         scriptUrl: 'data:text/javascript,export const nothing = 1;',
         timeout: Duration(seconds: 5),
       );
 
       await expectLater(
-        MapLibreJsLoader.ensureLoaded(),
+        SiroJsLoader.ensureLoaded(),
         throwsA(
-          isA<MapLibreJsLoaderException>().having(
+          isA<SiroJsLoaderException>().having(
             (e) => e.message,
             'message',
             contains('no maplibre-gl-js'),
@@ -170,18 +170,18 @@ void main() {
     });
 
     test('passes the configured source through unchanged', () async {
-      const configured = MapLibreJsSource.urls(
+      const configured = SiroJsSource.urls(
         scriptUrl: 'assets/maplibre-gl.js',
         styleUrl: 'assets/maplibre-gl.css',
         timeout: Duration(seconds: 5),
       );
-      MapLibreJsSource.configured = configured;
-      MapLibreJsSource? seen;
-      MapLibreJsLoader.loadResources = (source) async {
+      SiroJsSource.configured = configured;
+      SiroJsSource? seen;
+      SiroJsLoader.loadResources = (source) async {
         seen = source;
       };
 
-      await MapLibreJsLoader.ensureLoaded();
+      await SiroJsLoader.ensureLoaded();
 
       expect(seen, same(configured));
     });
@@ -191,14 +191,14 @@ void main() {
       () async {
         // The preloaded path injects nothing, so this exercises the real
         // loadResources without touching the network.
-        MapLibreJsSource.configured = const MapLibreJsSource.preloaded(
+        SiroJsSource.configured = const SiroJsSource.preloaded(
           timeout: Duration(milliseconds: 50),
         );
 
         await expectLater(
-          MapLibreJsLoader.ensureLoaded(),
+          SiroJsLoader.ensureLoaded(),
           throwsA(
-            isA<MapLibreJsLoaderException>().having(
+            isA<SiroJsLoaderException>().having(
               (e) => e.message,
               'message',
               contains('preloaded'),
@@ -209,7 +209,7 @@ void main() {
         // The failure must not poison the session: once the page-provided
         // global appears, the next call succeeds.
         globalContext.setProperty('maplibregl'.toJS, JSObject());
-        await expectLater(MapLibreJsLoader.ensureLoaded(), completes);
+        await expectLater(SiroJsLoader.ensureLoaded(), completes);
       },
     );
   });
@@ -217,13 +217,13 @@ void main() {
   group('plugin registration', () {
     test('registerWith installs the web global platform, so preWarm from '
         'main() reaches the loader and not the method channel', () async {
-      MapLibreMapPlugin.registerWith(webPluginRegistrar);
+      SiroMapPlugin.registerWith(webPluginRegistrar);
 
-      expect(MapLibreGlobalPlatform.instance, isA<MapLibreGlobalWeb>());
+      expect(SiroGlobalPlatform.instance, isA<SiroGlobalWeb>());
 
       var loaderCalls = 0;
       var prewarmCalls = 0;
-      MapLibreJsLoader.loadResources = (source) async {
+      SiroJsLoader.loadResources = (source) async {
         loaderCalls++;
         // Simulate the injected script having executed: the global appears,
         // exposing the prewarm() entry point.
@@ -237,7 +237,7 @@ void main() {
         globalContext.setProperty('maplibregl'.toJS, fake);
       };
 
-      await MapLibreGlobalPlatform.instance.preWarm();
+      await SiroGlobalPlatform.instance.preWarm();
 
       expect(loaderCalls, 1);
       expect(prewarmCalls, 1);
@@ -247,11 +247,11 @@ void main() {
       'ensureLibraryLoaded on the web platform goes through the loader',
       () async {
         var loaderCalls = 0;
-        MapLibreJsLoader.loadResources = (source) async {
+        SiroJsLoader.loadResources = (source) async {
           loaderCalls++;
         };
 
-        await MapLibreGlobalWeb().ensureLibraryLoaded();
+        await SiroGlobalWeb().ensureLibraryLoaded();
 
         expect(loaderCalls, 1);
       },

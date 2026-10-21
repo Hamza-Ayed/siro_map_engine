@@ -4,14 +4,14 @@
 
 /// This library contains the MapLibre GL plugin for Flutter.
 ///
-/// To display a map, add a [MapLibreMap] widget to the widget tree.
+/// To display a map, add a [SiroMap] widget to the widget tree.
 ///
-/// In this plugin, the map is configured through the parameters passed to the [MapLibreMap] constructor and through the [MapLibreMapController].
-/// The [MapLibreMapController] is provided at runtime by the [MapLibreMap.onMapCreated] callback.
+/// In this plugin, the map is configured through the parameters passed to the [SiroMap] constructor and through the [SiroMapController].
+/// The [SiroMapController] is provided at runtime by the [SiroMap.onMapCreated] callback.
 /// The controller also allows adding annotations (icons, lines etc.) to the map at runtime and provides some callbacks to get notified when the user clicks those.
 ///
 /// The visual appearance of the map is configured through a MapLibre style passed to the
-/// [styleString] parameter of the [MapLibreMap] constructor.
+/// [styleString] parameter of the [SiroMap] constructor.
 /// The MapLibre style is a JSON document following the specification at https://maplibre.org/maplibre-style-spec/.
 /// The following is supposed to serve as a short introduction to the MapLibre style specification:
 /// The style document contains (among other things) sources and layers.
@@ -45,13 +45,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:collection/collection.dart';
 
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 // Offline database file copy needs dart:io on mobile; the web stub throws.
 import 'src/offline_export_stub.dart'
     if (dart.library.io) 'src/offline_export_io.dart';
 
-export 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart'
+export 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart'
     show
         Annotation,
         ArgumentCallbacks,
@@ -79,9 +79,6 @@ export 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart'
         LogoViewPosition,
         ManualLocationSource,
         ManualLocationUpdate,
-        MapLibreJsSource,
-        MapLibreMethodChannel,
-        MapLibrePlatform,
         MinMaxZoomPreference,
         MyLocationRenderMode,
         MyLocationTrackingMode,
@@ -91,6 +88,9 @@ export 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart'
         RasterSourceProperties,
         ScaleControlPosition,
         ScaleControlUnit,
+        SiroGlPlatform,
+        SiroJsSource,
+        SiroMethodChannel,
         SkyProperties,
         SourceProperties,
         Symbol,
@@ -103,7 +103,7 @@ export 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart'
 
 part 'src/controller.dart';
 
-part 'src/maplibre_map.dart';
+part 'src/siro_map.dart';
 
 part 'src/global.dart';
 
@@ -121,4 +121,4 @@ part 'src/annotation_manager.dart';
 
 part 'src/util.dart';
 
-part 'src/maplibre_styles.dart';
+part 'src/siro_styles.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -27,11 +27,11 @@ class _BackgroundLayerBody extends StatefulWidget {
 class _BackgroundLayerBodyState extends State<_BackgroundLayerBody> {
   static const _layerId = 'background_layer';
 
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   Color _backgroundColor = const Color(0xFF1B3A5C);
   double _backgroundOpacity = 1.0;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -65,7 +65,7 @@ class _BackgroundLayerBodyState extends State<_BackgroundLayerBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

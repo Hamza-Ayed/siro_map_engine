@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:siro_gl_example/util.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -27,7 +27,7 @@ class _LineLayerBody extends StatefulWidget {
 }
 
 class _LineLayerBodyState extends State<_LineLayerBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'line_source';
   static const _layerId = 'line_layer';
@@ -53,7 +53,7 @@ class _LineLayerBodyState extends State<_LineLayerBody> {
     super.initState();
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -181,7 +181,7 @@ class _LineLayerBodyState extends State<_LineLayerBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

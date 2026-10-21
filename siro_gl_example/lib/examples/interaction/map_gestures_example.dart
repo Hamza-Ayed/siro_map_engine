@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -26,7 +26,7 @@ class _MapGesturesBody extends StatefulWidget {
 }
 
 class _MapGesturesBodyState extends State<_MapGesturesBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   // Gesture Settings
   bool _rotateGesturesEnabled = true;
@@ -39,7 +39,7 @@ class _MapGesturesBodyState extends State<_MapGesturesBody> {
   bool _isMoving = false;
   String _lastGesture = 'None';
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
     controller.addListener(_onMapChanged);
   }
@@ -113,7 +113,7 @@ class _MapGesturesBodyState extends State<_MapGesturesBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onMapClick: _onMapClick,

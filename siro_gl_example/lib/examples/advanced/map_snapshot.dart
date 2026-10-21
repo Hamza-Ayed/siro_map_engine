@@ -1,14 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
 
 /// Cross-platform map snapshot example.
 ///
-/// Uses [MapLibreMapController.takeSnapshot] to capture the current map view
+/// Uses [SiroMapController.takeSnapshot] to capture the current map view
 /// as PNG bytes. Works on Android, iOS, and Web with the same code.
 class MapSnapshotPage extends ExamplePage {
   const MapSnapshotPage({super.key})
@@ -30,11 +30,11 @@ class _MapSnapshotBody extends StatefulWidget {
 }
 
 class _MapSnapshotBodyState extends State<_MapSnapshotBody> {
-  MapLibreMapController? _mapController;
+  SiroMapController? _mapController;
   bool _canInteract = false;
   bool _isCapturing = false;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _mapController = controller;
   }
 
@@ -138,7 +138,7 @@ class _MapSnapshotBodyState extends State<_MapSnapshotBody> {
     return Scaffold(
       body: Stack(
         children: [
-          MapLibreMap(
+          SiroMap(
             styleString: ExampleConstants.demoMapStyle,
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,

@@ -1,6 +1,6 @@
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
-/// Easing curve for [MapLibreMapController.easeCamera] animations.
+/// Easing curve for [SiroMapController.easeCamera] animations.
 ///
 /// Platform support varies — iOS exposes four distinct timing functions via
 /// `CAMediaTimingFunction`, Web implements each value as a cubic Bezier passed
@@ -51,20 +51,20 @@ enum CameraAnimationInterpolation {
   fastOutLinearIn,
 }
 
-/// The default instance of [MapLibrePlatform] to use.
+/// The default instance of [SiroGlPlatform] to use.
 typedef OnPlatformViewCreatedCallback = void Function(int);
 
-abstract class MapLibrePlatform {
-  static MapLibreMethodChannel? _instance;
+abstract class SiroGlPlatform {
+  static SiroMethodChannel? _instance;
 
-  /// The default instance of [MapLibrePlatform] to use.
+  /// The default instance of [SiroGlPlatform] to use.
   ///
-  /// Defaults to [MapLibreMethodChannel].
+  /// Defaults to [SiroMethodChannel].
   ///
   /// Platform-specific plugins should set this with their own platform-specific
-  /// class that extends [MapLibrePlatform] when they register themselves.
-  static MapLibrePlatform Function() createInstance =
-      () => _instance ?? MapLibreMethodChannel();
+  /// class that extends [SiroGlPlatform] when they register themselves.
+  static SiroGlPlatform Function() createInstance =
+      () => _instance ?? SiroMethodChannel();
 
   final onInfoWindowTappedPlatform = ArgumentCallbacks<String>();
 
@@ -112,7 +112,7 @@ abstract class MapLibrePlatform {
   /// Applies a camera pitch that the active tracking mode keeps.
   ///
   /// Supported on Android and iOS. Web throws an [UnsupportedError]; see
-  /// `MapLibreMapController.setTrackingCameraOptions` for why.
+  /// `SiroMapController.setTrackingCameraOptions` for why.
   Future<bool> setTrackingCameraOptions({
     required double tilt,
     Duration? duration,

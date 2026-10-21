@@ -1,4 +1,4 @@
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
 /// Base interface for all data-driven map annotations drawn via
 /// style layers (symbols, lines, fills, circles, etc.).

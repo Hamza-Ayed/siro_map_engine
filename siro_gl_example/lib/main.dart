@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 // PMTiles protocol registration is JS interop, so it only exists on web; the
@@ -83,7 +83,7 @@ String? _initialExampleSlug() {
 }
 
 Future<void> main() async {
-  // Deliberately no MapLibreMap.preWarm() here. This app opens on a list of
+  // Deliberately no SiroMap.preWarm() here. This app opens on a list of
   // examples, not on a map, so pre-warming would pay for engine start-up that
   // the first screen does not use, and demonstrating it in that position would
   // suggest it belongs in every app. It is worth it when your first screen is
@@ -94,7 +94,7 @@ Future<void> main() async {
     // PMTiles protocol can no longer be registered by an inline script in
     // index.html. Wait for the library, then register the protocol from Dart
     // before any map is built.
-    await MapLibreMap.ensureWebLibraryLoaded();
+    await SiroMap.ensureWebLibraryLoaded();
     pmtiles_protocol.registerPmTilesProtocol(
       'https://demo-bucket.protomaps.com/v4.pmtiles',
     );
@@ -123,11 +123,11 @@ Future<void> main() async {
   // first map is built.
   unawaited(configureTileClientIdentity());
 
-  runApp(const MapLibreExampleApp());
+  runApp(const SiroExampleApp());
 }
 
-class MapLibreExampleApp extends StatelessWidget {
-  const MapLibreExampleApp({super.key});
+class SiroExampleApp extends StatelessWidget {
+  const SiroExampleApp({super.key});
 
   @override
   Widget build(BuildContext context) {

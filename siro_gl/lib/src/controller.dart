@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
 typedef OnMapClickCallback =
     void Function(Point<double> point, LatLng coordinates);
@@ -59,13 +59,13 @@ typedef OnCameraIdleCallback = void Function();
 
 typedef OnMapIdleCallback = void Function();
 
-/// Controller for a single [MapLibreMap] instance running on the host platform.
+/// Controller for a single [SiroMap] instance running on the host platform.
 ///
 /// Some of its methods can only be called after the [onStyleLoaded] callback has been invoked.
 ///
 /// To add annotations ([Circle]s, [Line]s, [Symbol]s and [Fill]s) on the map, there are two ways:
 ///
-/// 1. *Simple way to add annotations*: Use the corresponding add* methods ([addCircle], [addLine], [addSymbol] and [addFill]) on the MapLibreMapController to add one annotation at a time to the map.
+/// 1. *Simple way to add annotations*: Use the corresponding add* methods ([addCircle], [addLine], [addSymbol] and [addFill]) on the SiroMapController to add one annotation at a time to the map.
 /// There are also corresponding [addCircles], [addLines] etc. methods which work the same but add multiple annotations at a time.
 ///
 /// (If you are interested how this works: under the hood, this uses AnnotationManagers to manage the annotations.
@@ -87,18 +87,18 @@ typedef OnMapIdleCallback = void Function();
 /// and add a new layer to display the data of that source on the map (either with the [addLayer] method or with the more specific methods like [addCircleLayer], [addLineLayer] etc.).
 /// For more information about MapLibre Styles, see the documentation of [maplibre_gl] as well as the specification at [https://maplibre.org/maplibre-style-spec/].
 ///
-/// A MapLibreMapController is also a [ChangeNotifier]. Subscribers (change listeners) are notified upon changes to any of
+/// A SiroMapController is also a [ChangeNotifier]. Subscribers (change listeners) are notified upon changes to any of
 ///
-/// * the configuration options of the [MapLibreMap] widget
+/// * the configuration options of the [SiroMap] widget
 /// * the [symbols], [lines], [circles] or [fills] properties
 /// (i.e. the collection of [Symbol]s, [Line]s, [Circle]s and [Fill]s added to this map via the "simple way" (see above))
 /// * the [isCameraMoving] property
 /// * the [cameraPosition] property
 ///
 /// Listeners are notified after changes have been applied on the platform side.
-class MapLibreMapController extends ChangeNotifier {
-  MapLibreMapController({
-    required MapLibrePlatform maplibrePlatform,
+class SiroMapController extends ChangeNotifier {
+  SiroMapController({
+    required SiroGlPlatform maplibrePlatform,
     CameraPosition? initialCameraPosition,
     required Iterable<AnnotationType> annotationOrder,
     required Iterable<AnnotationType> annotationConsumeTapEvents,
@@ -373,7 +373,7 @@ class MapLibreMapController extends ChangeNotifier {
   bool _isCameraMoving = false;
 
   /// Returns the most recent camera position reported by the platform side.
-  /// Will be null, if [MapLibreMap.trackCameraPosition] is false.
+  /// Will be null, if [SiroMap.trackCameraPosition] is false.
   ///
   /// Never holds a camera with NaN or infinite components; those readings are
   /// dropped. For a guaranteed fresh reading rather than the last reported one,
@@ -397,7 +397,7 @@ class MapLibreMapController extends ChangeNotifier {
         position.target.longitude.isFinite;
   }
 
-  final MapLibrePlatform _maplibrePlatform;
+  final SiroGlPlatform _maplibrePlatform;
 
   /// Tracks whether the controller has already been disposed
   bool _isDisposed = false;
@@ -1042,7 +1042,7 @@ class MapLibreMapController extends ChangeNotifier {
   ///
   /// Use this rather than [animateCamera], [easeCamera] or [moveCamera], which are
   /// not tracking-aware: on Android they end tracking outright, so the map stops
-  /// following the user and [MapLibreMap.onCameraTrackingChanged] reports
+  /// following the user and [SiroMap.onCameraTrackingChanged] reports
   /// [MyLocationTrackingMode.none].
   ///
   /// A tracking mode other than [MyLocationTrackingMode.none] must already be
@@ -1334,7 +1334,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the SymbolManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.symbol] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<Symbol> addSymbol(
     SymbolOptions options, [
     Map<String, dynamic>? data,
@@ -1358,7 +1358,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the SymbolManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.symbol] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<List<Symbol>> addSymbols(
     List<SymbolOptions> options, [
     List<Map<String, dynamic>>? data,
@@ -1387,7 +1387,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// The returned [Future] completes once listeners have been notified.\
   /// Unlike [addSymbol], this is a no-op when the SymbolManager does not exist
   /// (style not loaded yet, or [AnnotationType.symbol] missing from the
-  /// `annotationOrder` of the [MapLibreMap] widget).
+  /// `annotationOrder` of the [SiroMap] widget).
   Future<void> updateSymbol(Symbol symbol, SymbolOptions changes) async {
     await symbolManager?.set(
       symbol..options = symbol.options.copyWith(changes),
@@ -1453,7 +1453,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the LineManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.line] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<Line> addLine(
     LineOptions options, [
     Map<String, dynamic>? data,
@@ -1476,7 +1476,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the LineManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.line] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<List<Line>> addLines(
     List<LineOptions> options, [
     List<Map<String, dynamic>>? data,
@@ -1565,7 +1565,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the CircleManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.circle] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<Circle> addCircle(
     CircleOptions options, [
     Map<String, dynamic>? data,
@@ -1589,7 +1589,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the CircleManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.circle] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<List<Circle>> addCircles(
     List<CircleOptions> options, [
     List<Map<String, dynamic>>? data,
@@ -1680,7 +1680,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the FillManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.fill] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<Fill> addFill(
     FillOptions options, [
     Map<String, dynamic>? data,
@@ -1704,7 +1704,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// been notified.\
   /// An [Exception] is thrown if the FillManager is not initialized: either the
   /// style has not finished loading yet, or [AnnotationType.fill] is missing
-  /// from the `annotationOrder` of the [MapLibreMap] widget.
+  /// from the `annotationOrder` of the [SiroMap] widget.
   Future<List<Fill>> addFills(
     List<FillOptions> options, [
     List<Map<String, dynamic>>? data,
@@ -1926,7 +1926,7 @@ class MapLibreMapController extends ChangeNotifier {
   /// Requires the map to be created with
   /// `locationSource: ManualLocationSource()` and `myLocationEnabled: true`.
   /// The accuracy ring, the tracking modes and
-  /// [MapLibreMap.onUserLocationUpdated] keep working, and no location
+  /// [SiroMap.onUserLocationUpdated] keep working, and no location
   /// permission is needed. Works on Android, iOS and web.
   Future<void> updateManualLocation(ManualLocationUpdate update) {
     return _maplibrePlatform.setManualLocation(update);
@@ -2455,7 +2455,7 @@ class MapLibreMapController extends ChangeNotifier {
         "The annotation manager for AnnotationType.${type.name} has not been "
         "initialized. Either the map style has not finished loading yet (add "
         "annotations from onStyleLoadedCallback), or AnnotationType.${type.name} "
-        "is missing from the annotationOrder parameter of the MapLibreMap "
+        "is missing from the annotationOrder parameter of the SiroMap "
         "widget (note that an empty annotationOrder disables all annotations).",
       );
     }

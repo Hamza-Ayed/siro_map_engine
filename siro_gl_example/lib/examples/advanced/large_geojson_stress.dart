@@ -2,7 +2,7 @@ import 'dart:async' show unawaited;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -37,7 +37,7 @@ class _LargeGeojsonStressBody extends StatefulWidget {
 
 class _LargeGeojsonStressBodyState extends State<_LargeGeojsonStressBody>
     with SingleTickerProviderStateMixin {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   late final AnimationController _spinner;
 
   static const _sourceId = 'stress_source';
@@ -64,7 +64,7 @@ class _LargeGeojsonStressBodyState extends State<_LargeGeojsonStressBody>
     super.dispose();
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -134,7 +134,7 @@ class _LargeGeojsonStressBodyState extends State<_LargeGeojsonStressBody>
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

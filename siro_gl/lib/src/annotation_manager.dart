@@ -1,4 +1,4 @@
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
 /// Manages a homogeneous set of [Annotation]s (e.g. symbols, lines, fills) by
 /// owning their backing style source(s)/layer(s) and performing efficient
@@ -16,7 +16,7 @@ part of '../maplibre_gl.dart';
 /// When [enableInteraction] is true, drag events are listened to and the
 /// underlying annotation is translated & re-set.
 abstract class AnnotationManager<T extends Annotation> {
-  final MapLibreMapController controller;
+  final SiroMapController controller;
 
   bool _isInitializing = false;
   bool _isInitialized = false;

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 /// User-Agent this example sends with every request the map makes: tiles,
 /// style JSON, sprites and glyphs.
@@ -24,7 +24,7 @@ const String tileClientUserAgent =
 ///
 /// Call it once at start-up, before the first map is built. The headers are
 /// global to the process and are applied at request time, so a single call
-/// covers every [MapLibreMap] the app creates afterwards.
+/// covers every [SiroMap] the app creates afterwards.
 ///
 /// On web this is a no-op: the browser owns the User-Agent header and refuses
 /// to let a page set it, so there is no global channel behind

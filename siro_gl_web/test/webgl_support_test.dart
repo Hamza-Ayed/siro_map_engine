@@ -62,7 +62,7 @@ void main() {
       expect(diagnostic, contains('WebGL1 but not WebGL2'));
       expect(
         diagnostic,
-        contains('MapLibreMap.webLibrarySource'),
+        contains('SiroMap.webLibrarySource'),
         reason: 'the message has to name what the app can actually change',
       );
     });
@@ -76,7 +76,7 @@ void main() {
       expect(diagnostic, contains('no WebGL context at all'));
       expect(
         diagnostic,
-        isNot(contains('MapLibreMap.webLibrarySource')),
+        isNot(contains('SiroMap.webLibrarySource')),
         reason: 'no build of the library helps here, so do not suggest one',
       );
     });
@@ -85,10 +85,10 @@ void main() {
   group('mapRendererDiagnostic', () {
     /// A stand-in for the library's map, with or without the `painter` the
     /// library assigns once it has a context.
-    MapLibreMap fakeMap({required bool withRenderer}) {
+    SiroMap fakeMap({required bool withRenderer}) {
       final map = JSObject();
       if (withRenderer) map.setProperty('painter'.toJS, JSObject());
-      return MapLibreMap.fromJsObject(map as MapLibreMapJsImpl);
+      return SiroMap.fromJsObject(map as JsMapImpl);
     }
 
     test('reads the renderer back, and probes nothing when there is one', () {

@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('MethodChannel Cluster inspection', () {
-    late MapLibreMethodChannel platform;
+    late SiroMethodChannel platform;
     late List<MethodCall> methodCalls;
 
     /// What the mocked native side replies to `source#getClusterExpansionZoom`.
@@ -18,14 +18,14 @@ void main() {
     Object? featuresReply;
 
     setUp(() async {
-      platform = MapLibreMethodChannel();
+      platform = SiroMethodChannel();
       methodCalls = [];
       expansionZoomReply = 0;
       featuresReply = <Object?, Object?>{'features': <Object?>[]};
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -155,7 +155,7 @@ void main() {
     test('a platform error is surfaced to the caller', () async {
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async =>
                 throw PlatformException(
                   code: 'SOURCE_NOT_FOUND',

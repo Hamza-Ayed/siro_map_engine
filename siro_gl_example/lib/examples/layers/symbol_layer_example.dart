@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:siro_gl_example/util.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -27,7 +27,7 @@ class _SymbolLayerBody extends StatefulWidget {
 }
 
 class _SymbolLayerBodyState extends State<_SymbolLayerBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _sourceId = 'symbol_source';
   static const _layerId = 'symbol_layer';
@@ -66,7 +66,7 @@ class _SymbolLayerBodyState extends State<_SymbolLayerBody> {
     super.initState();
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -218,7 +218,7 @@ class _SymbolLayerBodyState extends State<_SymbolLayerBody> {
   @override
   Widget build(BuildContext context) {
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/constants.dart';
@@ -32,7 +32,7 @@ class _MultiStyleSwitchBody extends StatefulWidget {
 }
 
 class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   int _currentIndex = 0;
   bool _isSwitching = false;
 
@@ -82,7 +82,7 @@ class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
     }
   }
 
-  Future<void> _onMapCreated(MapLibreMapController c) async {
+  Future<void> _onMapCreated(SiroMapController c) async {
     setState(() => _controller = c);
     c.addListener(() {
       // Listen to camera changes to keep track of last position.
@@ -110,7 +110,7 @@ class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
     return Scaffold(
       body: Stack(
         children: [
-          MapLibreMap(
+          SiroMap(
             trackCameraPosition: true,
             initialCameraPosition: const CameraPosition(
               target: LatLng(0, 0),

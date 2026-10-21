@@ -5,11 +5,11 @@
 library;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_web/maplibre_gl_web.dart';
+import 'package:siro_gl_web/siro_gl_web.dart';
 
 void main() {
   test('setTrackingCameraOptions reports that web cannot honor it', () async {
-    final controller = MapLibreMapController();
+    final controller = SiroMapController();
 
     await expectLater(
       controller.setTrackingCameraOptions(tilt: 45),

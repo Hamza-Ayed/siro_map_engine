@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -32,19 +32,19 @@ final List<OfflineRegionDefinition> regionDefinitions = [
     bounds: hawaiiBounds,
     minZoom: 3.0,
     maxZoom: 8.0,
-    mapStyleUrl: MapLibreStyles.openfreemapLiberty,
+    mapStyleUrl: SiroStyles.openfreemapLiberty,
   ),
   OfflineRegionDefinition(
     bounds: santiagoBounds,
     minZoom: 10.0,
     maxZoom: 16.0,
-    mapStyleUrl: MapLibreStyles.openfreemapLiberty,
+    mapStyleUrl: SiroStyles.openfreemapLiberty,
   ),
   OfflineRegionDefinition(
     bounds: aucklandBounds,
     minZoom: 13.0,
     maxZoom: 16.0,
-    mapStyleUrl: MapLibreStyles.openfreemapLiberty,
+    mapStyleUrl: SiroStyles.openfreemapLiberty,
   ),
 ];
 

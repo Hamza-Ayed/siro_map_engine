@@ -36,6 +36,6 @@ class AttributionControlJsImpl {
 
 extension AttributionControlJsImplExtension on AttributionControlJsImpl {
   external AttributionControlOptionsJsImpl get options;
-  external JSAny? onAdd(MapLibreMapJsImpl map);
+  external JSAny? onAdd(JsMapImpl map);
   external void onRemove();
 }

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 /// A call record for verifying interactions with [FakeMapLibrePlatform].
 class PlatformCall {
@@ -20,8 +20,8 @@ class PlatformCall {
   String toString() => 'PlatformCall($method, $positionalArgs, $namedArgs)';
 }
 
-/// Fake implementation of [MapLibrePlatform] that records all method calls.
-class FakeMapLibrePlatform extends MapLibrePlatform {
+/// Fake implementation of [SiroGlPlatform] that records all method calls.
+class FakeMapLibrePlatform extends SiroGlPlatform {
   final calls = <PlatformCall>[];
 
   /// Clears recorded calls.

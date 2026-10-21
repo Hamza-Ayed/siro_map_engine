@@ -23,16 +23,16 @@ import 'package:siro_gl_web/src/ui/handler/keyboard.dart';
 import 'package:siro_gl_web/src/ui/handler/scroll_zoom.dart';
 import 'package:siro_gl_web/src/ui/handler/touch_zoom_rotate.dart';
 
-///  The `MapLibreMap` object represents the map on your page. It exposes methods
+///  The `SiroMap` object represents the map on your page. It exposes methods
 ///  and properties that enable you to programmatically change the map,
 ///  and fires events as users interact with it.
 ///
-///  You create a `MapLibreMap` by specifying a `container` and other options.
-///  Then MapLibre JS JS initializes the map on the page and returns your `MapLibreMap`
+///  You create a `SiroMap` by specifying a `container` and other options.
+///  Then MapLibre JS JS initializes the map on the page and returns your `SiroMap`
 ///  object.
 ///
 ///  ```dart
-///  var map = MapLibreMap(
+///  var map = SiroMap(
 ///    MapOptions(
 ///      container: 'map',
 ///      center: LngLat(-122.420679, 37.772537),
@@ -53,12 +53,12 @@ import 'package:siro_gl_web/src/ui/handler/touch_zoom_rotate.dart';
 ///  );
 ///  ```
 ///  @see [Display a map](https://maplibre.org/maplibre-gl-js/docs/examples/simple-map/)
-class MapLibreMap extends Camera {
+class SiroMap extends Camera {
   @override
-  final MapLibreMapJsImpl jsObject;
+  final JsMapImpl jsObject;
 
-  factory MapLibreMap(MapOptions options) =>
-      MapLibreMap.fromJsObject(MapLibreMapJsImpl(options.jsObject));
+  factory SiroMap(MapOptions options) =>
+      SiroMap.fromJsObject(JsMapImpl(options.jsObject));
 
   Style get style => Style.fromJsObject(jsObject.style);
 
@@ -103,24 +103,24 @@ class MapLibreMap extends Camera {
   ///  @param {IControl} control The {@link IControl} to add.
   ///  @param {string} [position] position on the map to which the control will be added.
   ///  Valid values are `'top-left'`, `'top-right'`, `'bottom-left'`, and `'bottom-right'`. Defaults to `'top-right'`.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Add zoom and rotation controls to the map.
   ///  map.addControl(new NavigationControl());
   ///  @see [Display map navigation controls](https://maplibre.org/maplibre-gl-js/docs/examples/navigation/)
-  MapLibreMap addControl(dynamic control, [String? position]) {
+  SiroMap addControl(dynamic control, [String? position]) {
     if (position != null) {
-      return MapLibreMap.fromJsObject(
+      return SiroMap.fromJsObject(
         jsObject.addControl(control.jsObject, position),
       );
     }
-    return MapLibreMap.fromJsObject(jsObject.addControl(control.jsObject));
+    return SiroMap.fromJsObject(jsObject.addControl(control.jsObject));
   }
 
   ///  Removes the control from the map.
   ///
   ///  @param {IControl} control The {@link IControl} to remove.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Define a new navigation control.
   ///  var navigation = new NavigationControl();
@@ -128,8 +128,8 @@ class MapLibreMap extends Camera {
   ///  map.addControl(navigation);
   ///  // Remove zoom and rotation controls from the map.
   ///  map.removeControl(navigation);
-  MapLibreMap removeControl(dynamic control) =>
-      MapLibreMap.fromJsObject(jsObject.removeControl(control.jsObject));
+  SiroMap removeControl(dynamic control) =>
+      SiroMap.fromJsObject(jsObject.removeControl(control.jsObject));
 
   ///  Resizes the map according to the dimensions of its
   ///  `container` element.
@@ -141,14 +141,14 @@ class MapLibreMap extends Camera {
   ///  @param eventData Additional properties to be passed to `movestart`, `move`, `resize`, and `moveend`
   ///    events that get triggered as a result of resize. This can be useful for differentiating the
   ///    source of an event (for example, user-initiated or programmatically-triggered events).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Resize the map when the map container is shown
   ///  // after being initially hidden with CSS.
   ///  var mapDiv = document.getElementById('map');
   ///  if (mapDiv.style.visibility === true) map.resize();
-  MapLibreMap resize([dynamic eventData]) =>
-      MapLibreMap.fromJsObject(jsObject.resize(eventData));
+  SiroMap resize([dynamic eventData]) =>
+      SiroMap.fromJsObject(jsObject.resize(eventData));
 
   ///  Returns the map's geographical bounds. When the bearing or pitch is non-zero, the visible region is not
   ///  an axis-aligned rectangle, and the result is the smallest bounds that encompasses the visible region.
@@ -172,7 +172,7 @@ class MapLibreMap extends Camera {
   ///  remaining within the bounds.
   ///
   ///  @param {LngLatBoundsLike | null | undefined} bounds The maximum bounds to set. If `null` or `undefined` is provided, the function removes the map's maximum bounds.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  // Define bounds that conform to the `LngLatBoundsLike` object.
   ///  var bounds = [
@@ -181,8 +181,8 @@ class MapLibreMap extends Camera {
   ///  ];
   ///  // Set the map's max bounds.
   ///  map.setMaxBounds(bounds);
-  MapLibreMap setMaxBounds(LngLatBounds? bounds) =>
-      MapLibreMap.fromJsObject(jsObject.setMaxBounds(bounds?.jsObject));
+  SiroMap setMaxBounds(LngLatBounds? bounds) =>
+      SiroMap.fromJsObject(jsObject.setMaxBounds(bounds?.jsObject));
 
   ///  Sets or clears the map's minimum zoom level.
   ///  If the map's current zoom level is lower than the new minimum,
@@ -195,11 +195,11 @@ class MapLibreMap extends Camera {
   ///
   ///  @param {number | null | undefined} minZoom The minimum zoom level to set (-2 - 24).
   ///    If `null` or `undefined` is provided, the function removes the current minimum zoom (i.e. sets it to -2).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setMinZoom(12.25);
-  MapLibreMap setMinZoom([num? minZoom]) =>
-      MapLibreMap.fromJsObject(jsObject.setMinZoom(minZoom));
+  SiroMap setMinZoom([num? minZoom]) =>
+      SiroMap.fromJsObject(jsObject.setMinZoom(minZoom));
 
   ///  Returns the map's minimum allowable zoom level.
   ///
@@ -214,11 +214,11 @@ class MapLibreMap extends Camera {
   ///
   ///  @param {number | null | undefined} maxZoom The maximum zoom level to set.
   ///    If `null` or `undefined` is provided, the function removes the current maximum zoom (sets it to 22).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setMaxZoom(18.75);
-  MapLibreMap setMaxZoom([num? maxZoom]) =>
-      MapLibreMap.fromJsObject(jsObject.setMaxZoom(maxZoom));
+  SiroMap setMaxZoom([num? maxZoom]) =>
+      SiroMap.fromJsObject(jsObject.setMaxZoom(maxZoom));
 
   ///  Returns the map's maximum allowable zoom level.
   ///
@@ -233,9 +233,9 @@ class MapLibreMap extends Camera {
   ///
   ///  @param {number | null | undefined} minPitch The minimum pitch to set (0-60).
   ///    If `null` or `undefined` is provided, the function removes the current minimum pitch (i.e. sets it to 0).
-  ///  @returns {MapLibreMap} `this`
-  MapLibreMap setMinPitch([num? minPitch]) =>
-      MapLibreMap.fromJsObject(jsObject.setMinPitch(minPitch));
+  ///  @returns {SiroMap} `this`
+  SiroMap setMinPitch([num? minPitch]) =>
+      SiroMap.fromJsObject(jsObject.setMinPitch(minPitch));
 
   ///  Returns the map's minimum allowable pitch.
   ///
@@ -248,9 +248,9 @@ class MapLibreMap extends Camera {
   ///
   ///  @param {number | null | undefined} maxPitch The maximum pitch to set.
   ///    If `null` or `undefined` is provided, the function removes the current maximum pitch (sets it to 60).
-  ///  @returns {MapLibreMap} `this`
-  MapLibreMap setMaxPitch([num? maxPitch]) =>
-      MapLibreMap.fromJsObject(jsObject.setMaxPitch(maxPitch));
+  ///  @returns {SiroMap} `this`
+  SiroMap setMaxPitch([num? maxPitch]) =>
+      SiroMap.fromJsObject(jsObject.setMaxPitch(maxPitch));
 
   ///  Returns the map's maximum allowable pitch.
   ///
@@ -277,12 +277,12 @@ class MapLibreMap extends Camera {
   ///  map and the other on the left edge of the map) at every zoom level.
   ///
   ///  `undefined` is treated as `true`, `null` is treated as `false`.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setRenderWorldCopies(true);
   ///  @see [Render world copies](https://maplibre.org/maplibre-gl-js/docs/examples/render-world-copies/)
-  MapLibreMap setRenderWorldCopies([bool? renderWorldCopies]) =>
-      MapLibreMap.fromJsObject(
+  SiroMap setRenderWorldCopies([bool? renderWorldCopies]) =>
+      SiroMap.fromJsObject(
         jsObject.setRenderWorldCopies(renderWorldCopies),
       );
 
@@ -337,18 +337,18 @@ class MapLibreMap extends Camera {
   ///  feature in this layer will trigger the listener. The event will have a `features` property containing
   ///  an array of the matching features.
   ///  @param {Function} listener The function to be called when the event is fired.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   // Defined in evented.dart
-  // MapLibreMap on(String type, [dynamic layerIdOrListener, Listener listener]);
+  // SiroMap on(String type, [dynamic layerIdOrListener, Listener listener]);
 
-  ///  Removes an event listener for layer-specific events previously added with `MapLibreMap#on`.
+  ///  Removes an event listener for layer-specific events previously added with `SiroMap#on`.
   ///
   ///  @param {string} type The event type previously used to install the listener.
   ///  @param {string} layerId The layer ID previously used to install the listener.
   ///  @param {Function} listener The function previously installed as a listener.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   // Defined in evented.dart
-  // MapLibreMap off(String type, [dynamic layerIdOrListener, Listener listener]);
+  // SiroMap off(String type, [dynamic layerIdOrListener, Listener listener]);
 
   ///  Returns an array of [GeoJSON](http://geojson.org/)
   ///  [Feature objects](https://tools.ietf.org/html/rfc7946#section-3.2)
@@ -356,7 +356,7 @@ class MapLibreMap extends Camera {
   ///
   ///  @param `{PointLike|Array<PointLike>}` [geometry] - The geometry of the query region:
   ///  either a single point or southwest and northeast points describing a bounding box.
-  ///  Omitting this parameter (i.e. calling [MapLibreMap.queryRenderedFeatures] with zero arguments,
+  ///  Omitting this parameter (i.e. calling [SiroMap.queryRenderedFeatures] with zero arguments,
   ///  or with only a [options] argument) is equivalent to passing a bounding box encompassing the entire
   ///  map viewport.
   ///  @param {Object} [options]
@@ -458,7 +458,7 @@ class MapLibreMap extends Camera {
   ///  @returns {Array<Object>} An array of [GeoJSON](http://geojson.org/)
   ///  [Feature objects](https://tools.ietf.org/html/rfc7946#section-3.2).
   ///
-  ///  In contrast to [MapLibreMap.queryRenderedFeatures], this function returns all features matching the query parameters,
+  ///  In contrast to [SiroMap.queryRenderedFeatures], this function returns all features matching the query parameters,
   ///  whether or not they are rendered by the current style (i.e. visible). The domain of the query includes all currently-loaded
   ///  vector tiles and GeoJSON source tiles: this function does not check tiles outside the currently
   ///  visible viewport.
@@ -500,13 +500,13 @@ class MapLibreMap extends Camera {
   ///    In these ranges, font settings from the map's style will be ignored, except for font-weight keywords (light/regular/medium/bold).
   ///    Set to `false`, to enable font settings from the map's style for these glyph ranges.
   ///    Forces a full update.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @see [Change a map's style](https://maplibre.org/maplibre-gl-js/docs/examples/setstyle/)
-  MapLibreMap setStyle(dynamic style, [dynamic options]) {
+  SiroMap setStyle(dynamic style, [dynamic options]) {
     final styleJs =
         style is Style ? style.jsObject as JSAny : utils.jsify(style);
     final optionsJs = utils.jsify(options);
-    return MapLibreMap.fromJsObject(jsObject.setStyle(styleJs, optionsJs));
+    return SiroMap.fromJsObject(jsObject.setStyle(styleJs, optionsJs));
   }
 
   ///  Returns the map's MapLibre style object, which can be used to recreate the map's style.
@@ -556,17 +556,17 @@ class MapLibreMap extends Camera {
   ///  MapLibre Style Specification's [source definition](https://maplibre.org/maplibre-style-spec/#sources) or
   ///  [CanvasSourceOptions].
   ///  @fires source.add
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  });
   ///  @see Vector source: [Show and hide layers](https://maplibre.org/maplibre-gl-js/docs/examples/toggle-layers/)
   ///  @see GeoJSON source: [Add live realtime data](https://maplibre.org/maplibre-gl-js/docs/examples/live-geojson/)
   ///  @see Raster DEM source: [Add hillshading](https://maplibre.org/maplibre-gl-js/docs/examples/hillshade/)
-  MapLibreMap addSource(String id, dynamic source) {
+  SiroMap addSource(String id, dynamic source) {
     if (source is Source) {
-      return MapLibreMap.fromJsObject(jsObject.addSource(id, source.jsObject));
+      return SiroMap.fromJsObject(jsObject.addSource(id, source.jsObject));
     }
     // source is a Map<String, dynamic>
-    return MapLibreMap.fromJsObject(
+    return SiroMap.fromJsObject(
       jsObject.addSource(id, utils.jsify(source)!),
     );
   }
@@ -588,7 +588,7 @@ class MapLibreMap extends Camera {
   bool areTilesLoaded() => jsObject.areTilesLoaded();
 
   ///  Adds a/// *custom source type**(#Custom Sources), making it available for use with
-  ///  [MapLibreMap.addSource].
+  ///  [SiroMap.addSource].
   ///  @private
   ///  @param {string} name The name of the source type; source definition objects use this name in the `{type: ...}` field.
   ///  @param {Function} SourceType A {@link Source} constructor.
@@ -599,7 +599,7 @@ class MapLibreMap extends Camera {
   ///  Removes a source from the map's style.
   ///
   ///  @param {string} id The ID of the source to remove.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.removeSource('bathymetry-data');
   removeSource(String id) => jsObject.removeSource(id);
@@ -635,7 +635,7 @@ class MapLibreMap extends Camera {
   ///  [`background-pattern`](https://maplibre.org/maplibre-style-spec/#paint-background-background-pattern),
   ///  [`fill-pattern`](https://maplibre.org/maplibre-style-spec/#paint-fill-fill-pattern),
   ///  or [`line-pattern`](https://maplibre.org/maplibre-style-spec/#paint-line-line-pattern).
-  ///  A {@link MapLibreMap#error} event will be fired if there is not enough space in the sprite to add this image.
+  ///  A {@link SiroMap#error} event will be fired if there is not enough space in the sprite to add this image.
   ///
   ///  @param id The ID of the image.
   ///  @param image The image as an `HTMLImageElement`, `ImageData`, or object with `width`, `height`, and `data`
@@ -716,7 +716,7 @@ class MapLibreMap extends Camera {
   ///
   ///  Worth checking rather than assuming: the library on the page is not
   ///  always the one the plugin loads. A leftover `<script>` tag in
-  ///  `index.html`, or `MapLibreJsSource.preloaded`, can put version 5 there,
+  ///  `index.html`, or `SiroJsSource.preloaded`, can put version 5 there,
   ///  and calling a method it does not have would throw on map creation.
   bool get hasMissingStyleImageResolver =>
       (jsObject as JSObject).has('setMissingStyleImageResolver');
@@ -743,7 +743,7 @@ class MapLibreMap extends Camera {
   ///  a resolver, version 5 has none and only lets a `styleimagemissing`
   ///  listener do the work, and which of the two is on the page is not up to
   ///  this plugin. A leftover `<script>` tag in `index.html`, or
-  ///  `MapLibreJsSource.preloaded`, can still put version 5 there.
+  ///  `SiroJsSource.preloaded`, can still put version 5 there.
   ///
   ///  Returns the listener's subscription on version 5, for the caller to
   ///  unsubscribe, and null on version 6, where [clearMissingStyleImageHandler]
@@ -779,7 +779,7 @@ class MapLibreMap extends Camera {
   ///  if (map.hasImage('cat')) map.removeImage('cat');
   removeImage(String id) => jsObject.removeImage(id);
 
-  ///  Load an image from an external URL to be used with `MapLibreMap#addImage`. External
+  ///  Load an image from an external URL to be used with `SiroMap#addImage`. External
   ///  domains must support [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS).
   ///
   ///  @param {string} url The URL of the image file. Image file must be in png, webp, or jpg format.
@@ -821,19 +821,19 @@ class MapLibreMap extends Camera {
   ///  @param {string} [beforeId] The ID of an existing layer to insert the new layer before.
   ///    If this argument is omitted, the layer will be appended to the end of the layers array.
   ///
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @see [Create and style clusters](https://maplibre.org/maplibre-gl-js/docs/examples/cluster/)
   ///  @see [Add a vector tile source](https://maplibre.org/maplibre-gl-js/docs/examples/vector-source/)
   ///  @see [Add a WMS source](https://maplibre.org/maplibre-gl-js/docs/examples/wms/)
-  MapLibreMap addLayer(dynamic layer, [String? beforeId]) {
+  SiroMap addLayer(dynamic layer, [String? beforeId]) {
     if (layer is Layer) {
-      return MapLibreMap.fromJsObject(
+      return SiroMap.fromJsObject(
         jsObject.addLayer(layer.jsObject, beforeId),
       );
     }
     // layer is a Map<String, dynamic>
-    return MapLibreMap.fromJsObject(
+    return SiroMap.fromJsObject(
       jsObject.addLayer(utils.jsify(layer)!, beforeId),
     );
   }
@@ -845,13 +845,13 @@ class MapLibreMap extends Camera {
   ///  @param {string} id The ID of the layer to move.
   ///  @param {string} [beforeId] The ID of an existing layer to insert the new layer before.
   ///    If this argument is omitted, the layer will be appended to the end of the layers array.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @example
   ///  // Move a layer with ID 'label' before the layer with ID 'waterways'.
   ///  map.moveLayer('label', 'waterways');
-  MapLibreMap moveLayer(String id, String beforeId) =>
-      MapLibreMap.fromJsObject(jsObject.moveLayer(id, beforeId));
+  SiroMap moveLayer(String id, String beforeId) =>
+      SiroMap.fromJsObject(jsObject.moveLayer(id, beforeId));
 
   ///  Removes the layer with the given ID from the map's style.
   ///
@@ -891,12 +891,12 @@ class MapLibreMap extends Camera {
   ///  @param {string} layerId The ID of the layer to which the zoom extent will be applied.
   ///  @param {number} minzoom The minimum zoom to set (0-24).
   ///  @param {number} maxzoom The maximum zoom to set (0-24).
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///
   ///  @example
   ///  map.setLayerZoomRange('my-layer', 2, 5);
-  MapLibreMap setLayerZoomRange(String layerId, num minzoom, num maxzoom) =>
-      MapLibreMap.fromJsObject(
+  SiroMap setLayerZoomRange(String layerId, num minzoom, num maxzoom) =>
+      SiroMap.fromJsObject(
         jsObject.setLayerZoomRange(layerId, minzoom, maxzoom),
       );
 
@@ -908,18 +908,18 @@ class MapLibreMap extends Camera {
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if the filter conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
   ///
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setFilter('my-layer', ['==', 'name', 'USA']);
   ///
   ///  @see [Filter features within map view](https://maplibre.org/maplibre-gl-js/docs/examples/filter-features-within-map-view/)
   ///  @see [Highlight features containing similar data](https://maplibre.org/maplibre-gl-js/docs/examples/query-similar-features/)
   ///  @see [Create a timeline animation](https://maplibre.org/maplibre-gl-js/docs/examples/timeline-animation/)
-  MapLibreMap setFilter(
+  SiroMap setFilter(
     String layerId,
     dynamic filter, [
     StyleSetterOptions? options,
-  ]) => MapLibreMap.fromJsObject(jsObject.setFilter(layerId, filter));
+  ]) => SiroMap.fromJsObject(jsObject.setFilter(layerId, filter));
 
   ///  Returns the filter applied to the specified style layer.
   ///
@@ -938,7 +938,7 @@ class MapLibreMap extends Camera {
   ///    Must be of a type appropriate for the property, as defined in the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if `value` conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setPaintProperty('my-layer', 'fill-color', '#faafee');
   ///  @see [Change a layer's color with buttons](https://maplibre.org/maplibre-gl-js/docs/examples/color-switcher/)
@@ -969,17 +969,17 @@ class MapLibreMap extends Camera {
   ///  @param {*} value The value of the layout property. Must be of a type appropriate for the property, as defined in the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if `value` conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
+  ///  @returns {SiroMap} `this`
   ///  @example
   ///  map.setLayoutProperty('my-layer', 'visibility', 'none');
-  MapLibreMap setLayoutProperty(
+  SiroMap setLayoutProperty(
     String layerId,
     String name,
     dynamic value, [
     StyleSetterOptions? options,
   ]) {
     final jsValue = utils.jsify(value);
-    return MapLibreMap.fromJsObject(
+    return SiroMap.fromJsObject(
       jsObject.setLayoutProperty(layerId, name, jsValue),
     );
   }
@@ -997,9 +997,9 @@ class MapLibreMap extends Camera {
   ///  @param light Light properties to set. Must conform to the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/#light).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if the filter conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
-  MapLibreMap setLight(dynamic light, [StyleSetterOptions? options]) =>
-      MapLibreMap.fromJsObject(
+  ///  @returns {SiroMap} `this`
+  SiroMap setLight(dynamic light, [StyleSetterOptions? options]) =>
+      SiroMap.fromJsObject(
         jsObject.setLight(utils.jsify(light)!, options?.jsObject),
       );
 
@@ -1008,30 +1008,30 @@ class MapLibreMap extends Camera {
   ///  @param sky Sky properties to set. Must conform to the [MapLibre Style Specification](https://maplibre.org/maplibre-style-spec/sky/).
   ///  @param {Object} [options]
   ///  @param {boolean} [options.validate=true] Whether to check if the sky conforms to the MapLibre JS Style Specification. Disabling validation is a performance optimization that should only be used if you have previously validated the values you will be passing to this function.
-  ///  @returns {MapLibreMap} `this`
-  MapLibreMap setSky(dynamic sky, [StyleSetterOptions? options]) =>
-      MapLibreMap.fromJsObject(
+  ///  @returns {SiroMap} `this`
+  SiroMap setSky(dynamic sky, [StyleSetterOptions? options]) =>
+      SiroMap.fromJsObject(
         jsObject.setSky(utils.jsify(sky)!, options?.jsObject),
       );
 
   ///  Loads a 3D terrain mesh, based on a "raster-dem" source.
   ///
   ///  @param {Object | null} terrain The terrain to set, or `null` to remove the terrain.
-  ///  @returns {MapLibreMap} `this`
-  MapLibreMap setTerrain(dynamic terrain) =>
-      MapLibreMap.fromJsObject(jsObject.setTerrain(utils.jsify(terrain)));
+  ///  @returns {SiroMap} `this`
+  SiroMap setTerrain(dynamic terrain) =>
+      SiroMap.fromJsObject(jsObject.setTerrain(utils.jsify(terrain)));
 
   ///  Sets the map's projection.
   ///
   ///  @param {Object | null} projection A projection definition object, or `null` to reset to the default mercator projection.
-  ///  @returns {MapLibreMap} `this`
-  MapLibreMap setProjection(dynamic projection) =>
-      MapLibreMap.fromJsObject(jsObject.setProjection(utils.jsify(projection)));
+  ///  @returns {SiroMap} `this`
+  SiroMap setProjection(dynamic projection) =>
+      SiroMap.fromJsObject(jsObject.setProjection(utils.jsify(projection)));
 
   ///  Sets one property of the style's global state, read by the
   ///  `global-state` expression.
-  MapLibreMap setGlobalStateProperty(String name, dynamic value) =>
-      MapLibreMap.fromJsObject(
+  SiroMap setGlobalStateProperty(String name, dynamic value) =>
+      SiroMap.fromJsObject(
         jsObject.setGlobalStateProperty(name, utils.jsify(value)),
       );
 
@@ -1045,7 +1045,7 @@ class MapLibreMap extends Camera {
   ///  cast to an integer.
   ///
   ///  @param {Object} feature Feature identifier. Feature objects returned from
-  ///  [MapLibreMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
+  ///  [SiroMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
   ///  @param {string | number} feature.id Unique id of the feature.
   ///  @param {string} feature.source The Id of the vector source or GeoJSON source for the feature.
   ///  @param {string} `feature.sourceLayer` (optional) /// For vector tile sources, the sourceLayer is
@@ -1066,7 +1066,7 @@ class MapLibreMap extends Camera {
   ///  Features are identified by their `id` attribute, which must be an integer or a string that can be
   ///  cast to an integer.
   ///  @param {Object} target Identifier of where to set state: can be a source, a feature, or a specific key of feature.
-  ///  Feature objects returned from [MapLibreMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
+  ///  Feature objects returned from [SiroMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
   ///  @param {string | number} target.id (optional) Unique id of the feature. Optional if key is not specified.
   ///  @param {string} target.source The Id of the vector source or GeoJSON source for the feature.
   ///  @param {string} `target.sourceLayer` (optional) /// For vector tile sources, the sourceLayer is
@@ -1080,7 +1080,7 @@ class MapLibreMap extends Camera {
   ///  cast to an integer.
   ///
   ///  @param {Object} feature Feature identifier. Feature objects returned from
-  ///  [MapLibreMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
+  ///  [SiroMap.queryRenderedFeatures] or event handlers can be used as feature identifiers.
   ///  @param {string | number} feature.id Unique id of the feature.
   ///  @param {string} feature.source The Id of the vector source or GeoJSON source for the feature.
   ///  @param {string} `feature.sourceLayer` (optional) /// For vector tile sources, the sourceLayer is
@@ -1148,7 +1148,7 @@ class MapLibreMap extends Camera {
   ///  @name showTileBoundaries
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   bool get showTileBoundaries => jsObject.showTileBoundaries;
 
   set showTileBoundaries(bool value) => jsObject.showTileBoundaries;
@@ -1161,7 +1161,7 @@ class MapLibreMap extends Camera {
   ///  @name showCollisionBoxes
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   bool get showCollisionBoxes => jsObject.showCollisionBoxes;
 
   set showCollisionBoxes(bool value) => jsObject.showCollisionBoxes;
@@ -1175,7 +1175,7 @@ class MapLibreMap extends Camera {
   ///  @name showOverdraw
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   bool get showOverdrawInspector => jsObject.showOverdrawInspector;
 
   set showOverdrawInspector(bool value) => jsObject.showOverdrawInspector;
@@ -1186,7 +1186,7 @@ class MapLibreMap extends Camera {
   ///  @name repaint
   ///  @type {boolean}
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   bool get repaint => jsObject.repaint;
 
   set repaint(bool value) => jsObject.repaint;
@@ -1200,12 +1200,12 @@ class MapLibreMap extends Camera {
   ///
   ///  @name version
   ///  @instance
-  ///  @memberof MapLibreMap
+  ///  @memberof SiroMap
   ///  @var {string} version
   String get version => jsObject.version;
 
-  /// Creates a new MapLibreMap from a [jsObject].
-  MapLibreMap.fromJsObject(this.jsObject) : super.fromJsObject(jsObject);
+  /// Creates a new SiroMap from a [jsObject].
+  SiroMap.fromJsObject(this.jsObject) : super.fromJsObject(jsObject);
 }
 
 class MapOptions extends JsObjectWrapper<MapOptionsJsImpl> {
@@ -1330,7 +1330,7 @@ class MapOptions extends JsObjectWrapper<MapOptionsJsImpl> {
   String get localIdeographFontFamily =>
       jsObject.localIdeographFontFamily.toDart;
 
-  /// A callback run before the MapLibreMap makes a request for an external URL. The callback can be used to modify the url, set headers, or set the credentials property for cross-origin requests.
+  /// A callback run before the SiroMap makes a request for an external URL. The callback can be used to modify the url, set headers, or set the credentials property for cross-origin requests.
   /// Expected to return an object with a `url` property and optionally `headers` and `credentials` properties.
   JSFunction? get transformRequest => jsObject.transformRequest;
 
@@ -1536,31 +1536,31 @@ class RequestParameters extends JsObjectWrapper<RequestParametersJsImpl> {
 ///   }
 ///
 ///   @override
-///   HtmlElement onAdd(MapLibreMap map) {
+///   HtmlElement onAdd(SiroMap map) {
 ///     _divElement = DivElement();
 ///     _divElement.text = 'Hello World';
 ///     return _divElement;
 ///   }
 ///
 ///   @override
-///   onRemove(MapLibreMap map) {
+///   onRemove(SiroMap map) {
 ///     _divElement.remove();
 ///   }
 /// }
 /// ```
 class IControl extends JsObjectWrapper<IControlJsImpl> {
   ///  Register a control on the map and give it a chance to register event listeners
-  ///  and resources. This method is called by {@link MapLibreMap#addControl}
+  ///  and resources. This method is called by {@link SiroMap#addControl}
   ///  internally.
-  HtmlElement onAdd(MapLibreMap map) => jsObject.onAdd(map.jsObject);
+  HtmlElement onAdd(SiroMap map) => jsObject.onAdd(map.jsObject);
 
   ///  Unregister a control on the map and give it a chance to detach event listeners
-  ///  and resources. This method is called by {@link MapLibreMap#removeControl}
+  ///  and resources. This method is called by {@link SiroMap#removeControl}
   ///  internally.
-  onRemove(MapLibreMap map) => jsObject.onRemove(map.jsObject);
+  onRemove(SiroMap map) => jsObject.onRemove(map.jsObject);
 
   ///  Optionally provide a default position for this control. If this method
-  ///  is implemented and {@link MapLibreMap#addControl} is called without the `position`
+  ///  is implemented and {@link SiroMap#addControl} is called without the `position`
   ///  parameter, the value returned by getDefaultPosition will be used as the
   ///  control's position.
   String getDefaultPosition() => jsObject.getDefaultPosition();

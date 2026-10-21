@@ -1,11 +1,10 @@
-part of '../maplibre_gl_web.dart';
+part of '../siro_gl_web.dart';
 
-class MapLibreMapController extends MapLibrePlatform
-    implements MapLibreMapOptionsSink {
+class SiroMapController extends SiroGlPlatform implements SiroMapOptionsSink {
   late web.HTMLDivElement _mapElement;
 
   late Map<String, dynamic> _creationParams;
-  late MapLibreMap _map;
+  late SiroMap _map;
 
   /// Whether [_map] has been assigned. [initPlatform] can fail before it is,
   /// now that it loads maplibre-gl-js first, and [dispose] still runs after
@@ -60,7 +59,7 @@ class MapLibreMapController extends MapLibrePlatform
     _creationParams = creationParams;
     _registerViewFactory(onPlatformViewCreated, hashCode);
     return HtmlElementView(
-      viewType: 'plugins.flutter.io/maplibre_gl_$hashCode',
+      viewType: '$siroMapChannelPrefix$hashCode',
     );
   }
 
@@ -80,7 +79,7 @@ class MapLibreMapController extends MapLibrePlatform
 
   void _registerViewFactory(Function(int) callback, int identifier) {
     ui_web.platformViewRegistry.registerViewFactory(
-      'plugins.flutter.io/maplibre_gl_$identifier',
+      '$siroMapChannelPrefix$identifier',
       (int viewId) {
         _mapElement =
             (web.document.createElement('div') as web.HTMLDivElement)
@@ -99,7 +98,7 @@ class MapLibreMapController extends MapLibrePlatform
   Future<void> initPlatform(int id) async {
     // Every @JS binding in this package resolves its name at call time, so
     // nothing below works until maplibre-gl-js is on the page.
-    await MapLibreJsLoader.ensureLoaded();
+    await SiroJsLoader.ensureLoaded();
 
     final camera =
         _creationParams['initialCameraPosition'] as Map<String, dynamic>?;
@@ -114,7 +113,7 @@ class MapLibreMapController extends MapLibrePlatform
     // when it cannot get any WebGL context, and it is the build the docs send a
     // WebGL1 only browser to.
     try {
-      _map = MapLibreMap(
+      _map = SiroMap(
         MapOptions(
           container: _mapElement,
           center:
@@ -179,7 +178,7 @@ class MapLibreMapController extends MapLibrePlatform
   ///
   /// Since maplibre-gl-js 6 that is what a browser without WebGL2 gets, and the
   /// library only fires an `error` from inside its constructor, too early for
-  /// [MapLibreMap.on] to catch, so without this the map is just empty.
+  /// [SiroMap.on] to catch, so without this the map is just empty.
   ///
   /// Each distinct cause is reported once per session, through
   /// [FlutterError.reportError] rather than the silenceable [debugPrint]. Nothing
@@ -665,7 +664,7 @@ class MapLibreMapController extends MapLibrePlatform
     if (!_map.isStyleLoaded()) {
       // Style is not loaded yet, return empty list
       print(
-        'MapLibreMapController: queryRenderedFeatures, Style not loaded yet, returning empty list',
+        'SiroMapController: queryRenderedFeatures, Style not loaded yet, returning empty list',
       );
       return [];
     }
@@ -708,7 +707,7 @@ class MapLibreMapController extends MapLibrePlatform
     if (!_map.isStyleLoaded()) {
       // Style is not loaded yet, return empty list
       print(
-        'MapLibreMapController: queryRenderedFeaturesInRect, Style not loaded yet, returning empty list',
+        'SiroMapController: queryRenderedFeaturesInRect, Style not loaded yet, returning empty list',
       );
       return [];
     }
@@ -932,7 +931,7 @@ class MapLibreMapController extends MapLibrePlatform
         {'sdf': sdf, 'pixelRatio': 1},
       );
     } else {
-      print('MapLibreMapController: Image already exists on map: $name');
+      print('SiroMapController: Image already exists on map: $name');
     }
   }
 
@@ -1217,7 +1216,7 @@ class MapLibreMapController extends MapLibrePlatform
   }
 
   /*
-   *  MapLibreMapOptionsSink
+   *  SiroMapOptionsSink
    */
   @override
   void setAttributionButtonMargins(int x, int y) {
@@ -1886,7 +1885,7 @@ class MapLibreMapController extends MapLibrePlatform
   /// For tests of the calls that do nothing but hand a payload to
   /// maplibre-gl-js, which can then be driven against a stand-in for it.
   @visibleForTesting
-  void debugSetMap(MapLibreMap map) => _map = map;
+  void debugSetMap(SiroMap map) => _map = map;
 
   @override
   Future<void> setSky(SkyProperties sky) async {

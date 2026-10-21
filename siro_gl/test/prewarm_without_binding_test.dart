@@ -10,7 +10,7 @@ library;
 // of one is the condition under test. `flutter_test` only creates a binding
 // when something asks for it, so a single `testWidgets`, a `TestDefaultBinary
 // MessengerBinding` call, or anything else touching the binding added here
-// would make this test pass no matter what MapLibreMap.preWarm() does.
+// would make this test pass no matter what SiroMap.preWarm() does.
 //
 // Regression test for the "Binding has not yet been initialized" crash: the
 // method is documented as the first thing in `main()`, before `runApp()`, and
@@ -18,7 +18,7 @@ library;
 // its messenger through ServicesBinding.instance.
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 void main() {
   test('preWarm can be called before the binding exists', () async {
@@ -34,6 +34,6 @@ void main() {
           'exercises the no-binding path and must be restored to a file '
           'where nothing touches the binding',
     );
-    await expectLater(MapLibreMap.preWarm(), completes);
+    await expectLater(SiroMap.preWarm(), completes);
   });
 }

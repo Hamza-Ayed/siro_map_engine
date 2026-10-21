@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +46,7 @@ void main() {
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(
-          const MethodChannel('plugins.flutter.io/maplibre_gl'),
+          const MethodChannel(siroGlobalChannelName),
           (methodCall) async {
             methodCalls.add(methodCall);
 
@@ -112,7 +113,7 @@ void main() {
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl'),
+            const MethodChannel(siroGlobalChannelName),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -156,7 +157,7 @@ void main() {
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl'),
+            const MethodChannel(siroGlobalChannelName),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -202,7 +203,7 @@ void main() {
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl'),
+            const MethodChannel(siroGlobalChannelName),
             (methodCall) async {
               methodCalls.add(methodCall);
 
@@ -297,7 +298,7 @@ void main() {
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl'),
+            const MethodChannel(siroGlobalChannelName),
             (methodCall) async {
               methodCalls.add(methodCall);
               if (methodCall.method == 'getOfflineRegionStatus') {
@@ -326,7 +327,7 @@ void main() {
     // immediate no-op that never throws: app code awaits it unconditionally
     // on every platform before doing web-only JS interop.
     test('completes immediately on the method-channel default', () async {
-      await expectLater(MapLibreMap.ensureWebLibraryLoaded(), completes);
+      await expectLater(SiroMap.ensureWebLibraryLoaded(), completes);
 
       expect(methodCalls, isEmpty);
     });
@@ -335,7 +336,7 @@ void main() {
   if (!kIsWeb) {
     group('preWarm', () {
       test('sends correct method', () async {
-        await MapLibreMap.preWarm();
+        await SiroMap.preWarm();
 
         expect(methodCalls.length, 1);
         expect(methodCalls[0].method, 'preWarm');
@@ -343,25 +344,25 @@ void main() {
 
       test('does not throw when mock returns null', () async {
         // The default mock handler already returns null for unknown methods.
-        await expectLater(MapLibreMap.preWarm(), completes);
+        await expectLater(SiroMap.preWarm(), completes);
       });
 
       test('handles MissingPluginException gracefully', () async {
         TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
             .setMockMethodCallHandler(
-              const MethodChannel('plugins.flutter.io/maplibre_gl'),
+              const MethodChannel(siroGlobalChannelName),
               (methodCall) async {
                 throw MissingPluginException('not implemented');
               },
             );
 
-        await expectLater(MapLibreMap.preWarm(), completes);
+        await expectLater(SiroMap.preWarm(), completes);
       });
 
       test('safe to call multiple times', () async {
-        await MapLibreMap.preWarm();
-        await MapLibreMap.preWarm();
-        await MapLibreMap.preWarm();
+        await SiroMap.preWarm();
+        await SiroMap.preWarm();
+        await SiroMap.preWarm();
 
         expect(methodCalls.length, 3);
         for (final call in methodCalls) {

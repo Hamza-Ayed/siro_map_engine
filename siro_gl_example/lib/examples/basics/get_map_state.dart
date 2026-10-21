@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -26,12 +26,12 @@ class _GetMapInfoBody extends StatefulWidget {
 }
 
 class _GetMapInfoBodyState extends State<_GetMapInfoBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   String _displayData = '';
   bool _isLoading = false;
   int _idleCount = 0;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -136,7 +136,7 @@ class _GetMapInfoBodyState extends State<_GetMapInfoBody> {
     final hasController = _controller != null;
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         onMapCreated: _onMapCreated,
         onMapIdle: _onMapIdle,
         styleString: ExampleConstants.demoMapStyle,

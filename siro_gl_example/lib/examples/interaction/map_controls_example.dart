@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -39,7 +39,7 @@ class _MapControlsBody extends StatefulWidget {
 }
 
 class _MapControlsBodyState extends State<_MapControlsBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   // UI Settings
   bool _compassEnabled = true;
@@ -58,7 +58,7 @@ class _MapControlsBodyState extends State<_MapControlsBody> {
   // Current Map State
   CameraPosition? _currentPosition;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
     controller.addListener(_onMapChanged);
   }
@@ -129,7 +129,7 @@ class _MapControlsBodyState extends State<_MapControlsBody> {
     final lng = _currentPosition?.target.longitude.toStringAsFixed(4) ?? '--';
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         initialCameraPosition: ExampleConstants.defaultCameraPosition,

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -25,11 +25,11 @@ class _FullMapBody extends StatefulWidget {
 }
 
 class _FullMapBodyState extends State<_FullMapBody> {
-  MapLibreMapController? _mapController;
+  SiroMapController? _mapController;
   bool _canInteractWithMap = false;
   bool canReset = false;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _mapController = controller;
     setState(() => _canInteractWithMap = true);
   }
@@ -53,7 +53,7 @@ class _FullMapBodyState extends State<_FullMapBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MapLibreMap(
+      body: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         initialCameraPosition: ExampleConstants.defaultCameraPosition,

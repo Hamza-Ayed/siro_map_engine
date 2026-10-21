@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
- * Platform-view factory for {@code plugins.flutter.io/maplibre_gl}.
+ * Platform-view factory for {@code com.siro.gl/map}.
  *
  * <p>Beyond the standard {@link PlatformViewFactory} responsibilities, this class
  * keeps a weak registry of every {@link MapLibreMapController} it has produced so

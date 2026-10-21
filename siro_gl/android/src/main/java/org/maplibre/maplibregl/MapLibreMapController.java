@@ -303,7 +303,7 @@ final class MapLibreMapController
     }
 
     mapViewContainer.addView(mapView);
-    methodChannel = new MethodChannel(messenger, "plugins.flutter.io/maplibre_gl_" + id);
+    methodChannel = new MethodChannel(messenger, "com.siro.gl/map_" + id);
     methodChannel.setMethodCallHandler(this);
   }
 

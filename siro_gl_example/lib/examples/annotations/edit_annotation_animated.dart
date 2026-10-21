@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:siro_gl_example/util.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -31,7 +31,7 @@ class _EditAnnotationAnimatedBody extends StatefulWidget {
 class _EditAnnotationAnimatedBodyState
     extends State<_EditAnnotationAnimatedBody>
     with SingleTickerProviderStateMixin {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   Symbol? _animatedSymbol;
   Circle? _animatedCircle;
   Line? _animatedLine;
@@ -73,7 +73,7 @@ class _EditAnnotationAnimatedBodyState
     super.dispose();
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -336,7 +336,7 @@ class _EditAnnotationAnimatedBodyState
         _animatedLine != null;
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         initialCameraPosition: const CameraPosition(
           target: ExampleConstants.sydneyCenter,
           zoom: 13,

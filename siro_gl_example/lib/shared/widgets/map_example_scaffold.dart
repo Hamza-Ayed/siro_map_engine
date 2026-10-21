@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../constants.dart';
 
 /// A reusable scaffold for map examples that provides a consistent layout:
@@ -8,7 +8,7 @@ import '../constants.dart';
 /// - Automatic handling of responsive sizing
 class MapExampleScaffold extends StatelessWidget {
   /// The MapLibre map widget
-  final MapLibreMap map;
+  final SiroMap map;
 
   /// Control widgets to display below the map
   final List<Widget> controls;
@@ -118,7 +118,7 @@ class MapExampleScaffold extends StatelessWidget {
 /// A builder variant that accepts a child builder for more complex layouts
 class MapExampleScaffoldBuilder extends StatelessWidget {
   /// The MapLibre map widget
-  final MapLibreMap map;
+  final SiroMap map;
 
   /// Builder for the control panel content
   final Widget Function(BuildContext context) controlsBuilder;

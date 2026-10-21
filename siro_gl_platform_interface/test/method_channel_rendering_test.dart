@@ -1,21 +1,21 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   group('MethodChannel rendering control', () {
-    late MapLibreMethodChannel platform;
+    late SiroMethodChannel platform;
     late List<MethodCall> methodCalls;
 
     setUp(() async {
-      platform = MapLibreMethodChannel();
+      platform = SiroMethodChannel();
       methodCalls = [];
 
       TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(
-            const MethodChannel('plugins.flutter.io/maplibre_gl_0'),
+            const MethodChannel('${siroMapChannelPrefix}0'),
             (methodCall) async {
               methodCalls.add(methodCall);
               return null;

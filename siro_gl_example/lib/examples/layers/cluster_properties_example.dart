@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -41,9 +41,9 @@ class _ClusterPropertiesBody extends StatefulWidget {
 class _ClusterPropertiesBodyState extends State<_ClusterPropertiesBody> {
   static const _sourceId = 'earthquakes';
 
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
   }
 
@@ -169,7 +169,7 @@ class _ClusterPropertiesBodyState extends State<_ClusterPropertiesBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: MapLibreMap(
+      body: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

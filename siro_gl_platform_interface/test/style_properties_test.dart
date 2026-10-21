@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 
 // The style root objects are handed to the renderer as-is, and the style spec
 // spells every key in kebab-case. A misspelled key is not rejected, it is

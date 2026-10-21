@@ -31,9 +31,9 @@ class Marker extends Evented {
       Marker.fromJsObject(MarkerJsImpl(options?.jsObject));
 
   ///  Attaches the marker to a map
-  ///  @param {MapLibreMap} map
+  ///  @param {SiroMap} map
   ///  @returns {Marker} `this`
-  Marker addTo(MapLibreMap map) =>
+  Marker addTo(SiroMap map) =>
       Marker.fromJsObject(jsObject.addTo(map.jsObject));
 
   ///  Removes the marker from a map

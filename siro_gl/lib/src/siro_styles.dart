@@ -1,7 +1,7 @@
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
 /// MapLibre styles used mostly for demonstration.
-abstract class MapLibreStyles {
+abstract class SiroStyles {
   /// A very simple MapLibre demo style that shows only countries with their
   /// boundaries.
   static const String demo = 'https://demotiles.maplibre.org/style.json';

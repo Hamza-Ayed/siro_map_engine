@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'offline_regions.dart';
 
@@ -17,7 +17,7 @@ class _OfflineRegionMapState extends State<OfflineRegionMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Offline Region: ${widget.item.name}')),
-      body: MapLibreMap(
+      body: SiroMap(
         initialCameraPosition: CameraPosition(
           target: _center,
           zoom: widget.item.offlineRegionDefinition.minZoom,

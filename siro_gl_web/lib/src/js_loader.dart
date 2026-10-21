@@ -3,11 +3,11 @@ import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
 
 import 'package:flutter/foundation.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 import 'package:web/web.dart' as web;
 
 /// The maplibre-gl-js build loaded when the app has not configured a
-/// [MapLibreJsSource].
+/// [SiroJsSource].
 ///
 /// Pinned exactly rather than with a caret: every `@JS` binding in this
 /// package is written against one specific build, so which build ships must
@@ -18,21 +18,21 @@ const kMapLibreJsVersion = '6.4.1';
 /// Thrown when maplibre-gl-js cannot be brought onto the page, whether the
 /// import fails or times out, or a preloaded page never provides the
 /// `maplibregl` global.
-class MapLibreJsLoaderException implements Exception {
-  MapLibreJsLoaderException(this.message);
+class SiroJsLoaderException implements Exception {
+  SiroJsLoaderException(this.message);
 
   final String message;
 
   @override
-  String toString() => 'MapLibreJsLoaderException: $message';
+  String toString() => 'SiroJsLoaderException: $message';
 }
 
 /// Loads maplibre-gl-js into the page, honoring the app's
-/// [MapLibreJsSource.configured] choice.
+/// [SiroJsSource.configured] choice.
 ///
 /// Everything in this package that touches the `maplibregl` global awaits
 /// [ensureLoaded] first; the actual work runs once per session.
-abstract final class MapLibreJsLoader {
+abstract final class SiroJsLoader {
   /// Where the library comes from when the app configures nothing.
   ///
   /// This has to stay an ESM build: [_importLibrary] imports it as a module,
@@ -53,7 +53,7 @@ abstract final class MapLibreJsLoader {
   static const _importFailureHint =
       'A Content-Security-Policy that blocks that host, a device that is '
       'offline, or a server that does not serve .mjs as a JavaScript MIME type '
-      'are the usual causes. MapLibreMap.webLibrarySource can point the plugin '
+      'are the usual causes. SiroMap.webLibrarySource can point the plugin '
       'at a self-hosted copy instead.';
 
   /// The single in-flight or completed load. Cleared on failure (see
@@ -71,7 +71,7 @@ abstract final class MapLibreJsLoader {
   /// Seam for tests, which run under `flutter test --platform chrome` and
   /// must not touch the network.
   @visibleForTesting
-  static Future<void> Function(MapLibreJsSource source) loadResources =
+  static Future<void> Function(SiroJsSource source) loadResources =
       _loadResources;
 
   /// Restores the loader to its initial state between tests.
@@ -96,7 +96,7 @@ abstract final class MapLibreJsLoader {
   }
 
   static Future<void> _load() async {
-    final source = MapLibreJsSource.configured ?? const MapLibreJsSource.cdn();
+    final source = SiroJsSource.configured ?? const SiroJsSource.cdn();
     try {
       await loadResources(source);
     } catch (_) {
@@ -107,7 +107,7 @@ abstract final class MapLibreJsLoader {
     }
   }
 
-  static Future<void> _loadResources(MapLibreJsSource source) async {
+  static Future<void> _loadResources(SiroJsSource source) async {
     if (source.preloaded) {
       return _waitForGlobal(source.timeout);
     }
@@ -141,7 +141,7 @@ abstract final class MapLibreJsLoader {
     await _importLibrary(scriptUrl).timeout(
       source.timeout,
       onTimeout: () {
-        throw MapLibreJsLoaderException(
+        throw SiroJsLoaderException(
           'timed out after ${source.timeout.inSeconds}s waiting for '
           'maplibre-gl-js from $scriptUrl. $_importFailureHint',
         );
@@ -170,7 +170,7 @@ abstract final class MapLibreJsLoader {
       module = await importModule(target.toJS).toDart;
     } catch (error) {
       _failedImports++;
-      throw MapLibreJsLoaderException(
+      throw SiroJsLoaderException(
         'could not import maplibre-gl-js from $target ($error). '
         '$_importFailureHint',
       );
@@ -179,7 +179,7 @@ abstract final class MapLibreJsLoader {
     // Only publish a namespace that actually carries the library. An older,
     // non-module bundle imported this way runs fine, exports nothing, and
     // defines the global itself as a side effect, which is what an app still
-    // pointing MapLibreJsSource.urls at a maplibre-gl 5 `.js` file gets.
+    // pointing SiroJsSource.urls at a maplibre-gl 5 `.js` file gets.
     // Publishing that empty namespace would replace a working library with an
     // empty object and break every later call, with no error to go on.
     if (module.has('Map')) {
@@ -187,7 +187,7 @@ abstract final class MapLibreJsLoader {
       return;
     }
     if (globalContext.has('maplibregl')) return;
-    throw MapLibreJsLoaderException(
+    throw SiroJsLoaderException(
       'loaded $target, but it provided no maplibre-gl-js: neither the module it '
       'returned nor globalThis.maplibregl has a Map constructor. If that URL '
       'is a self-hosted copy, check it is the ESM build (maplibre-gl.mjs).',
@@ -201,7 +201,7 @@ abstract final class MapLibreJsLoader {
       '$url${url.contains('?') ? '&' : '?'}maplibreGlRetry=$attempt';
 
   /// Polls for the `maplibregl` global on a page that loads the library
-  /// itself ([MapLibreJsSource.preloaded]).
+  /// itself ([SiroJsSource.preloaded]).
   ///
   /// Since maplibre-gl-js 6 is ESM only, importing it defines no global, so
   /// such a page has to publish the namespace itself. The error below says so,
@@ -210,12 +210,12 @@ abstract final class MapLibreJsLoader {
     final clock = Stopwatch()..start();
     while (!globalContext.has('maplibregl')) {
       if (clock.elapsed > timeout) {
-        throw MapLibreJsLoaderException(
-          'MapLibreJsSource.preloaded is configured, but no maplibregl global '
+        throw SiroJsLoaderException(
+          'SiroJsSource.preloaded is configured, but no maplibregl global '
           'appeared within ${timeout.inSeconds}s. maplibre-gl-js 6 is an ES '
           'module and defines no global on its own, so the page has to publish '
           'one: `globalThis.maplibregl = await import(".../maplibre-gl.mjs")`. '
-          'Otherwise leave MapLibreMap.webLibrarySource unset and let the '
+          'Otherwise leave SiroMap.webLibrarySource unset and let the '
           'plugin load the library itself.',
         );
       }
@@ -243,7 +243,7 @@ abstract final class MapLibreJsLoader {
       ((web.Event _) {
         if (!completer.isCompleted) {
           completer.completeError(
-            MapLibreJsLoaderException('the stylesheet failed to load'),
+            SiroJsLoaderException('the stylesheet failed to load'),
           );
         }
       }).toJS,
@@ -258,7 +258,7 @@ abstract final class MapLibreJsLoader {
   static web.HTMLHeadElement get _head {
     final head = web.document.head;
     if (head == null) {
-      throw MapLibreJsLoaderException(
+      throw SiroJsLoaderException(
         'the document has no <head> to inject maplibre-gl-js into',
       );
     }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:developer' as dev;
 import 'dart:math' show Point, Random;
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:siro_gl_example/util.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -30,7 +30,7 @@ class _EditStyleLayerDraggableBody extends StatefulWidget {
 
 class _EditStyleLayerDraggableBodyState
     extends State<_EditStyleLayerDraggableBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const _circleSourceId = 'draggable_circle_source';
   static const _circleLayerId = 'draggable_circle_layer';
@@ -48,7 +48,7 @@ class _EditStyleLayerDraggableBodyState
   int _featureCounter = 0;
   bool _layersCreated = false;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     controller.onFeatureDrag.add(_onFeatureDrag);
     setState(() => _controller = controller);
   }
@@ -334,7 +334,7 @@ class _EditStyleLayerDraggableBodyState
     final totalFeatures = _circleFeatures.length + _symbolFeatures.length;
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         initialCameraPosition: const CameraPosition(
           target: ExampleConstants.sydneyCenter,
           zoom: 13,

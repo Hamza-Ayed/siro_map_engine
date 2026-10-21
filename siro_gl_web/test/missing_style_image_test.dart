@@ -39,8 +39,7 @@ void main() {
     return map;
   }
 
-  MapLibreMap wrap(JSObject map) =>
-      MapLibreMap.fromJsObject(map as MapLibreMapJsImpl);
+  SiroMap wrap(JSObject map) => SiroMap.fromJsObject(map as JsMapImpl);
 
   group('hasMissingStyleImageResolver', () {
     test('is true for a build that has the method', () {

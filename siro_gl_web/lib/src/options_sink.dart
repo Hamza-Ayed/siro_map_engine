@@ -1,6 +1,6 @@
-part of '../maplibre_gl_web.dart';
+part of '../siro_gl_web.dart';
 
-abstract class MapLibreMapOptionsSink {
+abstract class SiroMapOptionsSink {
   // TODO: replace with CameraPosition.Builder target
   void setCameraTargetBounds(LatLngBounds? bounds);
 

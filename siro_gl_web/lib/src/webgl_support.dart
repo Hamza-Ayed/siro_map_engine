@@ -52,7 +52,7 @@ String? webGlDiagnostic({
   return 'siro_gl_web: the map has no renderer, because this browser has '
       'WebGL1 but not WebGL2. maplibre-gl-js 6 requires WebGL2 and dropped the '
       'WebGL1 fallback that 5 had. To keep browsers like this one, point '
-      'MapLibreMap.webLibrarySource at a maplibre-gl-js 5 build, the last major '
+      'SiroMap.webLibrarySource at a maplibre-gl-js 5 build, the last major '
       'with that fallback: '
       'https://maplibre.org/flutter-maplibre-gl/migration/#web-the-engine-moves-to-maplibre-gl-js-6';
 }
@@ -63,6 +63,6 @@ String? webGlDiagnostic({
 /// all, can be tested against a stand-in map. [probe] is injectable for the same
 /// reason and defaults to [canCreateWebGlContext].
 String? mapRendererDiagnostic(
-  MapLibreMap map, {
+  SiroMap map, {
   bool Function({required bool version2}) probe = canCreateWebGlContext,
 }) => webGlDiagnostic(hasRenderer: map.painter != null, probe: probe);

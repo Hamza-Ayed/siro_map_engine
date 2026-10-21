@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:siro_gl_example/util.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
@@ -29,7 +29,7 @@ class _AnnotationsBody extends StatefulWidget {
 }
 
 class _AnnotationsBodyState extends State<_AnnotationsBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   AnnotationType _currentType = AnnotationType.symbol;
 
   final Map<String, Symbol> _symbols = {};
@@ -40,7 +40,7 @@ class _AnnotationsBodyState extends State<_AnnotationsBody> {
   int _counter = 0;
   String? _lastTappedAnnotation;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     controller.onFeatureTapped.add(
       (point, coordinates, id, layerId, annotation) =>
           print('AnnotationsExample: Feature tapped with id $id'),
@@ -436,7 +436,7 @@ class _AnnotationsBodyState extends State<_AnnotationsBody> {
     final totalCount = _getTotalCount();
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

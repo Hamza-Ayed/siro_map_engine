@@ -1,24 +1,24 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 void main() {
-  group('MapLibreMapOptions.updatesMap', () {
+  group('SiroMapOptions.updatesMap', () {
     test(
       'returns empty diff when only nested-list options (cameraTargetBounds) are equal by value',
       () {
-        // Two MapLibreMap widgets with the *same* cameraTargetBounds value
+        // Two SiroMap widgets with the *same* cameraTargetBounds value
         // (deeply nested list when serialized to JSON). The diff between
-        // their derived MapLibreMapOptions must be empty: nothing changed,
+        // their derived SiroMapOptions must be empty: nothing changed,
         // so no platform update should be triggered.
         final bounds = LatLngBounds(
           southwest: const LatLng(10, 20),
           northeast: const LatLng(30, 40),
         );
 
-        final mapA = MapLibreMap(
+        final mapA = SiroMap(
           cameraTargetBounds: CameraTargetBounds(bounds),
         );
-        final mapB = MapLibreMap(
+        final mapB = SiroMap(
           cameraTargetBounds: CameraTargetBounds(
             LatLngBounds(
               southwest: const LatLng(10, 20),
@@ -27,8 +27,8 @@ void main() {
           ),
         );
 
-        final optionsA = MapLibreMapOptions.fromWidget(mapA);
-        final optionsB = MapLibreMapOptions.fromWidget(mapB);
+        final optionsA = SiroMapOptions.fromWidget(mapA);
+        final optionsB = SiroMapOptions.fromWidget(mapB);
 
         final diff = optionsA.updatesMap(optionsB);
 
@@ -44,7 +44,7 @@ void main() {
     );
 
     test('detects an actual cameraTargetBounds change', () {
-      final mapA = MapLibreMap(
+      final mapA = SiroMap(
         cameraTargetBounds: CameraTargetBounds(
           LatLngBounds(
             southwest: const LatLng(10, 20),
@@ -52,7 +52,7 @@ void main() {
           ),
         ),
       );
-      final mapB = MapLibreMap(
+      final mapB = SiroMap(
         cameraTargetBounds: CameraTargetBounds(
           LatLngBounds(
             southwest: const LatLng(11, 21),
@@ -61,20 +61,20 @@ void main() {
         ),
       );
 
-      final diff = MapLibreMapOptions.fromWidget(
+      final diff = SiroMapOptions.fromWidget(
         mapA,
-      ).updatesMap(MapLibreMapOptions.fromWidget(mapB));
+      ).updatesMap(SiroMapOptions.fromWidget(mapB));
 
       expect(diff.containsKey('cameraTargetBounds'), isTrue);
     });
 
     test('returns empty diff when no widget property changed at all', () {
-      final mapA = MapLibreMap();
-      final mapB = MapLibreMap();
+      final mapA = SiroMap();
+      final mapB = SiroMap();
 
-      final diff = MapLibreMapOptions.fromWidget(
+      final diff = SiroMapOptions.fromWidget(
         mapA,
-      ).updatesMap(MapLibreMapOptions.fromWidget(mapB));
+      ).updatesMap(SiroMapOptions.fromWidget(mapB));
 
       expect(diff, isEmpty);
     });

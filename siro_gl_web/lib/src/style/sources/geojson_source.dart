@@ -32,7 +32,7 @@ class GeoJsonSource extends Source<GeoJsonSourceJsImpl> {
 
   /// Whether the underlying source carries the cluster-inspection methods.
   ///
-  /// `MapLibreMap.getSource` wraps whatever it finds in a [GeoJsonSource],
+  /// `SiroMap.getSource` wraps whatever it finds in a [GeoJsonSource],
   /// because casting to an extension type cannot fail, so this is what tells a
   /// GeoJSON source apart from a vector or raster one.
   bool get hasClusterInspection => jsObject.has('getClusterExpansionZoom');

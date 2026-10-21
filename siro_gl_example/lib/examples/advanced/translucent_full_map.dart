@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
@@ -25,11 +25,11 @@ class _TranslucentMapBody extends StatefulWidget {
 }
 
 class _TranslucentMapBodyState extends State<_TranslucentMapBody> {
-  MapLibreMapController? _mapController;
+  SiroMapController? _mapController;
   bool _canInteractWithMap = false;
   bool _canReset = false;
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _mapController = controller;
   }
 
@@ -69,7 +69,7 @@ class _TranslucentMapBodyState extends State<_TranslucentMapBody> {
               ),
             ),
           ),
-          MapLibreMap(
+          SiroMap(
             styleString: 'assets/translucent_style.json',
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,

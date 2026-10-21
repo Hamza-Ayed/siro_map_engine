@@ -1,17 +1,17 @@
 import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 
 import 'helpers/fake_platform.dart';
 
-/// Creates a [MapLibreMapController] backed by the given [FakeMapLibrePlatform]
+/// Creates a [SiroMapController] backed by the given [FakeMapLibrePlatform]
 /// with all annotation types enabled for interaction, and manually initializes
 /// all annotation managers (bypassing the async style-loaded callback).
-Future<MapLibreMapController> _createController(
+Future<SiroMapController> _createController(
   FakeMapLibrePlatform platform,
 ) async {
-  final controller = MapLibreMapController(
+  final controller = SiroMapController(
     maplibrePlatform: platform,
     initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
     annotationOrder: AnnotationType.values,
@@ -36,7 +36,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late FakeMapLibrePlatform platform;
-  late MapLibreMapController controller;
+  late SiroMapController controller;
 
   setUp(() async {
     platform = FakeMapLibrePlatform();
@@ -300,7 +300,7 @@ void main() {
 
     test('adding annotation before init throws', () {
       final freshPlatform = FakeMapLibrePlatform();
-      final freshController = MapLibreMapController(
+      final freshController = SiroMapController(
         maplibrePlatform: freshPlatform,
         initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
         annotationOrder: AnnotationType.values,
@@ -322,7 +322,7 @@ void main() {
         // loads normally but no annotation manager is created, so every add
         // call must fail with a message pointing at annotationOrder.
         final freshPlatform = FakeMapLibrePlatform();
-        final freshController = MapLibreMapController(
+        final freshController = SiroMapController(
           maplibrePlatform: freshPlatform,
           initialCameraPosition: const CameraPosition(target: LatLng(0, 0)),
           annotationOrder: const [],

@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../page.dart';
 import '../../shared/shared.dart';
 
 /// Snapshot of the user's location as reported by the map's location engine.
-/// The map (via [MapLibreMap.onUserLocationUpdated]) is the source of truth
+/// The map (via [SiroMap.onUserLocationUpdated]) is the source of truth
 /// here, so this is a plain value holder rather than a location plugin type.
 class _LocationSnapshot {
   const _LocationSnapshot({
@@ -50,13 +50,13 @@ class _GpsLocationBody extends StatefulWidget {
 }
 
 class _GpsLocationBodyState extends State<_GpsLocationBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
   _LocationSnapshot? _currentLocation;
   bool _useHighAccuracy = false;
   bool _hasPermission = false;
   MyLocationTrackingMode _trackingMode = MyLocationTrackingMode.none;
 
-  /// Pitch last requested through [MapLibreMapController.setTrackingCameraOptions].
+  /// Pitch last requested through [SiroMapController.setTrackingCameraOptions].
   double _trackingTilt = 0;
 
   /// What the last tracking-tilt attempt reported, shown under the slider.
@@ -84,7 +84,7 @@ class _GpsLocationBodyState extends State<_GpsLocationBody> {
     }
   }
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -218,7 +218,7 @@ class _GpsLocationBodyState extends State<_GpsLocationBody> {
     final hasLocation = _currentLocation != null;
 
     return MapExampleScaffold(
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onUserLocationUpdated: _onUserLocationUpdated,

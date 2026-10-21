@@ -17,7 +17,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Element;
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
-import 'package:siro_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 import 'package:image/image.dart' hide Point;
 import 'package:siro_gl_web/src/geo/point.dart' as geo_point;
 import 'package:siro_gl_web/src/geo/geojson.dart';
@@ -43,10 +43,10 @@ import 'package:siro_gl_web/src/camera_easing_math.dart';
 
 part 'src/convert.dart';
 
-part 'src/maplibre_map_plugin.dart';
+part 'src/siro_map_plugin.dart';
 
 part 'src/options_sink.dart';
 
-part 'src/maplibre_web_gl_platform.dart';
+part 'src/siro_web_gl_platform.dart';
 
 part 'src/camera_easing.dart';

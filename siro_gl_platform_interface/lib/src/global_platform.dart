@@ -1,21 +1,21 @@
-part of '../maplibre_gl_platform_interface.dart';
+part of '../siro_gl_platform_interface.dart';
 
 /// Platform hooks for operations that are global to the plugin rather than
 /// tied to a single map, so they can run before any map widget exists.
 ///
-/// [MapLibrePlatform] is created per map widget through
-/// [MapLibrePlatform.createInstance], which makes it unusable for calls apps
+/// [SiroGlPlatform] is created per map widget through
+/// [SiroGlPlatform.createInstance], which makes it unusable for calls apps
 /// issue from `main()`, before the first map is built. This class fills that
 /// gap: the web package replaces [instance] when it registers, the same way
-/// it replaces [MapLibrePlatform.createInstance], while Android and iOS keep
+/// it replaces [SiroGlPlatform.createInstance], while Android and iOS keep
 /// the method-channel default.
-abstract class MapLibreGlobalPlatform {
+abstract class SiroGlobalPlatform {
   /// The instance behind the global functions in `maplibre_gl`, such as
   /// `preWarm()` and `ensureWebLibraryLoaded()`.
   ///
-  /// Defaults to [MapLibreGlobalMethodChannel]. Platform packages replace it
+  /// Defaults to [SiroGlobalMethodChannel]. Platform packages replace it
   /// when they register themselves.
-  static MapLibreGlobalPlatform instance = MapLibreGlobalMethodChannel();
+  static SiroGlobalPlatform instance = SiroGlobalMethodChannel();
 
   /// Starts up the underlying map engine ahead of the first map widget.
   Future<void> preWarm();
@@ -29,10 +29,10 @@ abstract class MapLibreGlobalPlatform {
   Future<void> ensureLibraryLoaded();
 }
 
-/// The default [MapLibreGlobalPlatform], talking to Android and iOS over the
+/// The default [SiroGlobalPlatform], talking to Android and iOS over the
 /// plugin's global method channel.
-class MapLibreGlobalMethodChannel extends MapLibreGlobalPlatform {
-  static const _channel = MethodChannel('plugins.flutter.io/maplibre_gl');
+class SiroGlobalMethodChannel extends SiroGlobalPlatform {
+  static const _channel = MethodChannel(siroGlobalChannelName);
 
   @override
   Future<void> preWarm() async {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 import '../../util.dart';
@@ -25,7 +25,7 @@ class _AnnotationOrderBody extends StatefulWidget {
 }
 
 class _AnnotationOrderBodyState extends State<_AnnotationOrderBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   // Default order: bottom to top
   final List<AnnotationType> _annotationOrder = [
@@ -37,7 +37,7 @@ class _AnnotationOrderBodyState extends State<_AnnotationOrderBody> {
 
   final LatLng _center = const LatLng(36.580664, 32.5563837);
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     setState(() => _controller = controller);
   }
 
@@ -138,7 +138,7 @@ class _AnnotationOrderBodyState extends State<_AnnotationOrderBody> {
   Widget build(BuildContext context) {
     return MapExampleScaffold(
       mapHeightRatio: 0.4,
-      map: MapLibreMap(
+      map: SiroMap(
         key: ValueKey(_annotationOrder.toString()),
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,

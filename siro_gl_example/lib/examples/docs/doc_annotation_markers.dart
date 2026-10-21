@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:siro_gl/maplibre_gl.dart';
+import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 import '../../util.dart';
@@ -26,7 +26,7 @@ class _DocAnnotationMarkersBody extends StatefulWidget {
 }
 
 class _DocAnnotationMarkersBodyState extends State<_DocAnnotationMarkersBody> {
-  MapLibreMapController? _controller;
+  SiroMapController? _controller;
 
   static const List<Map<String, Object>> _landmarks = [
     {'name': 'Eiffel Tower', 'lat': 48.8584, 'lng': 2.2945},
@@ -36,7 +36,7 @@ class _DocAnnotationMarkersBodyState extends State<_DocAnnotationMarkersBody> {
     {'name': 'Big Ben', 'lat': 51.5007, 'lng': -0.1246},
   ];
 
-  void _onMapCreated(MapLibreMapController controller) {
+  void _onMapCreated(SiroMapController controller) {
     _controller = controller;
     controller.onSymbolTapped.add(_onSymbolTapped);
   }
@@ -93,7 +93,7 @@ class _DocAnnotationMarkersBodyState extends State<_DocAnnotationMarkersBody> {
   Widget build(BuildContext context) {
     return MapExampleScaffold(
       mapOnly: true,
-      map: MapLibreMap(
+      map: SiroMap(
         styleString: ExampleConstants.demoMapStyle,
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,

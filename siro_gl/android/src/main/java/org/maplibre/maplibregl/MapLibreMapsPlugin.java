@@ -43,13 +43,13 @@ public class MapLibreMapsPlugin implements FlutterPlugin, ActivityAware {
     Logger.setVerbosity(Logger.INFO);
 
     MethodChannel methodChannel =
-        new MethodChannel(binding.getBinaryMessenger(), "plugins.flutter.io/maplibre_gl");
+        new MethodChannel(binding.getBinaryMessenger(), "com.siro.gl/global");
     methodChannel.setMethodCallHandler(new GlobalMethodHandler(binding));
 
     binding
         .getPlatformViewRegistry()
         .registerViewFactory(
-            "plugins.flutter.io/maplibre_gl",
+            "com.siro.gl/map",
             mapFactory =
                 new MapLibreMapFactory(
                     binding.getBinaryMessenger(),

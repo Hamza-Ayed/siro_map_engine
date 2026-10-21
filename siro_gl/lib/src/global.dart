@@ -2,9 +2,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-part of '../maplibre_gl.dart';
+part of '../siro_gl.dart';
 
-const _globalChannel = MethodChannel('plugins.flutter.io/maplibre_gl');
+const _globalChannel = MethodChannel(siroGlobalChannelName);
 
 /// Retains active offline-download event-channel subscriptions so that Dart's
 /// GC cannot tear them down during idle periods (e.g. while a download is
