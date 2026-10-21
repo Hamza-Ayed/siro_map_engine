@@ -1,0 +1,40 @@
+// Siro Maps for Android: the Google Maps SDK for Android API, on Siro's engine.
+//
+// Apps move from com.google.android.gms.maps to com.siro.maps by changing the
+// imports; the classes and methods keep the same names and signatures.
+plugins {
+    id 'com.android.library' version '8.13.2'
+    id 'org.jetbrains.kotlin.android' version '2.4.10'
+}
+
+android {
+    namespace 'com.siro.maps'
+    compileSdk 36
+
+    defaultConfig {
+        // The engine's manifest requires 23, so the SDK cannot go lower.
+        minSdk 23
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    kotlinOptions {
+        jvmTarget = '21'
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
+}
+
+dependencies {
+    // The Siro engine: our MapLibre Native fork, published to mavenLocal.
+    api 'com.siro.native:siro-native-android-opengl-debug:13.7.1-siro.1'
+    implementation 'androidx.core:core-ktx:1.18.0'
+    implementation 'androidx.fragment:fragment-ktx:1.8.9'
+}
