@@ -2,7 +2,7 @@ import UIKit
 
 /// Gesture and control settings, as Google's `GMSUISettings`.
 ///
-/// A change applies to the map at once. The my-location button is stored but not drawn yet.
+/// A change applies to the map at once.
 public final class GMSUISettings: NSObject {
 
     private weak var map: GMSMapView?
@@ -27,8 +27,10 @@ public final class GMSUISettings: NSObject {
         didSet { map?.mlnMapView.isPitchEnabled = tiltGestures }
     }
 
-    /// Stored for parity with Google. The button is not drawn by this SDK yet.
-    public var myLocationButton: Bool = false
+    /// Shows the button that recentres the map on the user. It appears while my-location is on.
+    public var myLocationButton: Bool = false {
+        didSet { map?.updateMyLocationButton() }
+    }
 
     /// Stored for parity with Google. Scrolling during a rotate or zoom is always allowed.
     public var allowScrollGesturesDuringRotateOrZoom: Bool = true

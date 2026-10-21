@@ -20,9 +20,6 @@ internal final class Renderer {
     private static let defaultPinName = "siro-default-pin"
     private static let defaultPin = GMSMarker.markerImage(with: nil)
 
-    /// The layers a tap or long press can hit.
-    static let hitLayers: Set<String> = [Name.markerLayer, Name.lineLayer, Name.fillLayer]
-
     private weak var map: GMSMapView?
     private var style: MLNStyle?
     private var fillSource: MLNShapeSource?
@@ -131,12 +128,17 @@ internal final class Renderer {
     }
 
     /// The overlays under `point`, topmost first, as (kind, id) pairs.
+    ///
+    /// Each layer is queried on its own, in drawing order: markers over lines over fills.
+    /// One query for all layers returns hits in no fixed order, so a fill could win over a pin.
     func hits(at point: CGPoint) -> [(kind: String, id: String)] {
         guard let map else { return [] }
-        return map.mlnMapView.visibleFeatures(at: point, styleLayerIdentifiers: Renderer.hitLayers).compactMap { feature in
-            guard let kind = feature.attributes["kind"] as? String,
-                  let id = feature.attributes["id"] as? String else { return nil }
-            return (kind, id)
+        return [Name.markerLayer, Name.lineLayer, Name.fillLayer].flatMap { layer in
+            map.mlnMapView.visibleFeatures(at: point, styleLayerIdentifiers: [layer]).compactMap { feature in
+                guard let kind = feature.attributes["kind"] as? String,
+                      let id = feature.attributes["id"] as? String else { return nil }
+                return (kind, id)
+            }
         }
     }
 

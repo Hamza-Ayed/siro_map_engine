@@ -13,6 +13,7 @@ public class GMSMapView: UIView {
     private lazy var renderer = Renderer(map: self)
     private lazy var projectionObject = GMSProjection(map: self)
     private let attributionLabel = UILabel()
+    private let myLocationButton = UIButton(type: .system)
     private var infoWindow: UIView?
     private var draggingMarker: GMSMarker?
     private var scrollWasEnabled = true
@@ -53,7 +54,10 @@ public class GMSMapView: UIView {
 
     /// Shows the user's position. Asks for location permission when first turned on.
     public var isMyLocationEnabled: Bool = false {
-        didSet { mlnMapView.showsUserLocation = isMyLocationEnabled }
+        didSet {
+            mlnMapView.showsUserLocation = isMyLocationEnabled
+            updateMyLocationButton()
+        }
     }
 
     public var minZoom: Float { Float(mlnMapView.minimumZoomLevel) }
@@ -104,6 +108,19 @@ public class GMSMapView: UIView {
         attributionLabel.sizeToFit()
         addSubview(attributionLabel)
 
+        myLocationButton.setImage(UIImage(systemName: "location.fill"), for: .normal)
+        myLocationButton.backgroundColor = .white
+        myLocationButton.tintColor = .darkGray
+        myLocationButton.layer.cornerRadius = 22
+        myLocationButton.layer.shadowColor = UIColor.black.cgColor
+        myLocationButton.layer.shadowOpacity = 0.25
+        myLocationButton.layer.shadowRadius = 3
+        myLocationButton.layer.shadowOffset = CGSize(width: 0, height: 1)
+        myLocationButton.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        myLocationButton.isHidden = true
+        myLocationButton.addTarget(self, action: #selector(recenterOnUser), for: .touchUpInside)
+        addSubview(myLocationButton)
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         // A double tap zooms the map. Wait for it to fail, so a double tap is not a tap.
         if let doubleTap = mlnMapView.gestureRecognizers?
@@ -122,7 +139,19 @@ public class GMSMapView: UIView {
         super.layoutSubviews()
         mlnMapView.frame = bounds
         attributionLabel.frame.origin = CGPoint(x: 6, y: bounds.height - attributionLabel.frame.height - 6)
+        myLocationButton.frame.origin = CGPoint(x: bounds.width - 44 - 12, y: safeAreaInsets.top + 12)
         positionInfoWindow()
+    }
+
+    /// Shows the my-location button while my-location is on and the settings ask for it.
+    internal func updateMyLocationButton() {
+        myLocationButton.isHidden = !(settings.myLocationButton && isMyLocationEnabled)
+    }
+
+    /// Centres the map on the user's position, keeping the zoom.
+    @objc private func recenterOnUser() {
+        guard let coordinate = mlnMapView.userLocation?.location?.coordinate else { return }
+        mlnMapView.setCenter(coordinate, animated: true)
     }
 
     // MARK: - Camera

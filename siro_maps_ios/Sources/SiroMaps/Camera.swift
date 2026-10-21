@@ -87,9 +87,26 @@ public class GMSCameraUpdate: NSObject {
         }
     }
 
-    /// Changes the zoom by `delta` levels around `point`. The focus is currently the centre of the map.
+    /// Changes the zoom by `delta` levels, keeping the coordinate under `point` where it is.
     public class func zoomBy(_ delta: Float, at point: CGPoint) -> GMSCameraUpdate {
-        zoomBy(delta)
+        GMSCameraUpdate { camera, map in
+            let centre = CGPoint(x: map.bounds.midX, y: map.bounds.midY)
+            let zoom = camera.zoom + delta
+            let scaleNow = 512 * pow(2, Double(camera.zoom))
+            let scaleNext = 512 * pow(2, Double(zoom))
+            let dx = Double(point.x - centre.x)
+            let dy = Double(point.y - centre.y)
+            // The offset of the focus from the centre scales with the zoom, so the centre moves to keep the focus still.
+            let target = mercatorPoint(camera.target)
+            let focus = (x: target.x + dx / scaleNow, y: target.y + dy / scaleNow)
+            let next = (x: focus.x - dx / scaleNext, y: focus.y - dy / scaleNext)
+            return GMSCameraPosition(
+                target: coordinate(fromMercator: next),
+                zoom: Float(zoom),
+                bearing: camera.bearing,
+                viewingAngle: camera.viewingAngle
+            )
+        }
     }
 
     /// Moves the camera by `x` and `y` points on the screen.
@@ -135,4 +152,18 @@ private func cameraFitting(_ bounds: GMSCoordinateBounds, width: Double, height:
 
 private func mercatorY(_ latitude: Double) -> Double {
     log(tan(Double.pi / 4 + latitude * Double.pi / 360))
+}
+
+/// Web Mercator, normalised to 0...1 across the world. y grows southward, like the screen.
+private func mercatorPoint(_ coordinate: CLLocationCoordinate2D) -> (x: Double, y: Double) {
+    let latitude = coordinate.latitude * .pi / 180
+    let x = (coordinate.longitude + 180) / 360
+    let y = (1 - log(tan(latitude) + 1 / cos(latitude)) / .pi) / 2
+    return (x, y)
+}
+
+private func coordinate(fromMercator point: (x: Double, y: Double)) -> CLLocationCoordinate2D {
+    let longitude = point.x * 360 - 180
+    let latitude = atan(sinh(.pi * (1 - 2 * point.y))) * 180 / .pi
+    return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
 }

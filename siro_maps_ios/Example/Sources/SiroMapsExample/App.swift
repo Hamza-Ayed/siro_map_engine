@@ -15,7 +15,7 @@ struct SiroMapsExampleApp: App {
 /// The map with a row of controls: day, night and 3D, as the Android sample.
 struct ContentView: View {
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: .topLeading) {
             SiroMapRepresentable()
                 .ignoresSafeArea()
             VStack(spacing: 8) {
@@ -57,6 +57,8 @@ struct SiroMapRepresentable: UIViewRepresentable {
         )
         map.delegate = context.coordinator
         ExampleMap.shared = map
+        map.isMyLocationEnabled = true
+        map.settings.myLocationButton = true
 
         let ammanMarker = GMSMarker(position: amman)
         ammanMarker.title = "Amman"
