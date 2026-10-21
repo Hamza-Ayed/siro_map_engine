@@ -28,7 +28,7 @@ import 'package:recase/recase.dart';
 import 'conversions.dart';
 
 Future<void> main() async {
-  /// We assume the current working directory for this script is the scripts/
+  /// We assume the current working directory for this script is the siro_gl_codegen/
   /// package root (melos exec enforces that). style.json lives under input/.
   final currentPath = Directory.current.path;
   final styleFilePath = '$currentPath/input/style.json';
@@ -164,7 +164,7 @@ Future<void> main() async {
 
 /// Render a single template file.
 /// [path] is the relative workspace path to the output (and indirectly the
-/// template at scripts/templates/$filename.template).
+/// template at siro_gl_codegen/templates/$filename.template).
 /// Returns the absolute path of the written file.
 Future<String> render(
   Map<String, List> renderContext,
@@ -179,7 +179,7 @@ Future<String> render(
   print("Rendering $filename");
   final templateFile =
       await File(
-        '$currentParentPath/scripts/templates/$filename.template',
+        '$currentParentPath/siro_gl_codegen/templates/$filename.template',
       ).readAsString();
 
   final template = Template(templateFile);
@@ -307,7 +307,7 @@ List<Map<String, dynamic>> buildStyleProperties(
           'The layout property $key.${property['value']} is array-typed, which '
           'the Java and Swift layout templates do not wrap yet. Add the '
           'colorArray/numberArray handling to the layout section of '
-          'scripts/templates/LayerPropertyConverter.{java,swift}.template.',
+          'siro_gl_codegen/templates/LayerPropertyConverter.{java,swift}.template.',
         );
       }
     }

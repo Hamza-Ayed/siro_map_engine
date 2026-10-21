@@ -1,1 +1,1 @@
-To run the script, run `dart run .\scripts\lib\generate.dart ` from the root of the project. Afterwards run `dart format .` to format the generated dart code.
+To run the script, run `dart run lib/generate.dart` from the `siro_gl_codegen` folder. Afterwards run `dart format .` to format the generated dart code.

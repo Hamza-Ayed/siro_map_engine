@@ -6,7 +6,7 @@
 // @maplibre/maplibre-gl-style-spec (src/reference/v8.json), which is the
 // canonical source the MapLibre SDKs are generated from.
 //
-// Usage (from the scripts/ package root):
+// Usage (from the siro_gl_codegen package root):
 //   dart run lib/check_style_spec.dart            # fail if style.json drifted
 //   dart run lib/check_style_spec.dart --latest   # also diff against the
 //                                                 # latest upstream release
