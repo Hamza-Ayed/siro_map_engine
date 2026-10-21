@@ -2285,9 +2285,11 @@ class SiroMapController extends ChangeNotifier {
   /// Sets the style's `terrain` root object, which renders the map in 3D from
   /// the elevation of a raster dem source. A null [terrain] removes it.
   ///
-  /// **Platform support**: web only. Android and iOS throw an
-  /// [UnsupportedError], since MapLibre Native does not implement 3D terrain
-  /// yet.
+  /// The [TerrainProperties.source] must be a raster dem source already in the
+  /// style, added with `addSource`.
+  ///
+  /// **Platform support**: web and Android. iOS throws an [UnsupportedError],
+  /// since the MapLibre iOS build does not bind 3D terrain yet.
   ///
   /// The returned [Future] completes after the change has been made on the
   /// platform side.

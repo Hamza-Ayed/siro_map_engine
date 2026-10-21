@@ -87,6 +87,7 @@ import org.maplibre.android.style.sources.GeoJsonSource;
 import org.maplibre.android.style.sources.ImageSource;
 import org.maplibre.android.style.sources.Source;
 import org.maplibre.android.style.sources.VectorSource;
+import org.maplibre.android.style.terrain.Terrain;
 import org.maplibre.geojson.Feature;
 import org.maplibre.geojson.FeatureCollection;
 import org.maplibre.geojson.Point;
@@ -2961,6 +2962,36 @@ final class SiroMapController
           result.success(null);
           break;
 
+        }
+        case "map#setTerrain":
+        {
+          if (style == null || !style.isFullyLoaded()) {
+            result.error(
+                "STYLE_NOT_READY",
+                "Style is null or not fully loaded. Has onStyleLoaded() already been invoked?",
+                null);
+            break;
+          }
+          Map<String, Object> terrain = call.argument("terrain");
+          if (terrain == null) {
+            style.setTerrain(null);
+            result.success(null);
+            break;
+          }
+          String sourceId = (String) terrain.get("source");
+          if (sourceId == null || style.getSource(sourceId) == null) {
+            result.error(
+                "SOURCE_NOT_FOUND",
+                "Terrain source '" + sourceId + "' is not in the style. Add a raster-dem source first.",
+                null);
+            break;
+          }
+          Object exaggeration = terrain.get("exaggeration");
+          float scale = exaggeration == null ? 1f : ((Number) exaggeration).floatValue();
+          style.setTerrain(new Terrain(sourceId, scale));
+
+          result.success(null);
+          break;
         }
         case "map#querySourceFeatures":
         {

@@ -154,14 +154,6 @@ void main() {
       expect(methodCalls, isEmpty);
     });
 
-    test('setTerrain throws and sends nothing', () async {
-      await expectLater(
-        platform.setTerrain(const TerrainProperties(source: 'dem')),
-        throwsUnsupportedError,
-      );
-      expect(methodCalls, isEmpty);
-    });
-
     test('setProjection throws and sends nothing', () async {
       await expectLater(
         platform.setProjection('globe'),

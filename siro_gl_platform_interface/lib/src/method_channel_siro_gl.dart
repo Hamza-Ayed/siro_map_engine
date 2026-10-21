@@ -1340,10 +1340,15 @@ class SiroMethodChannel extends SiroGlPlatform {
 
   @override
   Future<void> setTerrain(TerrainProperties? terrain) async {
-    throw UnsupportedError(
-      'setTerrain is not available on Android and iOS because MapLibre Native '
-      'does not implement 3D terrain yet. Terrain is supported on web.',
-    );
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      throw UnsupportedError(
+        'setTerrain is not available on iOS yet, because the MapLibre iOS '
+        'build does not bind 3D terrain. Terrain is supported on Android and web.',
+      );
+    }
+    await _channel.invokeMethod('map#setTerrain', <String, dynamic>{
+      'terrain': terrain?.toJson(),
+    });
   }
 
   @override

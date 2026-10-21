@@ -129,10 +129,10 @@ class _GlobeTerrainSkyBodyState extends State<_GlobeTerrainSkyBody> {
         child: Padding(
           padding: EdgeInsets.all(24),
           child: Text(
-            'The globe projection, 3D terrain and the sky are only available '
-            'on web. MapLibre Native does not implement them yet, so on '
-            'Android and iOS setProjection, setTerrain and setSky throw an '
-            'UnsupportedError.',
+            'The globe projection and the sky are only available on web. On '
+            'Android and iOS, setProjection and setSky throw an '
+            'UnsupportedError. setTerrain works on Android and web, not on iOS '
+            'yet.',
             textAlign: TextAlign.center,
           ),
         ),
