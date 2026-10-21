@@ -1,0 +1,24 @@
+{
+    "folders": [
+        {
+            "name": "siro_gl",
+            "path": "./siro_gl"
+        },
+        {
+            "name": "siro_gl_platform_interface",
+            "path": "./siro_gl_platform_interface"
+        },
+        {
+            "name": "siro_gl_web",
+            "path": "./siro_gl_web"
+        },
+        {
+            "name": "siro_gl_example",
+            "path": "./siro_gl_example"
+        },
+        {
+            "name": "siro_gl_codegen",
+            "path": "./siro_gl_codegen"
+        }
+    ]
+}

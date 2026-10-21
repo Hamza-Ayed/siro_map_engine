@@ -28,7 +28,7 @@ jobs:
     runs-on: ${{ inputs.platform == 'ios' && 'macos-latest' || 'ubuntu-latest' }}
     defaults:
       run:
-        working-directory: maplibre_gl_example
+        working-directory: siro_gl_example
     steps:
       - uses: actions/checkout@v6
 
@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: maplibre-flutter-demo.apk
-          path: maplibre_gl_example/build/app/outputs/flutter-apk/app-release.apk
+          path: siro_gl_example/build/app/outputs/flutter-apk/app-release.apk
 
       - if: inputs.platform == 'ios'
         name: Build iOS package
@@ -71,7 +71,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: maplibre-flutter-demo.app
-          path: maplibre_gl_example/build/ios/iphonesimulator
+          path: siro_gl_example/build/ios/iphonesimulator
 
       - if: inputs.platform == 'web' && !inputs.web-release
         name: Build web
@@ -91,5 +91,5 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: web-demo
-          path: maplibre_gl_example/build/web
+          path: siro_gl_example/build/web
           retention-days: 1

@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: dart-lang/setup-dart@v1.8.1
         # --force skips the y/N confirmation
-        # --skip-validation because of "Because maplibre_gl requires the Flutter SDK, version solving failed. Flutter users should use `flutter pub` instead of `dart pub`."
+        # --skip-validation because of "Because siro_gl requires the Flutter SDK, version solving failed. Flutter users should use `flutter pub` instead of `dart pub`."
         # see https://github.com/dart-lang/setup-dart/issues/68
       - name: Publish to pub.dev
         working-directory: ${{ inputs.working-directory }}

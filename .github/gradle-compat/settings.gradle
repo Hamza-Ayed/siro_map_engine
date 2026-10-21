@@ -4,4 +4,4 @@
 rootProject.name = 'gradle-compat'
 
 include ':maplibre_gl'
-project(':maplibre_gl').projectDir = file('../../maplibre_gl/android')
+project(':maplibre_gl').projectDir = file('../../siro_gl/android')

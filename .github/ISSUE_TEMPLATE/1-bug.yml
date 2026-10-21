@@ -14,8 +14,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: Version of flutter maplibre_gl
-      description: What version of maplibre_gl are you using? (e.g. `0.18` or `master branch`)
+      label: Version of flutter siro_gl
+      description: What version of siro_gl are you using? (e.g. `0.18` or `master branch`)
     validations:
       required: true
   - type: textarea

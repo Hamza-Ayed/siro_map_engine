@@ -1,4 +1,4 @@
-# Weekly check of scripts/input/style.json against the latest release of
+# Weekly check of siro_gl_codegen/input/style.json against the latest release of
 # @maplibre/maplibre-gl-style-spec. When upstream has published a newer
 # release, this opens (or updates) a single PR that re-pins the spec and
 # regenerates the code from it, so the PR is complete and CI-green on its own.
@@ -35,7 +35,7 @@ jobs:
       # Captured before updating: reports pinned vs latest, per platform.
       - name: Report upstream drift
         id: report
-        working-directory: scripts
+        working-directory: siro_gl_codegen
         run: |
           dart run lib/check_style_spec.dart --latest | tee /tmp/style-spec-report.txt || true
           {
@@ -49,7 +49,7 @@ jobs:
           sed -n 's/^latest=/latest=/p' /tmp/style-spec-report.txt >> "$GITHUB_OUTPUT"
 
       - name: Update to the latest release
-        working-directory: scripts
+        working-directory: siro_gl_codegen
         run: |
           version='${{ steps.report.outputs.latest }}'
           if [ -n "$version" ]; then
@@ -63,7 +63,7 @@ jobs:
 
       - name: Read pinned version
         id: version
-        run: echo "version=$(cat scripts/input/style_spec_version.txt)" >> "$GITHUB_OUTPUT"
+        run: echo "version=$(cat siro_gl_codegen/input/style_spec_version.txt)" >> "$GITHUB_OUTPUT"
 
       # No-op when the working tree is unchanged (already on the latest
       # release). Reuses one branch, so weekly runs update the same PR
@@ -76,7 +76,7 @@ jobs:
           commit-message: "chore: update MapLibre style spec to ${{ steps.version.outputs.version }}"
           title: "chore: update MapLibre style spec to ${{ steps.version.outputs.version }}"
           body: |
-            Automated weekly update of `scripts/input/style.json` to
+            Automated weekly update of `siro_gl_codegen/input/style.json` to
             `@maplibre/maplibre-gl-style-spec@${{ steps.version.outputs.version }}`,
             with the code regenerated from it (`melos run generate`).
 

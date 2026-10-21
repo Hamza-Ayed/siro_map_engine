@@ -21,10 +21,10 @@ jobs:
   # `code` => Dart/native/CI sources: needs quality checks + native/web builds.
   # `docs` => anything that changes the rendered site: needs the docs build.
   #
-  # The doc examples (maplibre_gl_example/lib/examples/docs/**) intentionally
+  # The doc examples (siro_gl_example/lib/examples/docs/**) intentionally
   # belong to BOTH: they are real Dart that must compile/lint/build (code) AND
   # they are embedded as live iframes on the site (docs). They live under
-  # maplibre_gl_example/** so the `code` globs below already cover them.
+  # siro_gl_example/** so the `code` globs below already cover them.
   changes:
     name: "Detect changes"
     runs-on: ubuntu-latest
@@ -38,17 +38,17 @@ jobs:
         with:
           filters: |
             code:
-              - 'maplibre_gl/**'
-              - 'maplibre_gl_platform_interface/**'
-              - 'maplibre_gl_web/**'
-              - 'maplibre_gl_example/**'
-              - 'scripts/**'
+              - 'siro_gl/**'
+              - 'siro_gl_platform_interface/**'
+              - 'siro_gl_web/**'
+              - 'siro_gl_example/**'
+              - 'siro_gl_codegen/**'
               - 'pubspec.yaml'
               - '.github/workflows/**'
               - '.github/gradle-compat/**'
             docs:
               - 'website/**'
-              - 'maplibre_gl_example/lib/examples/docs/**'
+              - 'siro_gl_example/lib/examples/docs/**'
               - '.github/workflows/**'
 
   format:
@@ -107,7 +107,7 @@ jobs:
         uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: maplibre_gl_platform_interface/coverage/lcov.info,maplibre_gl/coverage/lcov.info
+          files: siro_gl_platform_interface/coverage/lcov.info,siro_gl/coverage/lcov.info
 
   test-web:
     name: "Run web tests"
