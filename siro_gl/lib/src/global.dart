@@ -71,6 +71,18 @@ Future<void> setHttpHeaders(Map<String, String> headers) {
   });
 }
 
+/// Sets the identifying headers that Siro's apps send with map requests:
+/// `X-Siro-App` and `X-Siro-Version`.
+///
+/// This goes through [setHttpHeaders], which replaces every header set before,
+/// so pass all the headers you need in one place.
+Future<void> setSiroRequestHeaders({String? app, String? version}) {
+  return setHttpHeaders(<String, String>{
+    if (app != null) 'X-Siro-App': app,
+    if (version != null) 'X-Siro-Version': version,
+  });
+}
+
 /// Turns network counting on or off for the whole process. Off by default.
 ///
 /// While it is on, [getNetworkStats] reports the requests the map makes

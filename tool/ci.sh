@@ -57,6 +57,7 @@ if [ "${SKIP_WEB:-0}" != "1" ]; then
   step "test web"            dart run melos run test:web --no-select
 fi
 step "generate (no diff)"    generate_check
+step "notices"              tool/check_notices.sh
 if [ "${SKIP_BUILD:-0}" != "1" ]; then
   step "build apk (example)" sh -c 'cd siro_gl_example && flutter build apk --debug'
   if [ "$(uname)" = "Darwin" ]; then

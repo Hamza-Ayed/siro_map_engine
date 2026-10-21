@@ -148,6 +148,16 @@ class GlobalMethodHandler implements MethodChannel.MethodCallHandler {
       case "clearAmbientCache":
         OfflineManagerUtils.clearAmbientCache(result, context);
         break;
+      case "setMaximumAmbientCacheSize":
+        OfflineManagerUtils.setMaximumAmbientCacheSize(
+            result, context, methodCall.<Number>argument("bytes").longValue());
+        break;
+      case "invalidateAmbientCache":
+        OfflineManagerUtils.invalidateAmbientCache(result, context);
+        break;
+      case "packDatabase":
+        OfflineManagerUtils.packDatabase(result, context);
+        break;
       case "resetOfflineDatabase":
         OfflineManagerUtils.resetOfflineDatabase(result, context);
         break;

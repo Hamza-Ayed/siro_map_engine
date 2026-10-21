@@ -35,6 +35,7 @@ class SiroMap extends StatefulWidget {
     this.myLocationTrackingMode = MyLocationTrackingMode.none,
     this.myLocationRenderMode = MyLocationRenderMode.normal,
     this.logoEnabled = false,
+    this.debugOverlay = false,
     this.logoViewPosition,
     this.logoViewMargins,
     this.compassViewPosition,
@@ -245,6 +246,10 @@ class SiroMap extends StatefulWidget {
   /// True if the MapLibre logo should be shown on the map.
   /// Defaults to false.
   final bool logoEnabled;
+
+  /// Shows [SiroDebugOverlay] over the map: Flutter frame rate, network
+  /// requests, and the offline database size. For tuning, not for release.
+  final bool debugOverlay;
 
   /// Set the position for the Logo
   final LogoViewPosition? logoViewPosition;
@@ -479,10 +484,17 @@ class _MapLibreMapState extends State<SiroMap> {
       if (widget.webPreserveDrawingBuffer != null)
         'webPreserveDrawingBuffer': widget.webPreserveDrawingBuffer,
     };
-    return _maplibrePlatform.buildView(
+    final view = _maplibrePlatform.buildView(
       creationParams,
       onPlatformViewCreated,
       widget.gestureRecognizers,
+    );
+    if (!widget.debugOverlay) return view;
+    return Stack(
+      children: [
+        view,
+        const Positioned(top: 8, left: 8, child: SiroDebugOverlay()),
+      ],
     );
   }
 

@@ -177,6 +177,27 @@ public class SiroGlPlugin: NSObject, FlutterPlugin {
                 OfflineManagerUtils.deleteRegion(result: result, id: id)
             case "clearAmbientCache":
                 OfflineManagerUtils.clearAmbientCache(result: result)
+            case "setMaximumAmbientCacheSize":
+                guard let arguments = methodCall.arguments as? [String: Any],
+                      let bytes = arguments["bytes"] as? Int, bytes >= 0
+                else {
+                    result(FlutterError(
+                        code: "INVALID_ARGUMENT",
+                        message: "setMaximumAmbientCacheSize needs a non-negative 'bytes' int.",
+                        details: nil
+                    ))
+                    return
+                }
+                OfflineManagerUtils.setMaximumAmbientCacheSize(result: result, bytes: UInt(bytes))
+            case "invalidateAmbientCache":
+                OfflineManagerUtils.invalidateAmbientCache(result: result)
+            case "packDatabase":
+                // The MapLibre iOS SDK has no packDatabase call.
+                result(FlutterError(
+                    code: "UNSUPPORTED",
+                    message: "packDatabase is not available on iOS: the MapLibre iOS SDK has no pack call.",
+                    details: nil
+                ))
             case "resetOfflineDatabase":
                 OfflineManagerUtils.resetOfflineDatabase(result: result)
             case "pauseOfflineRegionDownload":

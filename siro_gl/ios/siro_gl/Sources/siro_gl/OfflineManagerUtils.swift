@@ -131,6 +131,34 @@ class OfflineManagerUtils {
         result(nil)
     }
 
+    static func setMaximumAmbientCacheSize(result: @escaping FlutterResult, bytes: UInt) {
+        MLNOfflineStorage.shared.setMaximumAmbientCacheSize(bytes) { error in
+            if let error = error {
+                result(FlutterError(
+                    code: "SetMaximumAmbientCacheSizeError",
+                    message: error.localizedDescription,
+                    details: nil
+                ))
+            } else {
+                result(nil)
+            }
+        }
+    }
+
+    static func invalidateAmbientCache(result: @escaping FlutterResult) {
+        MLNOfflineStorage.shared.invalidateAmbientCache { error in
+            if let error = error {
+                result(FlutterError(
+                    code: "InvalidateAmbientCacheError",
+                    message: error.localizedDescription,
+                    details: nil
+                ))
+            } else {
+                result(nil)
+            }
+        }
+    }
+
     static func clearAmbientCache(result: @escaping FlutterResult) {
         MLNOfflineStorage.shared.clearAmbientCache { error in
             if let error = error {

@@ -43,6 +43,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:collection/collection.dart';
 
 import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
@@ -50,6 +51,9 @@ import 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart';
 // Offline database file copy needs dart:io on mobile; the web stub throws.
 import 'src/offline_export_stub.dart'
     if (dart.library.io) 'src/offline_export_io.dart';
+
+import 'src/siro_cache_files_stub.dart'
+    if (dart.library.io) 'src/siro_cache_files_io.dart';
 
 export 'package:siro_gl_platform_interface/siro_gl_platform_interface.dart'
     show
@@ -122,3 +126,5 @@ part 'src/annotation_manager.dart';
 part 'src/util.dart';
 
 part 'src/siro_styles.dart';
+part 'src/siro_cache.dart';
+part 'src/siro_debug_overlay.dart';
