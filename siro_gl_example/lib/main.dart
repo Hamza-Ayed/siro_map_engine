@@ -53,6 +53,7 @@ import 'examples/layers/edit_style_layer_animated.dart';
 import 'examples/layers/edit_style_layer_draggable.dart';
 
 // Advanced examples
+import 'examples/advanced/android_terrain.dart';
 import 'examples/advanced/globe_terrain_sky.dart';
 import 'examples/advanced/offline_regions.dart';
 import 'examples/advanced/pmtiles.dart';
@@ -235,6 +236,7 @@ final List<ExamplePage> _allPages = <ExamplePage>[
   const PMTilesPage(),
   // Offline regions are Android/iOS only — MapLibre GL JS has no offline API.
   const GlobeTerrainSkyPage(),
+  const AndroidTerrainPage(),
   if (!kIsWeb) const OfflineRegionsPage(),
   const TranslucentFullMapPage(),
   const MapSnapshotPage(),
