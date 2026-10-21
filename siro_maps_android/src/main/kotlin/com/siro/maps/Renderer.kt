@@ -48,9 +48,9 @@ internal class Renderer(private val owner: GoogleMap) {
         style.addSource(GeoJsonSource(LINE_SOURCE, FeatureCollection.fromFeatures(emptyList())))
         style.addSource(GeoJsonSource(MARKER_SOURCE, FeatureCollection.fromFeatures(emptyList())))
 
+        // The colour string carries its alpha, so the fill needs no separate opacity.
         val fill = FillLayer(FILL_LAYER, FILL_SOURCE).withProperties(
             PropertyFactory.fillColor(Expression.get("color")),
-            PropertyFactory.fillOpacity(Expression.get("opacity")),
         )
         val line = LineLayer(LINE_LAYER, LINE_SOURCE).withProperties(
             PropertyFactory.lineColor(Expression.get("color")),
