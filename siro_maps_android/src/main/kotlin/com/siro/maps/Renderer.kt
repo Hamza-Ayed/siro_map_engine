@@ -1,6 +1,7 @@
 package com.siro.maps
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.PointF
 import com.google.gson.JsonObject
 import org.maplibre.android.maps.Style
@@ -174,16 +175,32 @@ internal class Renderer(private val owner: GoogleMap) {
     }
 
     private fun iconName(style: Style, icon: BitmapDescriptor): String {
-        val name = if (icon.bitmap != null) {
-            "siro-bitmap-${System.identityHashCode(icon.bitmap)}"
-        } else {
-            "siro-pin-${icon.hue ?: BitmapDescriptorFactory.HUE_RED}"
+        val name = when {
+            icon.bitmap != null -> "siro-bitmap-${System.identityHashCode(icon.bitmap)}"
+            icon.resourceId != null -> "siro-resource-${icon.resourceId}"
+            icon.assetPath != null -> "siro-asset-${icon.assetPath}"
+            else -> "siro-pin-${icon.hue ?: BitmapDescriptorFactory.HUE_RED}"
         }
         if (addedImages.add(name)) {
-            val bitmap: Bitmap = icon.bitmap ?: defaultPinBitmap(icon.hue ?: BitmapDescriptorFactory.HUE_RED)
-            style.addImage(name, bitmap, false)
+            style.addImage(name, decode(icon), false)
         }
         return name
+    }
+
+    /** The bitmap behind an icon. Resources and assets are read through the map's context. */
+    private fun decode(icon: BitmapDescriptor): Bitmap {
+        icon.bitmap?.let { return it }
+        icon.resourceId?.let { id ->
+            return requireNotNull(BitmapFactory.decodeResource(owner.context.resources, id)) {
+                "Resource $id is not an image."
+            }
+        }
+        icon.assetPath?.let { path ->
+            return owner.context.assets.open(path).use { stream ->
+                requireNotNull(BitmapFactory.decodeStream(stream)) { "Asset $path is not an image." }
+            }
+        }
+        return defaultPinBitmap(icon.hue ?: BitmapDescriptorFactory.HUE_RED)
     }
 
     /** The object ids of everything drawn under [screen], topmost first. */

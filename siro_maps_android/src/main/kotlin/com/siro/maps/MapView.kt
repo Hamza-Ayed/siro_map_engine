@@ -77,6 +77,8 @@ class MapView @JvmOverloads constructor(
         engine.uiSettings.setLogoEnabled(false)
         val map = GoogleMap(engine, context, this)
         googleMap = map
+        // Marker drags are driven by touches the map view has not consumed yet.
+        engineView.setOnTouchListener { _, event -> map.onDragTouch(event) }
         map.setMapStyle(null)
         val callbacks = waiting.toList()
         waiting.clear()

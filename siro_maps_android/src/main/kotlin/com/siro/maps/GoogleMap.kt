@@ -3,6 +3,8 @@ package com.siro.maps
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.PointF
+import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
@@ -37,6 +39,8 @@ class GoogleMap internal constructor(
     private var cameraIdle: OnCameraIdleListener? = null
     private var cameraMove: OnCameraMoveListener? = null
     private var cameraMoveStarted: OnCameraMoveStartedListener? = null
+    private var markerDrag: OnMarkerDragListener? = null
+    private var dragging: Marker? = null
     private var myLocation = false
     private var currentMapType = MAP_TYPE_NORMAL
 
@@ -136,6 +140,8 @@ class GoogleMap internal constructor(
     fun addMarker(options: MarkerOptions): Marker =
         Marker(this, nextIdFor("m"), options).also {
             markers.add(it)
+            // A long press on a draggable marker needs the map's gestures listening.
+            attachListeners()
             renderer.refresh()
         }
 
@@ -249,6 +255,13 @@ class GoogleMap internal constructor(
     private fun handleTap(latLng: org.maplibre.android.geometry.LatLng, longPress: Boolean): Boolean {
         val hits = renderer.hitTest(engine.projection.toScreenLocation(latLng), engine)
         val hit = hits.firstOrNull()
+        if (longPress && hit != null && hit.first == "marker") {
+            val marker = markers.firstOrNull { it.id == hit.second }
+            if (marker != null && marker.isDraggable) {
+                startDrag(marker)
+                return true
+            }
+        }
         if (hit != null && !longPress) {
             val (kind, id) = hit
             when (kind) {
@@ -276,11 +289,49 @@ class GoogleMap internal constructor(
         infoWindowClick?.onInfoWindowClick(marker)
     }
 
+    fun setOnMarkerDragListener(listener: OnMarkerDragListener?) {
+        markerDrag = listener
+    }
+
+    private fun startDrag(marker: Marker) {
+        dragging = marker
+        // The map must not pan while the marker follows the finger.
+        engine.uiSettings.setScrollGesturesEnabled(false)
+        markerDrag?.onMarkerDragStart(marker)
+    }
+
+    /**
+     * Moves the marker being dragged to the finger. Returns true while a drag owns the touch,
+     * so the map does not pan under it.
+     */
+    internal fun onDragTouch(event: MotionEvent): Boolean {
+        val marker = dragging ?: return false
+        when (event.actionMasked) {
+            MotionEvent.ACTION_MOVE -> {
+                marker.position = engine.projection.fromScreenLocation(PointF(event.x, event.y)).toSiro()
+                markerDrag?.onMarkerDrag(marker)
+            }
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                dragging = null
+                engine.uiSettings.setScrollGesturesEnabled(uiSettings.isScrollGesturesEnabled)
+                markerDrag?.onMarkerDragEnd(marker)
+            }
+        }
+        return true
+    }
+
     // ---------------------------------------------------------------- listeners
 
     fun interface OnMarkerClickListener {
         /** Return true to consume the click. If false, the marker's info window shows. */
         fun onMarkerClick(marker: Marker): Boolean
+    }
+
+    /** Called while a marker is dragged. Like Google's, a drag starts with a long press on a draggable marker. */
+    interface OnMarkerDragListener {
+        fun onMarkerDragStart(marker: Marker)
+        fun onMarkerDrag(marker: Marker)
+        fun onMarkerDragEnd(marker: Marker)
     }
 
     fun interface OnMapClickListener {
