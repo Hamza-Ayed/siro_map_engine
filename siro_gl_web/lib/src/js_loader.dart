@@ -39,11 +39,11 @@ abstract final class SiroJsLoader {
   /// and maplibre-gl-js 6 ships nothing else. A test asserts the extension so a
   /// future version bump cannot quietly point this back at a classic script.
   static const defaultScriptUrl =
-      'https://unpkg.com/maplibre-gl@$kMapLibreJsVersion/dist/maplibre-gl.mjs';
+      'https://map-saas.intaleqapp.com/maplibre/$kMapLibreJsVersion/maplibre-gl.mjs';
 
   /// The stylesheet that goes with [defaultScriptUrl].
   static const defaultStyleUrl =
-      'https://unpkg.com/maplibre-gl@$kMapLibreJsVersion/dist/maplibre-gl.css';
+      'https://map-saas.intaleqapp.com/maplibre/$kMapLibreJsVersion/maplibre-gl.css';
 
   /// The tail both ways of not getting the library share.
   ///
