@@ -50,10 +50,12 @@ internal class Renderer(private val owner: GoogleMap) {
 
         // The colour string carries its alpha, so the fill needs no separate opacity.
         val fill = FillLayer(FILL_LAYER, FILL_SOURCE).withProperties(
-            PropertyFactory.fillColor(Expression.get("color")),
+            PropertyFactory.fillColor(Expression.toColor(Expression.get("color"))),
+            PropertyFactory.fillOpacity(Expression.get("opacity")),
         )
         val line = LineLayer(LINE_LAYER, LINE_SOURCE).withProperties(
-            PropertyFactory.lineColor(Expression.get("color")),
+            PropertyFactory.lineColor(Expression.toColor(Expression.get("color"))),
+            PropertyFactory.lineOpacity(Expression.get("opacity")),
             PropertyFactory.lineWidth(Expression.get("width")),
             PropertyFactory.lineCap(Property.LINE_CAP_ROUND),
             PropertyFactory.lineJoin(Property.LINE_JOIN_ROUND),
@@ -157,6 +159,7 @@ internal class Renderer(private val owner: GoogleMap) {
         val dash = dashArrayFor(pattern.map { it.length }, width).toTypedArray()
         val dashLayer = LineLayer(layer, source).withProperties(
             PropertyFactory.lineColor(cssColor(polyline.color)),
+            PropertyFactory.lineOpacity(alphaOf(polyline.color)),
             PropertyFactory.lineWidth(width),
             PropertyFactory.lineCap(Property.LINE_CAP_BUTT),
             PropertyFactory.lineDasharray(dash),
@@ -216,7 +219,8 @@ internal class Renderer(private val owner: GoogleMap) {
 
     private fun polygonFeature(id: String, kind: String, rings: List<List<LatLng>>, color: Int): Feature =
         Feature.fromGeometry(
-            GeoPolygon.fromLngLats(rings.map { ring -> ring.map { Point.fromLngLat(it.longitude, it.latitude) } }),
+            // GeoJSON polygon rings must be closed: the first point repeats at the end.
+            GeoPolygon.fromLngLats(rings.map { ring -> closed(ring).map { Point.fromLngLat(it.longitude, it.latitude) } }),
             JsonObject().apply {
                 addProperty("id", id)
                 addProperty("kind", kind)
@@ -225,6 +229,9 @@ internal class Renderer(private val owner: GoogleMap) {
             },
         )
 
+    private fun closed(ring: List<LatLng>): List<LatLng> =
+        if (ring.first() == ring.last()) ring else ring + ring.first()
+
     private fun lineFeature(id: String, kind: String, points: List<LatLng>, color: Int, width: Number): Feature =
         Feature.fromGeometry(
             LineString.fromLngLats(points.map { Point.fromLngLat(it.longitude, it.latitude) }),
@@ -232,6 +239,7 @@ internal class Renderer(private val owner: GoogleMap) {
                 addProperty("id", id)
                 addProperty("kind", kind)
                 addProperty("color", cssColor(color))
+                addProperty("opacity", alphaOf(color).toDouble())
                 addProperty("width", width.toDouble())
             },
         )

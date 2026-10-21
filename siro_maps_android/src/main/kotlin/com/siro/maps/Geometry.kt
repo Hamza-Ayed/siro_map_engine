@@ -58,14 +58,11 @@ internal fun geodesicLine(points: List<LatLng>, stepMeters: Double = 50000.0): L
     return out
 }
 
-/** A colour as the CSS `rgba(...)` string the engine's expressions read. */
-internal fun cssColor(argb: Int): String {
-    val a = (argb ushr 24) and 0xFF
-    val r = (argb ushr 16) and 0xFF
-    val g = (argb ushr 8) and 0xFF
-    val b = argb and 0xFF
-    return "rgba($r, $g, $b, ${"%.3f".format(a / 255.0)})"
-}
+/**
+ * The colour as `#RRGGBB`. Alpha is separate, in an opacity: the engine on Android does not
+ * parse `rgba()` strings.
+ */
+internal fun cssColor(argb: Int): String = "#%06X".format(argb and 0xFFFFFF)
 
 internal fun alphaOf(argb: Int): Float = ((argb ushr 24) and 0xFF) / 255f
 

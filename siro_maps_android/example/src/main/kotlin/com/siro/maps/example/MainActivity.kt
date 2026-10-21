@@ -58,6 +58,8 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback {
             MarkerOptions()
                 .position(ZARQA)
                 .title("Zarqa")
+                .snippet("Hold and drag")
+                .draggable(true)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)),
         )
         map.addPolyline(
