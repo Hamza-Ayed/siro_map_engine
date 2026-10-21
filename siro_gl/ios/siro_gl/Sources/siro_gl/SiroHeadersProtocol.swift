@@ -3,10 +3,10 @@ import MapLibre
 
 // URLProtocol that injects custom headers into every tile/resource request that
 // MapLibre-native makes. Registered once at plugin startup; headers are read
-// from MapLibreCustomHeaders at request time, so setCustomHeaders works even
+// from SiroCustomHeaders at request time, so setCustomHeaders works even
 // after MLNMapView has been created.
-final class MapLibreHeadersProtocol: URLProtocol {
-    private static let handledKey = "MapLibreHeadersProtocolHandled"
+final class SiroHeadersProtocol: URLProtocol {
+    private static let handledKey = "SiroHeadersProtocolHandled"
 
     // One session shared by every intercepted request, rather than one session
     // per request. A session per tile meant a session teardown per tile, and it
@@ -115,10 +115,10 @@ final class MapLibreHeadersProtocol: URLProtocol {
         // Counted before the header check, so the total covers every request
         // MapLibre makes through this session, not only the ones that get
         // custom headers.
-        MapLibreNetworkStats.recordRequest()
+        SiroNetworkStats.recordRequest()
         // Nothing to inject, so leave the request on the normal loading path
         // instead of routing it through this protocol for no reason.
-        guard MapLibreCustomHeaders.hasCustomHeaders() else {
+        guard SiroCustomHeaders.hasCustomHeaders() else {
             return false
         }
         return true
@@ -133,7 +133,7 @@ final class MapLibreHeadersProtocol: URLProtocol {
         URLProtocol.setProperty(true, forKey: Self.handledKey, in: mutable)
 
         // Read headers and filter atomically in one lock acquisition.
-        let (headers, shouldApply) = MapLibreCustomHeaders.headersIfApplicable(to: mutable.url?.absoluteString ?? "")
+        let (headers, shouldApply) = SiroCustomHeaders.headersIfApplicable(to: mutable.url?.absoluteString ?? "")
         if shouldApply {
             for (key, value) in headers {
                 mutable.setValue(value, forHTTPHeaderField: key)
@@ -225,9 +225,9 @@ private final class SessionDelegate: NSObject, URLSessionDataDelegate {
     // Keyed by object identity rather than `taskIdentifier`: identifiers are
     // only unique within one session, and invalidateSession() can leave an old
     // session draining alongside the new one.
-    private var handlers: [ObjectIdentifier: MapLibreHeadersProtocol] = [:]
+    private var handlers: [ObjectIdentifier: SiroHeadersProtocol] = [:]
 
-    func register(_ handler: MapLibreHeadersProtocol, for task: URLSessionTask) {
+    func register(_ handler: SiroHeadersProtocol, for task: URLSessionTask) {
         lock.lock()
         handlers[ObjectIdentifier(task)] = handler
         lock.unlock()
@@ -239,7 +239,7 @@ private final class SessionDelegate: NSObject, URLSessionDataDelegate {
         lock.unlock()
     }
 
-    private func handler(for task: URLSessionTask) -> MapLibreHeadersProtocol? {
+    private func handler(for task: URLSessionTask) -> SiroHeadersProtocol? {
         lock.lock()
         defer { lock.unlock() }
         return handlers[ObjectIdentifier(task)]

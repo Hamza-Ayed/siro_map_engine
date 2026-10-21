@@ -1,7 +1,7 @@
 import MapLibre
 
 class Convert {
-    class func interpretMapLibreMapOptions(options: Any?, delegate: MapLibreMapOptionsSink) {
+    class func interpretMapLibreMapOptions(options: Any?, delegate: SiroMapOptionsSink) {
         guard let options = options as? [String: Any] else { return }
         if let cameraTargetBounds = options["cameraTargetBounds"] as? [Any?] {
             // Handle both [[[Double]]] and [nil] (for unbounded)
@@ -112,7 +112,7 @@ class Convert {
                 : 0
             let pulseWindowMs = locationEngineProperties.count >= 4
                 ? locationEngineProperties[3]
-                : MapLibreMapController.defaultPulseWindowMs
+                : SiroMapController.defaultPulseWindowMs
             delegate.setLocationEngineProperties(
                 enableHighAccuracy: enableHighAccuracy,
                 distanceFilter: distanceFilter,

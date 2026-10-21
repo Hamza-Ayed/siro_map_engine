@@ -4,21 +4,21 @@
 import PackageDescription
 
 let package = Package(
-    name: "maplibre_gl",
+    name: "siro_gl",
     platforms: [
         .iOS("13.0"),
     ],
     products: [
-        .library(name: "maplibre-gl", targets: ["maplibre_gl"])
+        .library(name: "siro-gl", targets: ["siro_gl"])
     ],
     dependencies: [
         // When updating the dependency version,
-        // make sure to also update the version in maplibre_gl.podspec.
+        // make sure to also update the version in siro_gl.podspec.
         .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", exact: "6.28.0"),
     ],
     targets: [
         .target(
-            name: "maplibre_gl",
+            name: "siro_gl",
             dependencies: [
                 .product(name: "MapLibre", package: "maplibre-gl-native-distribution")
             ]

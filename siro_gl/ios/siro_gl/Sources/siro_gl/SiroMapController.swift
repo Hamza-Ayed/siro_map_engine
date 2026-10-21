@@ -1,7 +1,7 @@
 import Flutter
 import MapLibre
 
-class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, MapLibreMapOptionsSink,
+class SiroMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, SiroMapOptionsSink,
     UIGestureRecognizerDelegate
 {
     private var registrar: FlutterPluginRegistrar
@@ -34,7 +34,7 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
     private var locationPulseTimer: Timer?
     private var locationPulseWindowTimer: Timer?
     private var locationUpdateIntervalMs: Int = 0
-    private var locationPulseWindowMs: Int = MapLibreMapController.defaultPulseWindowMs
+    private var locationPulseWindowMs: Int = SiroMapController.defaultPulseWindowMs
     static let defaultPulseWindowMs: Int = 5000
 
     /// Duration used for `locationComponent#setTrackingCameraOptions` when Dart sends
@@ -101,7 +101,7 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
         // Fallback to default if neither JSON nor valid URL
         NSLog(
             """
-            Warning: MapLibreMapController - Initializing map view with \
+            Warning: SiroMapController - Initializing map view with \
             default style. This capability will be removed in a future release.
             """
         )
@@ -407,7 +407,7 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
             let durationMs = (arguments["duration"] as? NSNumber)?.doubleValue
             mapView.setCamera(
                 camera,
-                withDuration: (durationMs ?? Double(MapLibreMapController.defaultTrackingTiltDurationMs)) / 1000.0,
+                withDuration: (durationMs ?? Double(SiroMapController.defaultTrackingTiltDurationMs)) / 1000.0,
                 animationTimingFunction: nil
             ) { [weak self] in
                 // The completion runs both when the animation finishes and when it is
@@ -688,10 +688,10 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
             guard let arguments = methodCall.arguments as? [String: Any] else { return }
             guard let headers = arguments["headers"] as? [String:String] else { return }
             guard let filter = arguments["filter"] as? [String] else { return }
-            MapLibreCustomHeaders.setCustomHeaders(headers, filter: filter)
+            SiroCustomHeaders.setCustomHeaders(headers, filter: filter)
             result(nil)
         case "map#getCustomHeaders":
-            result(MapLibreCustomHeaders.getCustomHeaders())
+            result(SiroCustomHeaders.getCustomHeaders())
         case "map#getVisibleRegion":
             var reply = [String: NSObject]()
             let visibleRegion = mapView.visibleCoordinateBounds
@@ -1738,12 +1738,12 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
      */
     private func firstFeatureOnLayers(at: CGPoint) -> (feature: MLNFeature?, layerId: String?) {
         guard let style = mapView.style else { 
-            NSLog("MapLibreMapController - Map style is nil")
+            NSLog("SiroMapController - Map style is nil")
             return (nil, nil) 
         }
         
         guard styleIsReady else { 
-            NSLog("MapLibreMapController - Map style is not ready yet")
+            NSLog("SiroMapController - Map style is not ready yet")
             return (nil, nil) 
         }
 
@@ -2675,7 +2675,7 @@ class MapLibreMapController: NSObject, FlutterPlatformView, MLNMapViewDelegate, 
     }
 
     /*
-     *  MapLibreMapOptionsSink
+     *  SiroMapOptionsSink
      */
     func setCameraTargetBounds(bounds: MLNCoordinateBounds?) {
         let bounds = bounds ?? MLNCoordinateBounds(

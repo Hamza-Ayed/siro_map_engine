@@ -133,7 +133,7 @@ Future<void> main() async {
   // here to keep existing diff noise minimal.
   const templates = [
     "siro_gl/android/src/main/java/com/siro/gl/LayerPropertyConverter.java",
-    "siro_gl/ios/maplibre_gl/Sources/maplibre_gl/LayerPropertyConverter.swift",
+    "siro_gl/ios/siro_gl/Sources/siro_gl/LayerPropertyConverter.swift",
     "siro_gl/lib/src/layer_expressions.dart",
     "siro_gl/lib/src/layer_properties.dart",
     "siro_gl_web/lib/src/layer_tools.dart",
@@ -211,14 +211,14 @@ String readAndroidSdkVersion() {
 String readIosSdkVersion() {
   final podspec =
       File(
-        '${Directory.current.parent.path}/siro_gl/ios/maplibre_gl.podspec',
+        '${Directory.current.parent.path}/siro_gl/ios/siro_gl.podspec',
       ).readAsStringSync();
   final match = RegExp(
     r"s\.dependency\s+'MapLibre',\s+'(\d+(?:\.\d+)*)'",
   ).firstMatch(podspec);
   if (match == null) {
     throw StateError(
-      'Could not find the MapLibre iOS SDK version in maplibre_gl.podspec',
+      'Could not find the MapLibre iOS SDK version in siro_gl.podspec',
     );
   }
   return match.group(1)!;

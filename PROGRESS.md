@@ -4,8 +4,8 @@
 > الحالات: ⬜ لسا · 🔄 شغّال · ✅ خلص · ⏳ بانتظار صاحب المشروع (جهاز حقيقي أو قرار) · ⛔ عائق
 
 ## الحالة الحالية
-- **آخر مهمة مكتملة:** ID-04
-- **المهمة الجاية:** ID-05
+- **آخر مهمة مكتملة:** ID-05
+- **المهمة الجاية:** ID-06
 - **الفرع:** `siro-engine/dev` (انعمل من `main` عند `25423ba`، مستودع `packages/siro_map_engine` مستقل git)
 
 ## الأوامر المعتمدة (F-01، 2026-10-21، جهاز M3 / Flutter 3.47.7 stable / Xcode 27.1)
@@ -55,7 +55,7 @@
 | ID-02 | إعادة تسمية حزم Dart | ✅ | (انظر git log) | المجلدات: `maplibre_gl`→`siro_gl`، `maplibre_gl_platform_interface`→`siro_gl_platform_interface`، `maplibre_gl_web`→`siro_gl_web`، `maplibre_gl_example`→`siro_gl_example`، `scripts`→`siro_gl_codegen`. مساحة العمل `siro_gl_workspace`، و`siro_gl.code-workspace` (JSON صحيح، كان فيه فاصلة زايدة). استيرادات `package:` كلها، مسارات `path:` والـ melos scopes والـ CI والـ generator وسكربتات الإصدار. ملفات الـ LICENSE والـ NOTICE والـ CHANGELOG ما انلمست. `analyze` ✅ (5 حزم)، `format` ✅، `test:io` ✅ (232+302)، `test:scripts` ✅ (16)، `test:web` ✅ (223+302+46). |
 | ID-03 | الواجهات العامة Dart | ✅ | (انظر git log) | أسماء الأصناف بالجدول: `SiroMap`، `SiroMapController`، `SiroMapOptions`، `SiroGlPlatform`، `SiroMethodChannel`، `SiroGlobalPlatform`، `SiroGlobalMethodChannel`، `SiroStyles`، `SiroJsSource`، `SiroJsLoader`، `SiroJsLoaderException`، `SiroMapPlugin`، و`JsMapImpl` (داخلي). ملفات الـ API: `siro_gl.dart`، `siro_map.dart`، `siro_styles.dart`، `siro_gl_platform_interface.dart`، `siro_js_source.dart`، `method_channel_siro_gl.dart`، `siro_gl_web.dart`، `siro_map_plugin.dart`، `siro_web_gl_platform.dart`. القنوات بملف واحد `siro_gl_platform_interface/lib/src/channels.dart`: `com.siro.gl/global`، `com.siro.gl/map_<id>`، `com.siro.gl/map` (view type). الـ Dart والـ native (Android/iOS) مكتوبين بنفس الأسماء. أسماء الاختبارات (`*_test.dart`) ما اتغيّرت. `analyze` ✅، `test:io` ✅ (232+302)، `test:web` ✅ (223+302+46). |
 | ID-04 | Android | ✅ | (انظر git log) | الحزمة `com.siro.gl` (المجلد `android/src/main/java/com/siro/gl`). الأصناف: `SiroGlPlugin`، `SiroMapController`، `SiroMapFactory`، `SiroMapBuilder`، `SiroMapOptionsSink`، `SiroCustomHttpInterceptor`، `SiroHttpRequestUtil`، `SiroGpsLocationEngine`، `SiroNetworkStats`، `SiroUtils`. أصناف SDK المحرك (`org.maplibre.android.*`، `MapLibreMap`) ما انلمست. المثال: `namespace com.siro.gl.example` (applicationId يورث الـ namespace). Gradle: `rootProject.name = siro_gl`، والـ gradle-compat و`flutter_ci` بيستخدموا `:siro_gl`. `flutter build apk --debug` ✅ (المثال). التشغيل على الـ emulator ما انعمل (بطلب منك). |
-| ID-05 | iOS | ⬜ | | |
+| ID-05 | iOS | ✅ | (انظر git log) | `siro_gl.podspec` (الاسم `siro_gl`، المؤلف Siro Maps). `Package.swift` (الحزمة `siro_gl`، المنتج `siro-gl`، الهدف `siro_gl`). المجلد `ios/siro_gl/Sources/siro_gl`. الأصناف: `SiroGlPlugin`، `SiroMapController`، `SiroMapFactory`، `SiroMapOptionsSink`، `SiroCustomHeaders`، `SiroHeadersProtocol`، `SiroNetworkStats`. `MapLibre` كـ SDK (الـ pod والـ import) ما انلمس. مثال iOS: bundle id `com.siro.gl.example`. `flutter build ios --simulator --debug` ✅ (بعد `flutter clean`، لأن cache الـ SwiftPM القديم فيه مسارات مطلقة للمجلد القديم). **تشغيل على المحاكي ✅:** الخريطة الرئيسية (Full screen map) بتعرض tiles بالكود المعاد تسميته. |
 | ID-06 | Web | ⬜ | | |
 | ID-07 | المولّد | ⬜ | | |
 | ID-08 | الوثائق والهوية | ⬜ | | |
@@ -121,6 +121,7 @@
 <!-- سطر لكل جلسة: التاريخ · المهام · النتيجة · المهمة الجاية -->
 - 2026-10-21 · F-01 · الجولة الأولى (Flutter 3.41.2): التحليل والاختبارات والتوليد ناجحة، والبناءات فشلت (عائق 1 و2). بعد موافقة صاحب المشروع رُقّي Flutter لـ 3.47.7، وأعيدت كل البوابات + build apk + build ios sim بنجاح · **المهمة الجاية:** F-02 (لقطات الشاشة على محاكي iOS وAndroid، ومسارات `docs/evidence/F-02/`).
 - 2026-10-21 · F-02 · تشغيل المثال على iPhone 17 Pro (محاكي iOS 26.0): الخريطة الرئيسية "Full screen map" ظاهرة بالتايلز، اللقطة في `docs/evidence/F-02/ios-iphone17pro-full-screen-map.png`. أذونات الموقع: اخترت "Don't Allow" (ما في حاجة للموقع بهاي اللقطة). Android: تشغيل emulator ⏳ بانتظار موافقة تثبيت. المحاكي اتقفل بعد اللقطة.
+- 2026-10-21 · ID-05 · iOS: الـ podspec و`Package.swift` والأصناف و`pluginClass` و bundle id. التشغيل على المحاكي ✅ (خريطة بالـ tiles). عيوب معروفة مسجّلة: اسم العرض `MapLibre Example` وعنوان التطبيق `MapLibre Examples` لسا (هوية UI، ID-08)، وـ`homepage` بالـ podspec ما زال upstream. **المهمة الجاية:** ID-06.
 - 2026-10-21 · ID-04 · Android: الحزمة `com.siro.gl` والأصناف. APK ✅. (iOS ما زال بالأسماء القديمة لحد ID-05، لذلك `pluginClass` في pubspec تبع iOS مكسور لحد ما نخلّص ID-05.) **المهمة الجاية:** ID-05.
 - 2026-10-21 · ID-03 · أسماء الأصناف والملفات وملف القنوات. ما زال Android وiOS بأسماء أصناف `MapLibre*` (ID-04 و ID-05). **المهمة الجاية:** ID-04.
 - 2026-10-21 · ID-02 · إعادة تسمية الحزم والمجلدات. ملاحظة: استعملت `git add -A` مرة بالخطأ (ممنوع بالقواعد)، وتحققت من المجموعة المرحلة ملف ملف (ما في بناء أو أسرار)، وتراجعت عن تغييرات CocoaPods اللي خلّفها بناء iOS سابق (ملفات xcconfig). `analyze` و`test:io` و`test:web` و`test:scripts` و`format` كلها ✅. **المهمة الجاية:** ID-03 (الواجهات العامة وأسماء القنوات).

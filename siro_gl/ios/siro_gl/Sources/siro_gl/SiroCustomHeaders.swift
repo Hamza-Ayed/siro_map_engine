@@ -1,7 +1,7 @@
 import Foundation
 import MapLibre
 
-public class MapLibreCustomHeaders {
+public class SiroCustomHeaders {
     private static let queue = DispatchQueue(
         label: "io.flutter.maplibre_gl.customHeaders",
         attributes: .concurrent

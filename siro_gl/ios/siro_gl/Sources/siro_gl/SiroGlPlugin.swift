@@ -3,21 +3,21 @@ import Foundation
 import MapLibre
 import UIKit
 
-public class MapLibreMapsPlugin: NSObject, FlutterPlugin {
+public class SiroGlPlugin: NSObject, FlutterPlugin {
     static var downloadOfflineRegionChannelHandler: OfflineChannelHandler? = nil
 
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let instance = MapLibreMapFactory(withRegistrar: registrar)
+        let instance = SiroMapFactory(withRegistrar: registrar)
         registrar.register(instance, withId: "com.siro.gl/map")
 
         // Register the header-injection protocol before any MLNMapView is created.
         // MLNNetworkConfiguration docs require sessionConfiguration to be set before
         // the first map view; we bake the protocol class into the session config here
-        // so that MapLibreHeadersProtocol can intercept requests at call time.
+        // so that SiroHeadersProtocol can intercept requests at call time.
         let sessionConfig = MLNNetworkConfiguration.sharedManager.sessionConfiguration
             ?? URLSessionConfiguration.default
-        sessionConfig.protocolClasses = [MapLibreHeadersProtocol.self]
+        sessionConfig.protocolClasses = [SiroHeadersProtocol.self]
             + (sessionConfig.protocolClasses ?? [])
         MLNNetworkConfiguration.sharedManager.sessionConfiguration = sessionConfig
 
@@ -40,7 +40,7 @@ public class MapLibreMapsPlugin: NSObject, FlutterPlugin {
                     result(nil)
                     return
                 }
-                MapLibreCustomHeaders.setHeaders(headers)
+                SiroCustomHeaders.setHeaders(headers)
                 result(nil)
             case "setNetworkStatsEnabled":
                 guard let arguments = methodCall.arguments as? [String: Any],
@@ -53,16 +53,16 @@ public class MapLibreMapsPlugin: NSObject, FlutterPlugin {
                     ))
                     return
                 }
-                MapLibreNetworkStats.setEnabled(enabled)
+                SiroNetworkStats.setEnabled(enabled)
                 result(nil)
             case "getNetworkStats":
-                // Bytes are null on iOS: see MapLibreNetworkStats.
+                // Bytes are null on iOS: see SiroNetworkStats.
                 result([
-                    "requests": MapLibreNetworkStats.snapshot(),
+                    "requests": SiroNetworkStats.snapshot(),
                     "bytes": NSNull(),
                 ])
             case "resetNetworkStats":
-                MapLibreNetworkStats.reset()
+                SiroNetworkStats.reset()
                 result(nil)
             case "installOfflineMapTiles":
                 guard let arguments = methodCall.arguments as? [String: String] else { return }

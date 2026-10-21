@@ -1,6 +1,6 @@
 import MapLibre
 
-protocol MapLibreMapOptionsSink {
+protocol SiroMapOptionsSink {
     func setCameraTargetBounds(bounds: MLNCoordinateBounds?)
     func setCompassEnabled(compassEnabled: Bool)
     func setStyleString(styleString: String)
