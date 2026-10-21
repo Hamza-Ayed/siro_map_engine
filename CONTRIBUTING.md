@@ -31,10 +31,10 @@ We welcome contributions of all kinds: bug fixes, new features, documentation im
 
 ## Project Structure (Workspace Packages)
 ```
-maplibre_gl/                     # Main Flutter plugin (Android/iOS bindings + shared Dart API)
-maplibre_gl_platform_interface/  # Federated plugin interface (abstractions & shared types)
-maplibre_gl_web/                 # Web implementation (maplibre-gl-js bridge)
-maplibre_gl_example/             # Example app (integration & usage demos)
+siro_gl/                     # Main Flutter plugin (Android/iOS bindings + shared Dart API)
+siro_gl_platform_interface/  # Federated plugin interface (abstractions & shared types)
+siro_gl_web/                 # Web implementation (maplibre-gl-js bridge)
+siro_gl_example/             # Example app (integration & usage demos)
 scripts/                         # Code generation templates and generator entrypoints
 ```
 Generated code lives inside the plugin packages — never modify it directly (see Code Generation section).
@@ -100,7 +100,7 @@ If adding platform‑channel changes, test both Android & iOS (simulator/emulato
 
 ## Performance Considerations
 - Batch style or layer operations.
-- Avoid unnecessary rebuilds of `MapLibreMap` widget in example pages.
+- Avoid unnecessary rebuilds of `SiroMap` widget in example pages.
 - Profile only when needed (Flutter DevTools / native profilers). Include notes if performance-sensitive code added.
 
 ## Documentation & Changelog

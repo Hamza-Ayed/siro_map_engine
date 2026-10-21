@@ -5,7 +5,7 @@ All packages are versioned and released together.
 
 ---
 ## Overview
-The repository is a multi-package workspace (`maplibre_gl` (root dir), `maplibre_gl_web`, `maplibre_gl_platform_interface`). 
+The repository is a multi-package workspace (`siro_gl` (root dir), `siro_gl_web`, `siro_gl_platform_interface`). 
 
 All packages share the same version number. A release = bump versions + update changelog + tag + publish.
 
@@ -70,7 +70,7 @@ Run the bump script from the repository root:
 ```bash
 ./scripts/bump_version.sh 0.25.0
 ```
-It sets `version:` in every workspace package (`maplibre_gl`, `maplibre_gl_platform_interface`, `maplibre_gl_web`, plus the unpublished `maplibre_gl_example` and `scripts`), moves the internal `maplibre_gl_*` constraints to the new version, and updates the `maplibre_gl: ^x.y.z` install snippets in `README.md` and `website/docs`. Add `--dry-run` to see the edits first.
+It sets `version:` in every workspace package (`siro_gl`, `siro_gl_platform_interface`, `siro_gl_web`, plus the unpublished `siro_gl_example` and `scripts`), moves the internal `siro_gl_*` constraints to the new version, and updates the `maplibre_gl: ^x.y.z` install snippets in `README.md` and `website/docs`. Add `--dry-run` to see the edits first.
 
 It then prints which changelogs and which section of the migration guide still need writing, since those need prose and are left to you.
 

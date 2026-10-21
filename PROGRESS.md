@@ -4,8 +4,8 @@
 > الحالات: ⬜ لسا · 🔄 شغّال · ✅ خلص · ⏳ بانتظار صاحب المشروع (جهاز حقيقي أو قرار) · ⛔ عائق
 
 ## الحالة الحالية
-- **آخر مهمة مكتملة:** ID-07
-- **المهمة الجاية:** QA-01
+- **آخر مهمة مكتملة:** QA-01 و ID-08 (المرحلة ID كاملة)
+- **المهمة الجاية:** QA-02 (اختبارات تكامل) أو قرار صاحب المشروع على المرحلة 8 / D-002 / عنوان الأمان
 - **الفرع:** `siro-engine/dev` (انعمل من `main` عند `25423ba`، مستودع `packages/siro_map_engine` مستقل git)
 
 ## الأوامر المعتمدة (F-01، 2026-10-21، جهاز M3 / Flutter 3.47.7 stable / Xcode 27.1)
@@ -58,8 +58,8 @@
 | ID-05 | iOS | ✅ | (انظر git log) | `siro_gl.podspec` (الاسم `siro_gl`، المؤلف Siro Maps). `Package.swift` (الحزمة `siro_gl`، المنتج `siro-gl`، الهدف `siro_gl`). المجلد `ios/siro_gl/Sources/siro_gl`. الأصناف: `SiroGlPlugin`، `SiroMapController`، `SiroMapFactory`، `SiroMapOptionsSink`، `SiroCustomHeaders`، `SiroHeadersProtocol`، `SiroNetworkStats`. `MapLibre` كـ SDK (الـ pod والـ import) ما انلمس. مثال iOS: bundle id `com.siro.gl.example`. `flutter build ios --simulator --debug` ✅ (بعد `flutter clean`، لأن cache الـ SwiftPM القديم فيه مسارات مطلقة للمجلد القديم). **تشغيل على المحاكي ✅:** الخريطة الرئيسية (Full screen map) بتعرض tiles بالكود المعاد تسميته. |
 | ID-06 | Web | ✅ | (انظر git log) | الـ registrar `SiroMapPlugin`، `fileName: siro_gl_web.dart`، `SiroJsSource` قابل للضبط (cdn/bundled/preloaded). `flutter build web` ✅ للمثال. الخريطة بتفتح بـ Chrome (tiles ظاهرة) عبر `?example=full-screen-map`. |
 | ID-07 | المولّد | ✅ | (انظر git log) | `melos run generate` بيشتغل بعد تصليح مسارات الـ templates (كانت لسا `scripts/templates`). توليد الـ 6 ملفات ما بعمل أي diff. `check-style-spec` ✅. `test:scripts` ✅ (16). |
-| ID-08 | الوثائق والهوية | ⬜ | | |
-| QA-01 | CI محلي | ⬜ | | |
+| ID-08 | الوثائق والهوية | ✅ | (انظر git log) | README ثنائي اللغة (`siro_gl/README.md`، والجذر رابط إليه). `SECURITY.md` بدل `SECURITY_POLICY.txt`، وعنوان الأمان **placeholder لصاحب المشروع**. CHANGELOG: `## 1.0.0-dev` مع قائمة الأسماء المتغيّرة. CONTRIBUTING وRELEASE وARCHITECTURE تحدّثت بالأسماء الجديدة. `website/` ما انحذف (D-002 مقترح، ينتظر قرار). |
+| QA-01 | CI محلي | ✅ | (انظر git log) | `tool/ci.sh`: pub get، format، analyze، test io/scripts/web، codegen check (generate بدون diff)، build apk، build ios sim. `SKIP_WEB=1` و`SKIP_BUILD=1` للتسريع. آخر تشغيل كامل: كل الخطوات ✅ ما عدا test io اللي فشل بسبب README قديم (تصحّح، ونجح بعد الإصلاح: 232 + 302). |
 | C-01 | حجم الكاش | ⬜ | | |
 | C-02 | إحصاءات الكاش | ⬜ | | |
 | C-03 | البذرة المدمجة | ⬜ | | |
@@ -121,6 +121,7 @@
 <!-- سطر لكل جلسة: التاريخ · المهام · النتيجة · المهمة الجاية -->
 - 2026-10-21 · F-01 · الجولة الأولى (Flutter 3.41.2): التحليل والاختبارات والتوليد ناجحة، والبناءات فشلت (عائق 1 و2). بعد موافقة صاحب المشروع رُقّي Flutter لـ 3.47.7، وأعيدت كل البوابات + build apk + build ios sim بنجاح · **المهمة الجاية:** F-02 (لقطات الشاشة على محاكي iOS وAndroid، ومسارات `docs/evidence/F-02/`).
 - 2026-10-21 · F-02 · تشغيل المثال على iPhone 17 Pro (محاكي iOS 26.0): الخريطة الرئيسية "Full screen map" ظاهرة بالتايلز، اللقطة في `docs/evidence/F-02/ios-iphone17pro-full-screen-map.png`. أذونات الموقع: اخترت "Don't Allow" (ما في حاجة للموقع بهاي اللقطة). Android: تشغيل emulator ⏳ بانتظار موافقة تثبيت. المحاكي اتقفل بعد اللقطة.
+- 2026-10-21 · QA-01 + ID-08 · `tool/ci.sh` و الوثائق. الـ gate الكامل كان ✅ إلا test io (README قديم، صلّحناه). **قرارات مفتوحة لصاحب المشروع:** عنوان الأمان (SECURITY.md)، حذف `website/` (D-002)، اسم العرض والعنوان على الجهاز والويب (`MapLibre Example`) ، `homepage` بالـ podspec ما زال upstream، والمرحلة 8.
 - 2026-10-21 · ID-07 · codegen: التوليد ما بيشتغل بعد ID-02 لأن مسارات الـ templates كانت لسا `scripts/templates`. صلّحناها، و`generate` ما عمل أي diff. ID-06: web build ✅ وفتح بـ Chrome ✅. **المهمة الجاية:** QA-01 (tool/ci.sh).
 - 2026-10-21 · ID-05 · iOS: الـ podspec و`Package.swift` والأصناف و`pluginClass` و bundle id. التشغيل على المحاكي ✅ (خريطة بالـ tiles). عيوب معروفة مسجّلة: اسم العرض `MapLibre Example` وعنوان التطبيق `MapLibre Examples` لسا (هوية UI، ID-08)، وـ`homepage` بالـ podspec ما زال upstream. **المهمة الجاية:** ID-06.
 - 2026-10-21 · ID-04 · Android: الحزمة `com.siro.gl` والأصناف. APK ✅. (iOS ما زال بالأسماء القديمة لحد ID-05، لذلك `pluginClass` في pubspec تبع iOS مكسور لحد ما نخلّص ID-05.) **المهمة الجاية:** ID-05.

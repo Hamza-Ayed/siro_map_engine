@@ -3,10 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## Unreleased
+## 1.0.0-dev
+
+Based on flutter-maplibre-gl 0.27.1.
+
+### Breaking: renamed in this version
+* Packages: `maplibre_gl` → `siro_gl`, `maplibre_gl_platform_interface` → `siro_gl_platform_interface`, `maplibre_gl_web` → `siro_gl_web`, `maplibre_gl_example` → `siro_gl_example`, `scripts` → `siro_gl_codegen`.
+* Classes: `MapLibreMap` → `SiroMap`, `MapLibreMapController` → `SiroMapController`, `MapLibreMapOptions` → `SiroMapOptions`, `MapLibreStyles` → `SiroStyles`, and the platform classes (`SiroGlPlatform`, `SiroMethodChannel`, `SiroGlobalPlatform`, `SiroJsSource`, `SiroJsLoader`).
+* Channels: `plugins.flutter.io/maplibre_gl` → `com.siro.gl/global`, `plugins.flutter.io/maplibre_gl_<id>` → `com.siro.gl/map_<id>`.
+* Android: package `org.maplibre.maplibregl` → `com.siro.gl`; plugin class `SiroGlPlugin`.
+* iOS: pod `siro_gl`; Swift plugin class `SiroGlPlugin`.
+
+The MapLibre native SDKs keep their own names and versions.
+
 
 ### Added
 * **Network counter**: `setNetworkStatsEnabled(bool)`, `getNetworkStats()` and `resetNetworkStats()` count the HTTP(S) requests the map makes (tiles, styles, sprites, glyphs). Counting is off by default. `NetworkStats` reports `requests` on Android and iOS, and `bytes` on Android only (Content-Length, so chunked responses add nothing); iOS reports `bytes` as null. On Android, turning counting on rebuilds the HTTP client as `setHttpHeaders` does, so per-map headers from `setCustomHeaders` are replaced until set again.
+
+## History from flutter-maplibre-gl
 
 ## [0.27.1](https://github.com/maplibre/flutter-maplibre-gl/compare/v0.27.0...v0.27.1)
 
