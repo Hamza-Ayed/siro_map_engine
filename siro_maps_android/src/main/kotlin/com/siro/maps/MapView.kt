@@ -30,6 +30,7 @@ class MapView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs) {
 
     private val engineView: org.maplibre.android.maps.MapView
+    private var options: GoogleMapOptions? = null
     private val waiting = mutableListOf<OnMapReadyCallback>()
     private var googleMap: GoogleMap? = null
     private val myLocationButton = ImageButton(context).apply {
@@ -41,7 +42,7 @@ class MapView @JvmOverloads constructor(
         }
         elevation = 6f * resources.displayMetrics.density
         visibility = GONE
-        setOnClickListener { googleMap?.animateToMyLocation() }
+        setOnClickListener { googleMap?.onMyLocationButtonClicked() }
     }
 
     init {
@@ -80,6 +81,11 @@ class MapView @JvmOverloads constructor(
         )
     }
 
+    /** Creates a map with [options], as Google's `MapView(Context, GoogleMapOptions)`. */
+    constructor(context: Context, options: GoogleMapOptions?) : this(context) {
+        this.options = options
+    }
+
     /** Shows or hides the my-location button. Called by the map. */
     internal fun setMyLocationButtonVisible(visible: Boolean) {
         myLocationButton.visibility = if (visible) VISIBLE else GONE
@@ -105,10 +111,27 @@ class MapView @JvmOverloads constructor(
         googleMap = map
         // Marker drags are driven by touches the map view has not consumed yet.
         engineView.setOnTouchListener { _, event -> map.onDragTouch(event) }
+        options?.let { applyOptions(map, it) }
         map.setMapStyle(null)
         val callbacks = waiting.toList()
         waiting.clear()
         callbacks.forEach { it.onMapReady(map) }
+    }
+
+    private fun applyOptions(map: GoogleMap, options: GoogleMapOptions) {
+        options.camera?.let { map.moveCamera(CameraUpdateFactory.newCameraPosition(it)) }
+        options.mapType?.let { map.mapType = it }
+        val ui = map.uiSettings
+        options.compassEnabled?.let { ui.isCompassEnabled = it }
+        options.rotateGesturesEnabled?.let { ui.isRotateGesturesEnabled = it }
+        options.scrollGesturesEnabled?.let { ui.isScrollGesturesEnabled = it }
+        options.tiltGesturesEnabled?.let { ui.isTiltGesturesEnabled = it }
+        options.zoomGesturesEnabled?.let { ui.isZoomGesturesEnabled = it }
+        options.zoomControlsEnabled?.let { ui.isZoomControlsEnabled = it }
+        options.mapToolbarEnabled?.let { ui.isMapToolbarEnabled = it }
+        options.minZoom?.let { map.setMinZoomPreference(it) }
+        options.maxZoom?.let { map.setMaxZoomPreference(it) }
+        options.cameraTargetBounds?.let { map.setLatLngBoundsForCameraTarget(it) }
     }
 
     fun onCreate(savedInstanceState: Bundle?) = engineView.onCreate(savedInstanceState)

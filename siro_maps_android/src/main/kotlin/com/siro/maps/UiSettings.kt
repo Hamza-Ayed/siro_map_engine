@@ -37,6 +37,26 @@ class UiSettings internal constructor(private val map: GoogleMap) {
             map.engine.uiSettings.setZoomGesturesEnabled(value)
         }
 
+    /** Stored for compatibility. Siro draws no zoom buttons; use gestures. */
+    var isZoomControlsEnabled: Boolean = true
+
+    /** Stored for compatibility. Siro has no map toolbar. */
+    var isMapToolbarEnabled: Boolean = true
+
+    /** Stored for compatibility. Siro has no indoor maps. */
+    var isIndoorLevelPickerEnabled: Boolean = true
+
+    /** Stored for compatibility. Scrolling during a rotate or zoom is always allowed. */
+    var isScrollGesturesEnabledDuringRotateOrZoom: Boolean = true
+
+    /** Turns every gesture on or off at once. */
+    fun setAllGesturesEnabled(enabled: Boolean) {
+        isRotateGesturesEnabled = enabled
+        isScrollGesturesEnabled = enabled
+        isTiltGesturesEnabled = enabled
+        isZoomGesturesEnabled = enabled
+    }
+
     /** The button that recentres the map on the user. It shows while my-location is on. */
     var isMyLocationButtonEnabled: Boolean = false
         set(value) {

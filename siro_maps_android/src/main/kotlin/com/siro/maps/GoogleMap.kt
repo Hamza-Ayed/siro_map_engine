@@ -3,11 +3,14 @@ package com.siro.maps
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.PointF
 import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import org.maplibre.android.maps.MapLibreMap
 import org.maplibre.android.maps.Style
+import org.maplibre.android.style.layers.Property
+import org.maplibre.android.style.layers.PropertyFactory
 import org.maplibre.android.location.LocationComponentActivationOptions
 
 /**
@@ -36,6 +39,14 @@ class GoogleMap internal constructor(
     private var polygonClick: OnPolygonClickListener? = null
     private var circleClick: OnCircleClickListener? = null
     private var infoWindowClick: OnInfoWindowClickListener? = null
+    private var infoWindowClose: OnInfoWindowCloseListener? = null
+    private var infoWindowLongClick: OnInfoWindowLongClickListener? = null
+    private var mapLoaded: OnMapLoadedCallback? = null
+    private var loadedReported = false
+    private var locationButtonClick: OnMyLocationButtonClickListener? = null
+    private var buildings = true
+    private var traffic = false
+    private var indoor = false
     private var cameraIdle: OnCameraIdleListener? = null
     private var cameraMove: OnCameraMoveListener? = null
     private var cameraMoveStarted: OnCameraMoveStartedListener? = null
@@ -71,6 +82,92 @@ class GoogleMap internal constructor(
     fun setMinZoomPreference(minZoom: Float) = engine.setMinZoomPreference(minZoom.toDouble())
 
     fun setMaxZoomPreference(maxZoom: Float) = engine.setMaxZoomPreference(maxZoom.toDouble())
+
+    /** Restores the full zoom range. */
+    fun resetMinMaxZoomPreference() {
+        engine.setMinZoomPreference(0.0)
+        engine.setMaxZoomPreference(25.5)
+    }
+
+    /** Keeps the camera's target inside [bounds]. Null removes the limit. */
+    fun setLatLngBoundsForCameraTarget(bounds: LatLngBounds?) {
+        engine.setLatLngBoundsForCameraTarget(bounds?.toEngine())
+    }
+
+    /**
+     * Insets the map's controls and camera centre, as Google's `setPadding`.
+     * The engine marks its own `setPadding` as deprecated, but it is still the one that insets the view.
+     */
+    @Suppress("DEPRECATION")
+    fun setPadding(left: Int, top: Int, right: Int, bottom: Int) = engine.setPadding(left, top, right, bottom)
+
+    /** Stops a camera animation where it is. */
+    fun stopAnimation() = engine.cancelTransitions()
+
+    /** Draws the map into a bitmap. The callback gets null if the map could not be drawn. */
+    fun snapshot(callback: SnapshotReadyCallback) {
+        engine.snapshot { bitmap: Bitmap? -> callback.onSnapshotReady(bitmap) }
+    }
+
+    fun setContentDescription(description: String?) {
+        hostView.contentDescription = description
+    }
+
+    /** Shows or hides the 3D buildings of the style. */
+    var isBuildingsEnabled: Boolean
+        get() = buildings
+        set(value) {
+            buildings = value
+            engine.style?.let { applyBuildings(it) }
+        }
+
+    /** Stored for compatibility. Siro has no traffic layer. */
+    var isTrafficEnabled: Boolean
+        get() = traffic
+        set(value) {
+            traffic = value
+        }
+
+    /** Stored for compatibility. Siro has no indoor maps. */
+    var isIndoorEnabled: Boolean
+        get() = indoor
+        set(value) {
+            indoor = value
+        }
+
+    private fun applyBuildings(style: Style) {
+        val visibility = PropertyFactory.visibility(if (buildings) Property.VISIBLE else Property.NONE)
+        for (id in listOf("building-3d", "building-3d-osm")) {
+            style.getLayer(id)?.setProperties(visibility)
+        }
+    }
+
+    fun setOnMapLoadedCallback(callback: OnMapLoadedCallback?) {
+        mapLoaded = callback
+        if (loadedReported) callback?.onMapLoaded()
+    }
+
+    fun setOnCameraMoveCanceledListener(listener: OnCameraMoveCanceledListener?) {
+        engine.addOnCameraMoveCancelListener { listener?.onCameraMoveCanceled() }
+    }
+
+    fun setOnInfoWindowCloseListener(listener: OnInfoWindowCloseListener?) {
+        infoWindowClose = listener
+    }
+
+    fun setOnInfoWindowLongClickListener(listener: OnInfoWindowLongClickListener?) {
+        infoWindowLongClick = listener
+    }
+
+    fun setOnMyLocationButtonClickListener(listener: OnMyLocationButtonClickListener?) {
+        locationButtonClick = listener
+    }
+
+    /** Accepted so code written for Google compiles. The blue dot is not tappable yet. */
+    fun setOnMyLocationClickListener(listener: OnMyLocationClickListener?) = Unit
+
+    /** Accepted so code written for Google compiles. Siro's map has no tappable points of interest. */
+    fun setOnPoiClickListener(listener: OnPoiClickListener?) = Unit
 
     /** Shows the blue dot at the user's position. Needs a location permission. */
     var isMyLocationEnabled: Boolean
@@ -213,6 +310,11 @@ class GoogleMap internal constructor(
             if (request == styleRequest) {
                 renderer.attach(style)
                 applyLocation(style)
+                applyBuildings(style)
+                if (!loadedReported) {
+                    loadedReported = true
+                    mapLoaded?.onMapLoaded()
+                }
             }
         }
     }
@@ -310,6 +412,19 @@ class GoogleMap internal constructor(
         infoWindowClick?.onInfoWindowClick(marker)
     }
 
+    internal fun notifyInfoWindowClose(marker: Marker) {
+        infoWindowClose?.onInfoWindowClose(marker)
+    }
+
+    internal fun notifyInfoWindowLongClick(marker: Marker) {
+        infoWindowLongClick?.onInfoWindowLongClick(marker)
+    }
+
+    /** The my-location button was tapped. Recentres on the user unless the listener consumes it. */
+    internal fun onMyLocationButtonClicked() {
+        if (locationButtonClick?.onMyLocationButtonClick() != true) animateToMyLocation()
+    }
+
     fun setOnMarkerDragListener(listener: OnMarkerDragListener?) {
         markerDrag = listener
     }
@@ -353,6 +468,39 @@ class GoogleMap internal constructor(
         fun onMarkerDragStart(marker: Marker)
         fun onMarkerDrag(marker: Marker)
         fun onMarkerDragEnd(marker: Marker)
+    }
+
+    fun interface OnMapLoadedCallback {
+        fun onMapLoaded()
+    }
+
+    fun interface SnapshotReadyCallback {
+        fun onSnapshotReady(bitmap: Bitmap?)
+    }
+
+    fun interface OnCameraMoveCanceledListener {
+        fun onCameraMoveCanceled()
+    }
+
+    fun interface OnInfoWindowCloseListener {
+        fun onInfoWindowClose(marker: Marker)
+    }
+
+    fun interface OnInfoWindowLongClickListener {
+        fun onInfoWindowLongClick(marker: Marker)
+    }
+
+    fun interface OnMyLocationButtonClickListener {
+        /** Return true to consume the tap, so the map does not recentre. */
+        fun onMyLocationButtonClick(): Boolean
+    }
+
+    fun interface OnMyLocationClickListener {
+        fun onMyLocationClick(location: android.location.Location)
+    }
+
+    fun interface OnPoiClickListener {
+        fun onPoiClick(poi: PointOfInterest)
     }
 
     fun interface OnMapClickListener {

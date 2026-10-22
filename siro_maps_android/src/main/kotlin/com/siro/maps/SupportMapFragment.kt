@@ -14,11 +14,12 @@ import androidx.fragment.app.Fragment
 class SupportMapFragment : Fragment() {
 
     private var mapView: MapView? = null
+    private var options: GoogleMapOptions? = null
     private val waiting = mutableListOf<OnMapReadyCallback>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val view = MapView(requireContext())
+        val view = MapView(requireContext(), options)
         view.onCreate(savedInstanceState)
         mapView = view
         waiting.forEach { view.getMapAsync(it) }
@@ -73,5 +74,16 @@ class SupportMapFragment : Fragment() {
     override fun onDestroy() {
         mapView?.onDestroy()
         super.onDestroy()
+    }
+
+    companion object {
+        /** A fragment with the default options, as Google's `SupportMapFragment.newInstance()`. */
+        @JvmStatic
+        fun newInstance(): SupportMapFragment = SupportMapFragment()
+
+        /** A fragment with [options], as Google's `SupportMapFragment.newInstance(GoogleMapOptions)`. */
+        @JvmStatic
+        fun newInstance(options: GoogleMapOptions?): SupportMapFragment =
+            SupportMapFragment().also { it.options = options }
     }
 }

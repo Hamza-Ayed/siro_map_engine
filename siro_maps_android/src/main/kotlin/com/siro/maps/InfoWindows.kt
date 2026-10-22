@@ -22,9 +22,16 @@ internal class InfoWindows(private val owner: GoogleMap) {
     private var shownView: View? = null
 
     fun show(marker: Marker) {
-        hideAll()
+        // Opening another window closes the open one; rebuilding the same one does not.
+        val previous = shownMarker
+        removeShown()
+        if (previous != null && previous != marker) owner.notifyInfoWindowClose(previous)
         val view = viewFor(marker)
         view.setOnClickListener { owner.notifyInfoWindowClick(marker) }
+        view.setOnLongClickListener {
+            owner.notifyInfoWindowLongClick(marker)
+            true
+        }
         owner.hostView.addView(
             view,
             FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT),
@@ -42,6 +49,12 @@ internal class InfoWindows(private val owner: GoogleMap) {
     }
 
     fun hideAll() {
+        val closing = shownMarker
+        removeShown()
+        closing?.let { owner.notifyInfoWindowClose(it) }
+    }
+
+    private fun removeShown() {
         shownView?.let { owner.hostView.removeView(it) }
         shownView = null
         shownMarker = null

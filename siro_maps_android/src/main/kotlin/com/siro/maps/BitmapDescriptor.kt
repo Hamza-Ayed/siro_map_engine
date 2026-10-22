@@ -12,17 +12,21 @@ class BitmapDescriptor internal constructor(
     internal val bitmap: Bitmap?,
     internal val resourceId: Int? = null,
     internal val assetPath: String? = null,
+    internal val filePath: String? = null,
+    internal val privateFileName: String? = null,
 ) {
     override fun equals(other: Any?): Boolean =
         other is BitmapDescriptor &&
             other.hue == hue &&
             other.bitmap === bitmap &&
             other.resourceId == resourceId &&
-            other.assetPath == assetPath
+            other.assetPath == assetPath &&
+            other.filePath == filePath &&
+            other.privateFileName == privateFileName
 
     override fun hashCode(): Int =
         31 * (31 * (31 * (hue?.hashCode() ?: 0) + System.identityHashCode(bitmap)) + (resourceId ?: 0)) +
-            (assetPath?.hashCode() ?: 0)
+            (assetPath?.hashCode() ?: 0) + 17 * (filePath?.hashCode() ?: 0) + 19 * (privateFileName?.hashCode() ?: 0)
 }
 
 /** Creates [BitmapDescriptor]s, as in the Google Maps SDK. */
@@ -56,6 +60,14 @@ object BitmapDescriptorFactory {
     /** An icon from a drawable or mipmap resource, as Google's `fromResource`. */
     @JvmStatic
     fun fromResource(resourceId: Int): BitmapDescriptor = BitmapDescriptor(null, null, resourceId = resourceId)
+
+    /** An icon from an image file at an absolute [path], as Google's `fromPath`. */
+    @JvmStatic
+    fun fromPath(absolutePath: String): BitmapDescriptor = BitmapDescriptor(null, null, filePath = absolutePath)
+
+    /** An icon from a file in the app's private storage, as Google's `fromFile`. */
+    @JvmStatic
+    fun fromFile(fileName: String): BitmapDescriptor = BitmapDescriptor(null, null, privateFileName = fileName)
 
     /** An icon from an image in the app's assets, such as `"icons/car.png"`, as Google's `fromAsset`. */
     @JvmStatic

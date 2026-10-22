@@ -16,6 +16,8 @@ class MarkerOptions {
     internal var visible = true
     internal var zIndex = 0f
     internal var draggable = false
+    internal var infoWindowAnchorU = 0.5f
+    internal var infoWindowAnchorV = 0f
     internal var tag: Any? = null
 
     fun position(position: LatLng): MarkerOptions = apply { this.position = position }
@@ -34,6 +36,10 @@ class MarkerOptions {
     fun visible(visible: Boolean): MarkerOptions = apply { this.visible = visible }
     fun zIndex(zIndex: Float): MarkerOptions = apply { this.zIndex = zIndex }
     fun draggable(draggable: Boolean): MarkerOptions = apply { this.draggable = draggable }
+    fun infoWindowAnchor(u: Float, v: Float): MarkerOptions = apply {
+        infoWindowAnchorU = u
+        infoWindowAnchorV = v
+    }
 }
 
 /** Options for a [Polyline]. Same builder methods as the Google Maps SDK. */
@@ -46,6 +52,9 @@ class PolylineOptions {
     internal var geodesic = false
     internal var pattern: List<PatternItem>? = null
     internal var clickable = false
+    internal var startCap: Cap = ButtCap()
+    internal var endCap: Cap = ButtCap()
+    internal var jointType = JointType.DEFAULT
 
     fun add(vararg points: LatLng): PolylineOptions = apply { this.points.addAll(points) }
     fun addAll(points: Iterable<LatLng>): PolylineOptions = apply { this.points.addAll(points) }
@@ -56,6 +65,9 @@ class PolylineOptions {
     fun geodesic(geodesic: Boolean): PolylineOptions = apply { this.geodesic = geodesic }
     fun pattern(pattern: List<PatternItem>?): PolylineOptions = apply { this.pattern = pattern }
     fun clickable(clickable: Boolean): PolylineOptions = apply { this.clickable = clickable }
+    fun startCap(cap: Cap): PolylineOptions = apply { startCap = cap }
+    fun endCap(cap: Cap): PolylineOptions = apply { endCap = cap }
+    fun jointType(jointType: Int): PolylineOptions = apply { this.jointType = jointType }
 }
 
 /** Options for a [Polygon]. Same builder methods as the Google Maps SDK. */
@@ -80,6 +92,10 @@ class PolygonOptions {
     fun visible(visible: Boolean): PolygonOptions = apply { this.visible = visible }
     fun geodesic(geodesic: Boolean): PolygonOptions = apply { this.geodesic = geodesic }
     fun clickable(clickable: Boolean): PolygonOptions = apply { this.clickable = clickable }
+
+    // Accepted so code written for Google compiles. The outline is drawn solid with round joints.
+    fun strokePattern(pattern: List<PatternItem>?): PolygonOptions = this
+    fun strokeJointType(jointType: Int): PolygonOptions = this
 }
 
 /** Options for a [Circle]. Same builder methods as the Google Maps SDK. */
@@ -102,4 +118,7 @@ class CircleOptions {
     fun zIndex(zIndex: Float): CircleOptions = apply { this.zIndex = zIndex }
     fun visible(visible: Boolean): CircleOptions = apply { this.visible = visible }
     fun clickable(clickable: Boolean): CircleOptions = apply { this.clickable = clickable }
+
+    /** Accepted so code written for Google compiles. The outline is drawn solid. */
+    fun strokePattern(pattern: List<PatternItem>?): CircleOptions = this
 }

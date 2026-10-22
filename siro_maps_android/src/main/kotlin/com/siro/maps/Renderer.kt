@@ -188,6 +188,8 @@ internal class Renderer(private val owner: GoogleMap) {
             icon.bitmap != null -> "siro-bitmap-${System.identityHashCode(icon.bitmap)}"
             icon.resourceId != null -> "siro-resource-${icon.resourceId}"
             icon.assetPath != null -> "siro-asset-${icon.assetPath}"
+            icon.filePath != null -> "siro-file-${icon.filePath}"
+            icon.privateFileName != null -> "siro-private-${icon.privateFileName}"
             else -> "siro-pin-${icon.hue ?: BitmapDescriptorFactory.HUE_RED}"
         }
         if (addedImages.add(name)) {
@@ -208,6 +210,13 @@ internal class Renderer(private val owner: GoogleMap) {
             return owner.context.assets.open(path).use { stream ->
                 requireNotNull(BitmapFactory.decodeStream(stream)) { "Asset $path is not an image." }
             }
+        }
+        icon.filePath?.let { path ->
+            return requireNotNull(BitmapFactory.decodeFile(path)) { "File $path is not an image." }
+        }
+        icon.privateFileName?.let { name ->
+            val file = owner.context.getFileStreamPath(name)
+            return requireNotNull(BitmapFactory.decodeFile(file.path)) { "File $name is not an image." }
         }
         return defaultPinBitmap(icon.hue ?: BitmapDescriptorFactory.HUE_RED)
     }

@@ -19,6 +19,14 @@ class Marker internal constructor(
     private var zIndexValue = options.zIndex
     private var draggableValue = options.draggable
     private var removed = false
+    private var infoAnchorU = options.infoWindowAnchorU
+    private var infoAnchorV = options.infoWindowAnchorV
+
+    /** Where the info window attaches to the icon. Stored; the window is drawn above the pin. */
+    fun setInfoWindowAnchor(u: Float, v: Float) {
+        infoAnchorU = u
+        infoAnchorV = v
+    }
 
     /** Arbitrary data attached to the marker, as with Google's `setTag`. */
     var tag: Any? = options.tag
@@ -143,6 +151,11 @@ class Polyline internal constructor(
     private var removed = false
 
     var tag: Any? = null
+
+    /** Stored for compatibility. Lines are drawn with round ends and joints. */
+    var startCap: Cap = options.startCap
+    var endCap: Cap = options.endCap
+    var jointType: Int = options.jointType
 
     var points: List<LatLng>
         get() = pts

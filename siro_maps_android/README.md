@@ -69,15 +69,22 @@ Minimum Android version: **23** (the engine's manifest requires it; Google's SDK
 
 ## Known gaps
 
-These are not implemented. Calls to them compile, or are stored, but do not change the map.
+Checked against Google's `GoogleMap`, `Marker`, options, `UiSettings`, factories and `MapView`
+names: 104 of 109 are present. A name that is present may be stored without changing the map; the
+list below says which.
 
-- Zoom controls are not drawn. `UiSettings.isZoomControlsEnabled` does not exist yet.
-- `MAP_TYPE_SATELLITE` and `MAP_TYPE_HYBRID` show the day style.
-- `MAP_TYPE_NONE` shows the day style.
-- Polyline caps and joins are not drawn. Dash patterns are; dot patterns are not.
-- Tile overlays, clusters, heatmaps and ground overlays are not implemented.
-- Attribution is "© OpenStreetMap contributors · Siro Maps", in place of Google's logo.
-  Keep it visible in the app.
+Not implemented (calls do not exist, so code using them will not compile):
+- Ground overlays, tile overlays and `setLocationSource`.
+
+Present but stored only (the call compiles and runs, the map does not change):
+- Line caps and joint types, `strokePattern` on polygons and circles, custom caps.
+- `setOnMyLocationClickListener`, `setOnPoiClickListener`: the map has no tappable dot or points of interest.
+- `isTrafficEnabled`, `isIndoorEnabled`, zoom controls, toolbar, indoor picker, `setInfoWindowAnchor`.
+- `MapsInitializer` returns success at once. `GoogleMapOptions.liteMode`, `mapId` and similar are ignored.
+- `MAP_TYPE_SATELLITE`, `MAP_TYPE_HYBRID` and `MAP_TYPE_NONE` show the day style.
+
+Also different: the minimum Android version is 23 (Google's SDK supports 21), and the attribution is
+"© OpenStreetMap contributors · Siro Maps" in place of Google's logo. Keep it visible.
 
 ## Testing
 
