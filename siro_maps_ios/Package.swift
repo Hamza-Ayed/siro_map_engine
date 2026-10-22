@@ -22,5 +22,9 @@ let package = Package(
                 .product(name: "MapLibre", package: "maplibre-gl-native-distribution"),
             ]
         ),
+        .testTarget(
+            name: "SiroMapsTests",
+            dependencies: ["SiroMaps"]
+        ),
     ]
 )
