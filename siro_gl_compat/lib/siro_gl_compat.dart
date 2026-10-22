@@ -15,8 +15,13 @@ export 'package:siro_gl/siro_gl.dart'
         CameraTargetBounds,
         LatLng,
         LatLngBounds,
+        LightProperties,
         MinMaxZoomPreference,
-        SiroAttributionButton;
+        RasterDemSourceProperties,
+        SiroAttributionButton,
+        SiroMapController,
+        SkyProperties,
+        TerrainProperties;
 
 export 'src/geocoder.dart';
 export 'src/geometry.dart'

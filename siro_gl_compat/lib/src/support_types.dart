@@ -90,7 +90,7 @@ class InfoWindow {
 /// The icon of a [Marker]: the default pin tinted by hue, or your own image.
 @immutable
 class BitmapDescriptor {
-  const BitmapDescriptor._({this.hue, this.bytes});
+  const BitmapDescriptor._({this.hue, this.bytes, this.scale, this.multiplier});
 
   static const double hueRed = 0;
   static const double hueOrange = 30;
@@ -108,9 +108,18 @@ class BitmapDescriptor {
   static BitmapDescriptor defaultMarkerWithHue(double hue) =>
       BitmapDescriptor._(hue: hue);
 
-  /// An image from PNG bytes.
+  /// An image from PNG bytes, drawn at [multiplier] times its own size. A Siro
+  /// extension, not part of Google's API: it maps straight to the engine's icon size.
+  static BitmapDescriptor scaledBytes(Uint8List byteData, double multiplier) =>
+      BitmapDescriptor._(bytes: byteData, multiplier: multiplier);
+
+  /// An image from PNG bytes. [size] scales the image to that many logical
+  /// pixels wide, keeping its aspect ratio; the image's own size is used otherwise.
   static BitmapDescriptor fromBytes(Uint8List byteData, {Size? size}) =>
-      BitmapDescriptor._(bytes: byteData);
+      BitmapDescriptor._(
+        bytes: byteData,
+        scale: size?.width,
+      );
 
   /// An image from a PNG in the app's assets.
   static Future<BitmapDescriptor> asset(
@@ -119,7 +128,10 @@ class BitmapDescriptor {
     Size? size,
   }) async {
     final data = await rootBundle.load(assetName);
-    return BitmapDescriptor._(bytes: data.buffer.asUint8List());
+    return BitmapDescriptor._(
+      bytes: data.buffer.asUint8List(),
+      scale: size?.width,
+    );
   }
 
   /// The tint of the default pin, or null for an image icon.
@@ -127,6 +139,12 @@ class BitmapDescriptor {
 
   /// The PNG bytes of an image icon, or null for the default pin.
   final Uint8List? bytes;
+
+  /// The width in logical pixels an image icon is drawn at, or null for its own size.
+  final double? scale;
+
+  /// The engine icon-size multiplier of an image icon, or null to derive it from [scale].
+  final double? multiplier;
 
   /// The CSS colour of the default pin.
   String get cssColor =>

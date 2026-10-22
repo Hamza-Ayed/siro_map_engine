@@ -40,6 +40,10 @@ class GoogleMapController {
 
   SiroMapController get _map => _state._map!;
 
+  /// The engine's own controller, for the style-level calls Google's API has no equivalent for:
+  /// layers, terrain, sky, light and style images. Only valid once the map is created.
+  SiroMapController get native => _map;
+
   Future<void> animateCamera(CameraUpdate cameraUpdate, {Duration? duration}) =>
       _map.animateCamera(cameraUpdate.native, duration: duration);
 
@@ -94,6 +98,7 @@ class GoogleMap extends StatefulWidget {
     super.key,
     required this.initialCameraPosition,
     this.onMapCreated,
+    this.onStyleLoaded,
     this.gestureRecognizers,
     this.compassEnabled = true,
     this.mapToolbarEnabled = true,
@@ -134,6 +139,9 @@ class GoogleMap extends StatefulWidget {
 
   final CameraPosition initialCameraPosition;
   final MapCreatedCallback? onMapCreated;
+
+  /// Called each time a style finishes loading, including after a style change.
+  final VoidCallback? onStyleLoaded;
   final Set<Factory<OneSequenceGestureRecognizer>>? gestureRecognizers;
   final bool compassEnabled;
   final bool mapToolbarEnabled;
@@ -276,6 +284,7 @@ class _GoogleMapState extends State<GoogleMap> {
       await map.updateContentInsets(widget.padding);
     }
     await _sync();
+    widget.onStyleLoaded?.call();
   }
 
   Future<void> _setMapStyle(String? style) async {
@@ -549,6 +558,23 @@ class _GoogleMapState extends State<GoogleMap> {
     _dashLayers.add(layerId);
   }
 
+  /// The symbol size that draws an image icon at its requested width.
+  /// The engine scales a symbol by the image's own pixel width.
+  double? _iconSizeFor(BitmapDescriptor icon, Uint8List bytes) {
+    if (icon.multiplier != null) return icon.multiplier;
+    if (icon.scale == null) return null;
+    final ownWidth = _pngWidth(bytes);
+    if (ownWidth == null || ownWidth <= 0) return null;
+    return icon.scale! / ownWidth;
+  }
+
+  /// The width in pixels from a PNG's IHDR chunk, or null if the bytes are not a PNG.
+  static double? _pngWidth(Uint8List bytes) {
+    if (bytes.length < 24 || bytes[0] != 0x89 || bytes[1] != 0x50) return null;
+    final data = ByteData.sublistView(bytes);
+    return data.getUint32(16).toDouble();
+  }
+
   Future<void> _addMarker(SiroMapController map, Marker marker) async {
     final bytes = marker.icon.bytes;
     if (bytes != null) {
@@ -559,6 +585,7 @@ class _GoogleMapState extends State<GoogleMap> {
           geometry: marker.position,
           iconImage: name,
           iconRotate: marker.rotation,
+          iconSize: _iconSizeFor(marker.icon, bytes),
           iconAnchor:
               marker.anchor.dy >= 0.75
                   ? 'bottom'
