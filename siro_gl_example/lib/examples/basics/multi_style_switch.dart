@@ -86,7 +86,10 @@ class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
 
   void _onCameraIdle() {
     if (_controller == null) return;
-    _lastCamera ??= const CameraPosition(target: LatLng(0, 0), zoom: 2);
+    _lastCamera ??= const CameraPosition(
+      target: LatLng(31.9539, 35.9106),
+      zoom: 9,
+    );
   }
 
   Future<void> _cycleStyle() async {
@@ -106,8 +109,8 @@ class _MultiStyleSwitchBodyState extends State<_MultiStyleSwitchBody> {
           SiroMap(
             trackCameraPosition: true,
             initialCameraPosition: const CameraPosition(
-              target: LatLng(0, 0),
-              zoom: 2,
+              target: LatLng(31.9539, 35.9106),
+              zoom: 9,
             ),
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,

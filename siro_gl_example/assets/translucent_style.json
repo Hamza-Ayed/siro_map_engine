@@ -1,36 +1,47 @@
 {
 	"version": 8,
-	"name": "Demo style",
-	"center": [
-		50,
-		10
-	],
-	"zoom": 4,
+	"name": "Siro translucent",
+	"center": [35.9106, 31.9539],
+	"zoom": 8,
 	"sources": {
-		"demotiles": {
+		"siro-lines": {
 			"type": "vector",
-			"url": "https://demotiles.maplibre.org/tiles/tiles.json"
+			"tiles": ["https://tiles.intaleqapp.com/planet_osm_line/{z}/{x}/{y}"],
+			"maxzoom": 14,
+			"attribution": "© OpenStreetMap contributors · Siro Maps"
 		}
 	},
-	"sprite": "",
-	"glyphs": "https://orangemug.github.io/font-glyphs/glyphs/{fontstack}/{range}.pbf",
+	"glyphs": "https://map-saas.intaleqapp.com/fonts/{fontstack}/{range}.pbf",
 	"layers": [
 		{
 			"id": "background",
 			"type": "background",
 			"paint": {
-				"background-color": "rgba(255, 255, 255, 0)"
+				"background-color": "#ffffff",
+				"background-opacity": 0
 			}
 		},
 		{
-			"id": "countries",
+			"id": "boundaries",
 			"type": "line",
-			"source": "demotiles",
-			"source-layer": "countries",
+			"source": "siro-lines",
+			"source-layer": "planet_osm_line",
+			"filter": ["all", ["==", "boundary", "administrative"], ["in", "admin_level", "2", "4"]],
 			"paint": {
-				"line-color": "rgba(0, 0, 0, 1)",
-				"line-width": 1,
-				"line-opacity": 1
+				"line-color": "#000000",
+				"line-width": 1.5
+			}
+		},
+		{
+			"id": "main-roads",
+			"type": "line",
+			"source": "siro-lines",
+			"source-layer": "planet_osm_line",
+			"minzoom": 6,
+			"filter": ["in", "highway", "motorway", "trunk", "primary"],
+			"paint": {
+				"line-color": "#ffffff",
+				"line-width": 1.2
 			}
 		}
 	]

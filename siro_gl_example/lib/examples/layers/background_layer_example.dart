@@ -70,7 +70,7 @@ class _BackgroundLayerBodyState extends State<_BackgroundLayerBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 4,
         ),
       ),

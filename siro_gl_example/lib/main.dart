@@ -101,7 +101,7 @@ Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
   }
 
-  // demotiles.maplibre.org rate-limits aggressively (HTTP 429); start the
+  // Start the
   // probe that picks a reachable default style here, but do not await it.
   // The probe waits up to 4 seconds for a server that may be hanging, and
   // web/index.html has an empty body, so awaiting it would leave the page

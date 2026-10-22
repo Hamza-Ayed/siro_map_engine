@@ -141,7 +141,7 @@ class _SymbolLayerBodyState extends State<_SymbolLayerBody> {
     final random = Random();
     final points = <Map<String, dynamic>>[];
     final cities = [
-      'Sydney',
+      'Amman',
       'Melbourne',
       'Brisbane',
       'Perth',
@@ -160,8 +160,8 @@ class _SymbolLayerBodyState extends State<_SymbolLayerBody> {
         'geometry': {
           'type': 'Point',
           'coordinates': [
-            151.21 + (random.nextDouble() - 0.5) * 0.3,
-            -33.87 + (random.nextDouble() - 0.5) * 0.3,
+            35.91 + (random.nextDouble() - 0.5) * 0.3,
+            31.95 + (random.nextDouble() - 0.5) * 0.3,
           ],
         },
       });
@@ -223,7 +223,7 @@ class _SymbolLayerBodyState extends State<_SymbolLayerBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 10,
         ),
         trackCameraPosition: true,

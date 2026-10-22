@@ -224,8 +224,8 @@ class _GpsLocationBodyState extends State<_GpsLocationBody> {
         onUserLocationUpdated: _onUserLocationUpdated,
         onCameraTrackingChanged: _onCameraTrackingChanged,
         initialCameraPosition: const CameraPosition(
-          target: LatLng(37.3, -121.8),
-          zoom: 7,
+          target: LatLng(31.9539, 35.9106),
+          zoom: 10,
         ),
         trackCameraPosition: true,
         myLocationEnabled: hasPermission,

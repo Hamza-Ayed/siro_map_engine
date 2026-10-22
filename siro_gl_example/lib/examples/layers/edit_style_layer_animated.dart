@@ -89,7 +89,7 @@ class _EditStyleLayerAnimatedBodyState
     if (_controller == null) return;
 
     try {
-      const center = ExampleConstants.sydneyCenter;
+      const center = ExampleConstants.ammanCenter;
 
       // Add circle layer
       await _controller!.addGeoJsonSource(_circleSourceId, {
@@ -285,7 +285,7 @@ class _EditStyleLayerAnimatedBodyState
   Future<void> _animateGeometry() async {
     if (_controller == null) return;
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
 
     for (var i = 0; i < 30; i++) {
       if (_controller == null) return;
@@ -394,7 +394,7 @@ class _EditStyleLayerAnimatedBodyState
     return MapExampleScaffold(
       map: SiroMap(
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 14,
         ),
         onMapCreated: _onMapCreated,

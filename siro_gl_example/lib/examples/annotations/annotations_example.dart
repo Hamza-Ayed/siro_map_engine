@@ -116,7 +116,7 @@ class _AnnotationsBodyState extends State<_AnnotationsBody> {
     if (_controller == null) return;
 
     final random = Random();
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
 
     // Use different spread patterns for different annotation types
     // to prevent overlapping and ensure visibility
@@ -229,7 +229,7 @@ class _AnnotationsBodyState extends State<_AnnotationsBody> {
     if (_controller == null) return;
 
     final random = Random();
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
 
     for (var i = 0; i < count; i++) {
       double latOffset;
@@ -441,7 +441,7 @@ class _AnnotationsBodyState extends State<_AnnotationsBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 8,
         ),
         trackCameraPosition: true,

@@ -45,7 +45,7 @@ class _MapControlsBodyState extends State<_MapControlsBody> {
   bool _compassEnabled = true;
   CompassViewPosition _compassPosition = CompassViewPosition.topRight;
 
-  bool _logoEnabled = true;
+  bool _logoEnabled = false;
   LogoViewPosition _logoPosition = LogoViewPosition.bottomLeft;
 
   AttributionButtonPosition _attributionPosition =

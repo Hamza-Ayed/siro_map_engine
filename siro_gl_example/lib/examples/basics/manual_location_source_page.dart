@@ -44,8 +44,8 @@ class _ManualLocationSourceBody extends StatefulWidget {
 }
 
 class _ManualLocationSourceBodyState extends State<_ManualLocationSourceBody> {
-  // Center of the simulated loop (Cupertino, CA).
-  static const LatLng _center = LatLng(37.33233141, -122.0312186);
+  // Center of the simulated loop (Amman).
+  static const LatLng _center = LatLng(31.9539, 35.9106);
   static const double _radiusDeg = 0.0015;
 
   SiroMapController? _controller;

@@ -31,19 +31,19 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
   double? _maxZoom;
 
   // Predefined bounds
-  static final _sydneyBounds = LatLngBounds(
-    southwest: const LatLng(-34.022631, 150.620685),
-    northeast: const LatLng(-33.571835, 151.325952),
+  static final _ammanBounds = LatLngBounds(
+    southwest: const LatLng(31.8, 35.75),
+    northeast: const LatLng(32.1, 36.1),
   );
 
-  static final _sanFranciscoBounds = LatLngBounds(
-    southwest: const LatLng(37.7, -122.5),
-    northeast: const LatLng(37.8, -122.4),
+  static final _aqabaBounds = LatLngBounds(
+    southwest: const LatLng(29.45, 34.95),
+    northeast: const LatLng(29.6, 35.1),
   );
 
-  static final _europeBounds = LatLngBounds(
-    southwest: const LatLng(36.0, -10.0),
-    northeast: const LatLng(71.0, 40.0),
+  static final _jordanBounds = LatLngBounds(
+    southwest: const LatLng(29.0, 34.9),
+    northeast: const LatLng(33.4, 39.3),
   );
 
   Future<void> _onMapCreated(SiroMapController controller) async {
@@ -62,7 +62,7 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
   Future<void> _setBounds(LatLngBounds bounds, String name) async {
     if (_controller == null) return;
     var padding = 150.0;
-    if (bounds == _europeBounds) padding = 50.0;
+    if (bounds == _jordanBounds) padding = 50.0;
 
     await _controller!.animateCamera(
       CameraUpdate.newLatLngBounds(
@@ -166,27 +166,27 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
           title: 'Move to Bounds',
           children: [
             ExampleButton(
-              label: 'Sydney',
+              label: 'Amman',
               icon: Icons.map,
               onPressed:
                   hasController
-                      ? () => _setBounds(_sydneyBounds, 'Sydney')
+                      ? () => _setBounds(_ammanBounds, 'Amman')
                       : null,
             ),
             ExampleButton(
-              label: 'San Francisco',
+              label: 'Aqaba',
               icon: Icons.map,
               onPressed:
                   hasController
-                      ? () => _setBounds(_sanFranciscoBounds, 'San Francisco')
+                      ? () => _setBounds(_aqabaBounds, 'Aqaba')
                       : null,
             ),
             ExampleButton(
-              label: 'Europe',
+              label: 'Jordan',
               icon: Icons.map,
               onPressed:
                   hasController
-                      ? () => _setBounds(_europeBounds, 'Europe')
+                      ? () => _setBounds(_jordanBounds, 'Jordan')
                       : null,
             ),
           ],
@@ -222,11 +222,11 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
           title: 'Camera Target Bounds',
           children: [
             ExampleButton(
-              label: 'Lock to Sydney',
+              label: 'Lock to Amman',
               icon: Icons.lock,
               onPressed:
                   hasController
-                      ? () => _setCameraBounds(_sydneyBounds, 'Sydney')
+                      ? () => _setCameraBounds(_ammanBounds, 'Amman')
                       : null,
               style: ExampleButtonStyle.tonal,
             ),
@@ -235,17 +235,16 @@ class _CameraBoundsBodyState extends State<_CameraBoundsBody> {
               icon: Icons.lock,
               onPressed:
                   hasController
-                      ? () =>
-                          _setCameraBounds(_sanFranciscoBounds, 'San Francisco')
+                      ? () => _setCameraBounds(_aqabaBounds, 'Aqaba')
                       : null,
               style: ExampleButtonStyle.tonal,
             ),
             ExampleButton(
-              label: 'Lock to Europe',
+              label: 'Lock to Jordan',
               icon: Icons.lock,
               onPressed:
                   hasController
-                      ? () => _setCameraBounds(_europeBounds, 'Europe')
+                      ? () => _setCameraBounds(_jordanBounds, 'Jordan')
                       : null,
               style: ExampleButtonStyle.tonal,
             ),

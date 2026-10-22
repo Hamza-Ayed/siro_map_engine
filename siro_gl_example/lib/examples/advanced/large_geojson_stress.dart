@@ -85,8 +85,8 @@ class _LargeGeojsonStressBodyState extends State<_LargeGeojsonStressBody>
   Map<String, dynamic> _buildLine(int pointCount) {
     final random = Random(42);
     final coordinates = <List<double>>[];
-    var lng = 151.0;
-    var lat = -33.9;
+    var lng = 35.85;
+    var lat = 31.9;
     for (var i = 0; i < pointCount; i++) {
       lng += (random.nextDouble() - 0.5) * 0.001;
       lat += (random.nextDouble() - 0.5) * 0.001;
@@ -139,7 +139,7 @@ class _LargeGeojsonStressBodyState extends State<_LargeGeojsonStressBody>
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 10,
         ),
       ),

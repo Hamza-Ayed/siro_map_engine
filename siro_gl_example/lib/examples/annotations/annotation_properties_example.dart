@@ -83,7 +83,7 @@ class _AnnotationPropertiesBodyState extends State<_AnnotationPropertiesBody> {
         "assets/symbols/custom-marker.png",
       );
 
-      const center = ExampleConstants.sydneyCenter;
+      const center = ExampleConstants.ammanCenter;
 
       // Add one of each annotation type at different positions
       _symbol = await _controller!.addSymbol(
@@ -262,7 +262,7 @@ class _AnnotationPropertiesBodyState extends State<_AnnotationPropertiesBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 9,
         ),
         trackCameraPosition: true,

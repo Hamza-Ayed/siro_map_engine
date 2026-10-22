@@ -9,13 +9,13 @@ class ExampleConstants {
   // Map Coordinates
   // ============================================================================
 
-  /// Default map center (Sydney, Australia)
-  static const LatLng sydneyCenter = LatLng(-33.86711, 151.1947171);
+  /// Amman, Jordan: the example data covers Jordan and its neighbours, so every example starts inside it
+  static const LatLng ammanCenter = LatLng(31.9539, 35.9106);
 
-  /// Alternative coordinates for variety
-  static const LatLng sanFrancisco = LatLng(37.7749, -122.4194);
-  static const LatLng london = LatLng(51.5074, -0.1278);
-  static const LatLng tokyo = LatLng(35.6762, 139.6503);
+  /// Other cities inside our coverage
+  static const LatLng aqaba = LatLng(29.5321, 35.0063);
+  static const LatLng irbid = LatLng(32.5556, 35.85);
+  static const LatLng zarqa = LatLng(32.0728, 36.088);
 
   // ============================================================================
   // Map Configuration
@@ -24,10 +24,10 @@ class ExampleConstants {
   /// Default zoom level
   static const double defaultZoom = 4.0;
 
-  /// Default map bounds (Australia region)
+  /// Default map bounds (Amman)
   static final LatLngBounds defaultBounds = LatLngBounds(
-    southwest: const LatLng(-34.0, 150.5),
-    northeast: const LatLng(-33.5, 151.5),
+    southwest: const LatLng(31.85, 35.8),
+    northeast: const LatLng(32.05, 36.05),
   );
 
   // ============================================================================
@@ -88,10 +88,7 @@ class ExampleConstants {
   static Future<void> resolveDemoMapStyle() async {}
 
   /// Style asset paths
-  static const String rasterStyleAsset = 'assets/raster_style.json';
-  static const String pmtilesStyleAsset = 'assets/pmtiles_style.json';
   static const String translucenStyleAsset = 'assets/translucent_style.json';
-  static const String localStyleAsset = 'assets/style.json';
 
   // ============================================================================
   // Colors
@@ -132,19 +129,19 @@ class ExampleConstants {
     10,
   );
 
-  /// Camera position for Sydney
-  static CameraPosition sydneyCameraPosition = toCameraPosition(sydneyCenter);
+  /// Camera position for Amman
+  static CameraPosition ammanCameraPosition = toCameraPosition(ammanCenter);
 
-  /// Camera position for San Francisco
-  static CameraPosition sanFranciscoCameraPosition = toCameraPosition(
-    sanFrancisco,
+  /// Camera position for Aqaba
+  static CameraPosition aqabaCameraPosition = toCameraPosition(
+    aqaba,
   );
 
-  /// Camera position for London
-  static CameraPosition londonCameraPosition = toCameraPosition(london);
+  /// Camera position for Irbid
+  static CameraPosition irbidCameraPosition = toCameraPosition(irbid);
 
-  /// Camera position for Tokyo
-  static CameraPosition tokyoCameraPosition = toCameraPosition(tokyo);
+  /// Camera position for Zarqa
+  static CameraPosition zarqaCameraPosition = toCameraPosition(zarqa);
 
   /// Helper to create a CameraPosition with default zoom.
   static CameraPosition toCameraPosition(

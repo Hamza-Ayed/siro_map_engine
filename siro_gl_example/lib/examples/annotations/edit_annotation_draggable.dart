@@ -91,7 +91,7 @@ class _EditAnnotationDraggableBodyState
   Future<void> _addSymbol() async {
     if (_controller == null) return;
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
     final id = 'symbol_${_counter++}';
 
     final symbol = await _controller!.addSymbol(
@@ -118,7 +118,7 @@ class _EditAnnotationDraggableBodyState
   Future<void> _addCircle() async {
     if (_controller == null) return;
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
     final id = 'circle_${_counter++}';
 
     final circle = await _controller!.addCircle(
@@ -197,7 +197,7 @@ class _EditAnnotationDraggableBodyState
     return MapExampleScaffold(
       map: SiroMap(
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 14,
         ),
         onMapCreated: _onMapCreated,

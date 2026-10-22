@@ -12,43 +12,43 @@ import 'offline_region_map.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
-final LatLngBounds hawaiiBounds = LatLngBounds(
-  southwest: const LatLng(17.26672, -161.14746),
-  northeast: const LatLng(23.76523, -153.74267),
+final LatLngBounds jordanBounds = LatLngBounds(
+  southwest: const LatLng(29.0, 34.9),
+  northeast: const LatLng(33.4, 39.3),
 );
 
-final LatLngBounds santiagoBounds = LatLngBounds(
-  southwest: const LatLng(-33.65, -70.80),
-  northeast: const LatLng(-33.25, -70.40),
+final LatLngBounds ammanBounds = LatLngBounds(
+  southwest: const LatLng(31.80, 35.75),
+  northeast: const LatLng(32.10, 36.05),
 );
 
-final LatLngBounds aucklandBounds = LatLngBounds(
-  southwest: const LatLng(-36.87838, 174.73205),
-  northeast: const LatLng(-36.82838, 174.79745),
+final LatLngBounds aqabaBounds = LatLngBounds(
+  southwest: const LatLng(29.50, 34.98),
+  northeast: const LatLng(29.55, 35.03),
 );
 
 final List<OfflineRegionDefinition> regionDefinitions = [
   OfflineRegionDefinition(
-    bounds: hawaiiBounds,
+    bounds: jordanBounds,
     minZoom: 3.0,
     maxZoom: 8.0,
     mapStyleUrl: SiroStyles.day,
   ),
   OfflineRegionDefinition(
-    bounds: santiagoBounds,
+    bounds: ammanBounds,
     minZoom: 10.0,
     maxZoom: 16.0,
     mapStyleUrl: SiroStyles.day,
   ),
   OfflineRegionDefinition(
-    bounds: aucklandBounds,
+    bounds: aqabaBounds,
     minZoom: 13.0,
     maxZoom: 16.0,
     mapStyleUrl: SiroStyles.day,
   ),
 ];
 
-final List<String> regionNames = ['Hawaii', 'Santiago', 'Auckland'];
+final List<String> regionNames = ['Jordan', 'Amman', 'Aqaba'];
 
 class OfflineRegionListItem {
   OfflineRegionListItem({

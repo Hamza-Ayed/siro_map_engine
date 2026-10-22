@@ -72,7 +72,7 @@ class _MapLanguageBodyState extends State<_MapLanguageBody> {
     return MapExampleScaffold(
       map: SiroMap(
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.london,
+          target: ExampleConstants.irbid,
           zoom: 5,
         ),
         onMapCreated: _onMapCreated,

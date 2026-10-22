@@ -142,7 +142,7 @@ class _MapSnapshotBodyState extends State<_MapSnapshotBody> {
             styleString: ExampleConstants.demoMapStyle,
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,
-            initialCameraPosition: ExampleConstants.londonCameraPosition,
+            initialCameraPosition: ExampleConstants.irbidCameraPosition,
             trackCameraPosition: true,
             compassEnabled: true,
           ),

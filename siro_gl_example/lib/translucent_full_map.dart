@@ -77,7 +77,7 @@ class _TranslucentMapBodyState extends State<_TranslucentMapBody> {
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,
             initialCameraPosition: ExampleConstants.defaultCameraPosition,
-            logoEnabled: true,
+            logoEnabled: false,
             trackCameraPosition: true,
             compassEnabled: true,
             // This is a random color, for example purposes.

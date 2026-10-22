@@ -89,7 +89,7 @@ class _EditAnnotationAnimatedBodyState
   Future<void> _addInitialAnnotations() async {
     if (_controller == null) return;
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
 
     // Add a symbol
     final symbol = await _controller!.addSymbol(
@@ -189,7 +189,7 @@ class _EditAnnotationAnimatedBodyState
     setState(() => _isAnimating = true);
     await _colorAnimationController.forward();
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
     var step = 0;
 
     _animationTimer = Timer.periodic(const Duration(milliseconds: 100), (
@@ -338,7 +338,7 @@ class _EditAnnotationAnimatedBodyState
     return MapExampleScaffold(
       map: SiroMap(
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 13,
         ),
         onMapCreated: _onMapCreated,

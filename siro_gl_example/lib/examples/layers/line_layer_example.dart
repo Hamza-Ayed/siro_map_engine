@@ -124,8 +124,8 @@ class _LineLayerBodyState extends State<_LineLayerBody> {
     final lines = <Map<String, dynamic>>[];
 
     for (var i = 0; i < count; i++) {
-      final startLat = -33.87 + (random.nextDouble() - 0.5) * 0.2;
-      final startLng = 151.21 + (random.nextDouble() - 0.5) * 0.2;
+      final startLat = 31.95 + (random.nextDouble() - 0.5) * 0.2;
+      final startLng = 35.91 + (random.nextDouble() - 0.5) * 0.2;
 
       // Generate a curved line with multiple points
       final coordinates = <List<double>>[];
@@ -186,7 +186,7 @@ class _LineLayerBodyState extends State<_LineLayerBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 10,
         ),
         trackCameraPosition: true,

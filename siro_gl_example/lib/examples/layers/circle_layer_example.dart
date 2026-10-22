@@ -101,8 +101,8 @@ class _CircleLayerBodyState extends State<_CircleLayerBody> {
     final points = <Map<String, dynamic>>[];
 
     for (var i = 0; i < count; i++) {
-      final lat = -33.87 + (random.nextDouble() - 0.5) * 0.2;
-      final lng = 151.21 + (random.nextDouble() - 0.5) * 0.2;
+      final lat = 31.95 + (random.nextDouble() - 0.5) * 0.2;
+      final lng = 35.91 + (random.nextDouble() - 0.5) * 0.2;
 
       points.add({
         'type': 'Feature',
@@ -155,7 +155,7 @@ class _CircleLayerBodyState extends State<_CircleLayerBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 10,
         ),
         trackCameraPosition: true,

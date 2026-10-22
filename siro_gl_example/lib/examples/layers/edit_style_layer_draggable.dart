@@ -207,7 +207,7 @@ class _EditStyleLayerDraggableBodyState
   Future<void> _addCircleFeature() async {
     if (_controller == null || !_layersCreated) return;
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
     final random = Random();
     final id = 'circle_${_featureCounter++}';
 
@@ -237,7 +237,7 @@ class _EditStyleLayerDraggableBodyState
   Future<void> _addSymbolFeature() async {
     if (_controller == null || !_layersCreated) return;
 
-    const center = ExampleConstants.sydneyCenter;
+    const center = ExampleConstants.ammanCenter;
     final random = Random();
     final id = 'symbol_${_featureCounter++}';
 
@@ -336,7 +336,7 @@ class _EditStyleLayerDraggableBodyState
     return MapExampleScaffold(
       map: SiroMap(
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 13,
         ),
         onMapCreated: _onMapCreated,

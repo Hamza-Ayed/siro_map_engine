@@ -37,9 +37,9 @@ class _TranslucentMapBodyState extends State<_TranslucentMapBody> {
     setState(() => _canInteractWithMap = true);
   }
 
-  Future<void> _moveCameraToTokyo() async {
+  Future<void> _moveCameraToZarqa() async {
     await _mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(ExampleConstants.tokyoCameraPosition),
+      CameraUpdate.newCameraPosition(ExampleConstants.zarqaCameraPosition),
     );
     setState(() => _canReset = true);
   }
@@ -74,7 +74,7 @@ class _TranslucentMapBodyState extends State<_TranslucentMapBody> {
             onMapCreated: _onMapCreated,
             onStyleLoadedCallback: _onStyleLoaded,
             initialCameraPosition: ExampleConstants.defaultCameraPosition,
-            logoEnabled: true,
+            logoEnabled: false,
             trackCameraPosition: true,
             compassEnabled: true,
             // This is a random color, for example purposes.
@@ -85,13 +85,13 @@ class _TranslucentMapBodyState extends State<_TranslucentMapBody> {
         ],
       ),
       floatingActionButton: ExampleButton(
-        label: _canReset ? 'Reset camera' : 'Go to Tokyo',
+        label: _canReset ? 'Reset camera' : 'Go to Zarqa',
         icon: _canReset ? Icons.refresh : Icons.location_searching,
         onPressed:
             _canInteractWithMap
                 ? _canReset
                     ? _resetCamera
-                    : _moveCameraToTokyo
+                    : _moveCameraToZarqa
                 : null,
         style: ExampleButtonStyle.tonal,
       ),

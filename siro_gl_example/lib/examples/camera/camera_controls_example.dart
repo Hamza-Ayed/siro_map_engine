@@ -90,15 +90,15 @@ class _CameraControlsBodyState extends State<_CameraControlsBody> {
     CameraUpdate.newCameraPosition(ExampleConstants.defaultCameraPosition),
   );
 
-  Future<void> _goToSydney() => _moveCamera(
-    CameraUpdate.newCameraPosition(ExampleConstants.sydneyCameraPosition),
+  Future<void> _goToAmman() => _moveCamera(
+    CameraUpdate.newCameraPosition(ExampleConstants.ammanCameraPosition),
   );
   Future<void> _goToSanFrancisco() => _moveCamera(
-    CameraUpdate.newCameraPosition(ExampleConstants.sanFranciscoCameraPosition),
+    CameraUpdate.newCameraPosition(ExampleConstants.aqabaCameraPosition),
   );
 
-  Future<void> _goToLondon() => _moveCamera(
-    CameraUpdate.newCameraPosition(ExampleConstants.londonCameraPosition),
+  Future<void> _goToIrbid() => _moveCamera(
+    CameraUpdate.newCameraPosition(ExampleConstants.irbidCameraPosition),
   );
 
   @override
@@ -291,21 +291,21 @@ class _CameraControlsBodyState extends State<_CameraControlsBody> {
               style: ExampleButtonStyle.tonal,
             ),
             ExampleButton(
-              label: 'Sydney',
+              label: 'Amman',
               icon: Icons.place,
-              onPressed: hasController ? _goToSydney : null,
+              onPressed: hasController ? _goToAmman : null,
               style: ExampleButtonStyle.tonal,
             ),
             ExampleButton(
-              label: 'San Francisco',
+              label: 'Aqaba',
               icon: Icons.place,
               onPressed: hasController ? _goToSanFrancisco : null,
               style: ExampleButtonStyle.tonal,
             ),
             ExampleButton(
-              label: 'London',
+              label: 'Irbid',
               icon: Icons.place,
-              onPressed: hasController ? _goToLondon : null,
+              onPressed: hasController ? _goToIrbid : null,
               style: ExampleButtonStyle.tonal,
             ),
           ],

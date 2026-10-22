@@ -114,8 +114,8 @@ class _FillLayerBodyState extends State<_FillLayerBody> {
     final polygons = <Map<String, dynamic>>[];
 
     for (var i = 0; i < count; i++) {
-      final centerLat = -33.87 + (random.nextDouble() - 0.5) * 0.2;
-      final centerLng = 151.21 + (random.nextDouble() - 0.5) * 0.2;
+      final centerLat = 31.95 + (random.nextDouble() - 0.5) * 0.2;
+      final centerLng = 35.91 + (random.nextDouble() - 0.5) * 0.2;
       final size = 0.01 + random.nextDouble() * 0.02;
 
       polygons.add({
@@ -174,7 +174,7 @@ class _FillLayerBodyState extends State<_FillLayerBody> {
         onMapCreated: _onMapCreated,
         onStyleLoadedCallback: _onStyleLoaded,
         initialCameraPosition: const CameraPosition(
-          target: ExampleConstants.sydneyCenter,
+          target: ExampleConstants.ammanCenter,
           zoom: 10,
         ),
         trackCameraPosition: true,
