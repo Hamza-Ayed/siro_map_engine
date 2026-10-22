@@ -5,8 +5,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.TextView
 import org.maplibre.android.MapLibre
 import org.maplibre.android.maps.MapLibreMap
@@ -29,6 +32,17 @@ class MapView @JvmOverloads constructor(
     private val engineView: org.maplibre.android.maps.MapView
     private val waiting = mutableListOf<OnMapReadyCallback>()
     private var googleMap: GoogleMap? = null
+    private val myLocationButton = ImageButton(context).apply {
+        setImageResource(android.R.drawable.ic_menu_mylocation)
+        setColorFilter(Color.DKGRAY)
+        background = android.graphics.drawable.GradientDrawable().apply {
+            shape = android.graphics.drawable.GradientDrawable.OVAL
+            setColor(Color.WHITE)
+        }
+        elevation = 6f * resources.displayMetrics.density
+        visibility = GONE
+        setOnClickListener { googleMap?.animateToMyLocation() }
+    }
 
     init {
         MapLibre.getInstance(context)
@@ -38,6 +52,13 @@ class MapView @JvmOverloads constructor(
             FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT),
         )
         val density = resources.displayMetrics.density
+        val size = (44 * resources.displayMetrics.density).toInt()
+        val margin = (12 * resources.displayMetrics.density).toInt()
+        addView(
+            myLocationButton,
+            // Bottom end, so it stays clear of the top controls and the attribution.
+            FrameLayout.LayoutParams(size, size, Gravity.BOTTOM or Gravity.END).apply { setMargins(margin, margin, margin, margin) },
+        )
         addView(
             TextView(context).apply {
                 text = ATTRIBUTION
@@ -57,6 +78,11 @@ class MapView @JvmOverloads constructor(
                 Gravity.BOTTOM or Gravity.START,
             ),
         )
+    }
+
+    /** Shows or hides the my-location button. Called by the map. */
+    internal fun setMyLocationButtonVisible(visible: Boolean) {
+        myLocationButton.visibility = if (visible) VISIBLE else GONE
     }
 
     /** Calls [callback] with the map once it is ready, on the main thread. */

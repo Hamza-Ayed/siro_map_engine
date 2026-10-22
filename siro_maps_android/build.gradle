@@ -5,6 +5,7 @@
 plugins {
     id 'com.android.library' version '8.13.2'
     id 'org.jetbrains.kotlin.android' version '2.4.10'
+    id 'maven-publish'
 }
 
 android {
@@ -37,4 +38,21 @@ dependencies {
     api 'com.siro.native:siro-native-android-opengl-debug:13.7.1-siro.1'
     implementation 'androidx.core:core-ktx:1.18.0'
     implementation 'androidx.fragment:fragment-ktx:1.8.9'
+
+    testImplementation 'junit:junit:4.13.2'
+}
+
+// Publishes the AAR to mavenLocal, so apps can depend on com.siro.maps:siro-maps-android.
+// Run: ./gradlew publishReleasePublicationToMavenLocal
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.siro.maps'
+                artifactId = 'siro-maps-android'
+                version = '1.0.0'
+            }
+        }
+    }
 }

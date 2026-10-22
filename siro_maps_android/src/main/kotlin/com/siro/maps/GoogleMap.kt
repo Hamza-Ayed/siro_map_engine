@@ -85,7 +85,22 @@ class GoogleMap internal constructor(
             }
             myLocation = value
             engine.style?.let { style -> applyLocation(style) }
+            updateMyLocationButton()
         }
+
+    internal fun updateMyLocationButton() {
+        hostView.setMyLocationButtonVisible(myLocation && uiSettings.isMyLocationButtonEnabled)
+    }
+
+    /** Animates the camera to the last known position of the user, as the my-location button does. */
+    internal fun animateToMyLocation() {
+        val location = engine.locationComponent.lastKnownLocation ?: return
+        engine.animateCamera(
+            org.maplibre.android.camera.CameraUpdateFactory.newLatLng(
+                org.maplibre.android.geometry.LatLng(location.latitude, location.longitude),
+            ),
+        )
+    }
 
     @Suppress("MissingPermission")
     private fun applyLocation(style: Style) {

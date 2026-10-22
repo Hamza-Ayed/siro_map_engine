@@ -1,6 +1,10 @@
 package com.siro.maps.example
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
@@ -54,6 +58,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback {
 
     override fun onMapReady(map: GoogleMap) {
         this.map = map
+        enableMyLocation()
         map.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.fromLatLngZoom(AMMAN, 12f)))
 
         map.addMarker(MarkerOptions().position(AMMAN).title("Amman").snippet("Capital of Jordan"))
@@ -102,6 +107,25 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback {
         map.setOnCircleClickListener { toast("Circle") }
     }
 
+    /** Turns on the blue dot and the my-location button once the user grants location. */
+    private fun enableMyLocation() {
+        val granted = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED
+        if (granted) {
+            map?.isMyLocationEnabled = true
+            map?.uiSettings?.isMyLocationButtonEnabled = true
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_REQUEST)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == LOCATION_REQUEST && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+            enableMyLocation()
+        }
+    }
+
     private fun button(label: String, onClick: () -> Unit): Button =
         Button(this).apply {
             text = label
@@ -111,6 +135,7 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback {
     private fun toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
     private companion object {
+        const val LOCATION_REQUEST = 7
         val AMMAN = LatLng(31.9539, 35.9106)
         val ZARQA = LatLng(32.0728, 36.0880)
     }
