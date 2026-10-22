@@ -54,9 +54,9 @@ class _GoogleCompatBodyState extends State<_GoogleCompatBody> {
       setState(() {
         _polylines = {
           Polyline(
-            polylineId: PolylineId('amman-dashed'),
-            points: [_amman, LatLng(31.9, 35.85)],
-            color: Color(0xFFE53935),
+            polylineId: const PolylineId('amman-dashed'),
+            points: const [_amman, LatLng(31.9, 35.85)],
+            color: const Color(0xFFE53935),
             width: 4,
             patterns: [PatternItem.dash(20), PatternItem.gap(10)],
           ),

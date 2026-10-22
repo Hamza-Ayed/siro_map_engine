@@ -59,7 +59,7 @@ List<LatLng> geodesicLine(List<LatLng> points, {double stepMeters = 50000}) {
     final h =
         math.pow(math.sin(dLat / 2), 2) +
         math.cos(lat1) * math.cos(lat2) * math.pow(math.sin(dLng / 2), 2);
-    final angular = 2 * math.asin(math.sqrt(h.toDouble()));
+    final angular = 2 * math.asin(math.sqrt(h));
     final steps = (angular * _earthRadiusMeters / stepMeters).floor();
     for (var s = 1; s <= steps; s++) {
       final f = s / (steps + 1);

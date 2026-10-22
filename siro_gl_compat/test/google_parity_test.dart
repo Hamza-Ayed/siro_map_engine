@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:siro_gl_compat/siro_gl_compat.dart';
 
@@ -14,7 +13,7 @@ void main() {
     expect(state, isNotNull);
   });
 
-  test('Google-style value types behave like Google\'s', () {
+  test("Google-style value types behave like Google's", () {
     const polyline = Polyline(
       polylineId: PolylineId('a'),
       points: [LatLng(1, 2), LatLng(3, 4)],

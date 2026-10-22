@@ -111,12 +111,9 @@ class _TripScreenState extends State<TripScreen> {
   Widget build(BuildContext context) {
     return GoogleMap(
       initialCameraPosition: const CameraPosition(target: _amman, zoom: 12),
-      mapType: MapType.normal,
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       zoomControlsEnabled: false,
-      compassEnabled: true,
-      rotateGesturesEnabled: true,
       tiltGesturesEnabled: false,
       minMaxZoomPreference: const MinMaxZoomPreference(3, 19),
       padding: const EdgeInsets.only(bottom: 80),
@@ -124,7 +121,7 @@ class _TripScreenState extends State<TripScreen> {
       onTap: _addMarker,
       onLongPress: _addMarker,
       onCameraMoveStarted: () {},
-      onCameraMove: (CameraPosition position) {},
+      onCameraMove: (position) {},
       onCameraIdle: () {},
       markers: _markers,
       polylines: polylines,

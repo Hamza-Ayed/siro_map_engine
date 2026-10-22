@@ -32,7 +32,6 @@ class _ExampleHomePageState extends State<_ExampleHomePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('maplibre_gl minimal example')),
       body: SiroMap(
-        // ignore: avoid_redundant_argument_values --- EXAMPLE ---
         styleString: 'https://demotiles.maplibre.org/style.json',
         onMapCreated: (c) => _controller = c,
         initialCameraPosition: const CameraPosition(

@@ -175,7 +175,7 @@ class _EditStyleLayerDraggableBodyState
       await _controller!.addSymbolLayer(
         _symbolSourceId,
         _symbolLayerId,
-        SymbolLayerProperties(
+        const SymbolLayerProperties(
           iconImage: 'custom-marker',
           iconSize: 1.2,
           iconAllowOverlap: true,
