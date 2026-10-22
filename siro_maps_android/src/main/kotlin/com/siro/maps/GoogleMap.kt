@@ -41,6 +41,7 @@ class GoogleMap internal constructor(
     private var cameraMoveStarted: OnCameraMoveStartedListener? = null
     private var markerDrag: OnMarkerDragListener? = null
     private var dragging: Marker? = null
+    private var styleRequest = 0
     private var myLocation = false
     private var currentMapType = MAP_TYPE_NORMAL
 
@@ -190,9 +191,14 @@ class GoogleMap internal constructor(
         } else {
             Style.Builder().fromUri(styleUrlOrJson)
         }
+        // Only the newest request attaches. An older style that finishes late would
+        // otherwise take the renderer's sources away from the style on screen.
+        val request = ++styleRequest
         engine.setStyle(builder) { style ->
-            renderer.attach(style)
-            applyLocation(style)
+            if (request == styleRequest) {
+                renderer.attach(style)
+                applyLocation(style)
+            }
         }
     }
 

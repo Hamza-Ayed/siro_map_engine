@@ -47,6 +47,9 @@ class MainActivity : FragmentActivity(), OnMapReadyCallback {
             addView(button("3D") { map?.mapType = GoogleMap.MAP_TYPE_TERRAIN })
         }
         holder.addView(controls, FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, Gravity.TOP or Gravity.END))
+        // The map's GL surface must not cover the controls.
+        controls.bringToFront()
+        controls.elevation = 8f
     }
 
     override fun onMapReady(map: GoogleMap) {

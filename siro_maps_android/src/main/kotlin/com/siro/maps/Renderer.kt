@@ -6,6 +6,7 @@ import android.graphics.PointF
 import com.google.gson.JsonObject
 import org.maplibre.android.maps.Style
 import org.maplibre.android.style.expressions.Expression
+import org.maplibre.android.style.layers.FillExtrusionLayer
 import org.maplibre.android.style.layers.FillLayer
 import org.maplibre.android.style.layers.Layer
 import org.maplibre.android.style.layers.LineLayer
@@ -43,7 +44,12 @@ internal class Renderer(private val owner: GoogleMap) {
     }
 
     private fun addBaseLayers(style: Style) {
-        val below = style.layers.firstOrNull { it is SymbolLayer }?.id
+        // Overlays go above the base map and the 3D buildings, and below the labels.
+        // Labels are the first symbol layer after the last extrusion, so the buildings stay under overlays.
+        val lastExtrusion = style.layers.indexOfLast { it is FillExtrusionLayer }
+        val below = style.layers.withIndex()
+            .firstOrNull { (index, layer) -> layer is SymbolLayer && index > lastExtrusion }
+            ?.value?.id
         style.addSource(GeoJsonSource(FILL_SOURCE, FeatureCollection.fromFeatures(emptyList())))
         style.addSource(GeoJsonSource(LINE_SOURCE, FeatureCollection.fromFeatures(emptyList())))
         style.addSource(GeoJsonSource(MARKER_SOURCE, FeatureCollection.fromFeatures(emptyList())))
@@ -206,14 +212,21 @@ internal class Renderer(private val owner: GoogleMap) {
         return defaultPinBitmap(icon.hue ?: BitmapDescriptorFactory.HUE_RED)
     }
 
-    /** The object ids of everything drawn under [screen], topmost first. */
+    /**
+     * The object ids of everything drawn under [screen], topmost first.
+     *
+     * Each layer is queried on its own, in drawing order: markers, dashed lines, lines, fills.
+     * One query over all layers returns hits in no fixed order, so a fill could win over a route.
+     */
     fun hitTest(screen: PointF, map: org.maplibre.android.maps.MapLibreMap): List<Pair<String, String>> {
-        val layers = arrayOf(MARKER_LAYER, LINE_LAYER, FILL_LAYER) + dashed.keys.map { "$DASH_LAYER_PREFIX$it" }
-        return map.queryRenderedFeatures(screen, *layers).mapNotNull { feature ->
-            val props = feature.properties() ?: return@mapNotNull null
-            val id = props.get("id")?.asString ?: return@mapNotNull null
-            val kind = props.get("kind")?.asString ?: return@mapNotNull null
-            kind to id
+        val layers = listOf(MARKER_LAYER) + dashed.keys.map { "$DASH_LAYER_PREFIX$it" } + listOf(LINE_LAYER, FILL_LAYER)
+        return layers.flatMap { layer ->
+            map.queryRenderedFeatures(screen, layer).mapNotNull { feature ->
+                val props = feature.properties() ?: return@mapNotNull null
+                val id = props.get("id")?.asString ?: return@mapNotNull null
+                val kind = props.get("kind")?.asString ?: return@mapNotNull null
+                kind to id
+            }
         }
     }
 
