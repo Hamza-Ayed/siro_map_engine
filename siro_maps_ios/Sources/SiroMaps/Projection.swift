@@ -31,6 +31,12 @@ public final class GMSProjection: NSObject {
         return map.mlnMapView.convert(point, toCoordinateFrom: map)
     }
 
+    /// Whether `coordinate` is on the map's screen.
+    public func contains(_ coordinate: CLLocationCoordinate2D) -> Bool {
+        guard let map else { return false }
+        return map.bounds.contains(point(for: coordinate))
+    }
+
     /// The corners of the part of the map that is on screen.
     public var visibleRegion: GMSVisibleRegion {
         guard let map else {

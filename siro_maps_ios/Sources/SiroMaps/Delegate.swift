@@ -17,6 +17,12 @@ import UIKit
     @objc(mapView:didTapMarker:) optional func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool
     @objc(mapView:didTapOverlay:) optional func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay)
     @objc optional func mapView(_ mapView: GMSMapView, didTapInfoWindowOf marker: GMSMarker)
+    @objc optional func mapView(_ mapView: GMSMapView, didLongPressInfoWindowOf marker: GMSMarker)
+    /// The info window closed, because another marker was selected or the selection was cleared.
+    @objc optional func mapView(_ mapView: GMSMapView, didCloseInfoWindowOf marker: GMSMarker)
+
+    /// The my-location button was tapped. Return true to consume it, so the map does not recentre.
+    @objc(didTapMyLocationButtonForMapView:) optional func didTapMyLocationButton(for mapView: GMSMapView) -> Bool
 
     /// A custom window for the marker, or nil to use `markerInfoContents`, then the default.
     @objc optional func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView?

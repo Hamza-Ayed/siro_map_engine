@@ -51,15 +51,24 @@ official distribution, the same version the `siro_gl` Flutter plugin uses.
 
 ## Known gaps
 
-These are not implemented. Calls to them compile, or are stored, but do not change the map.
+Checked against Google's `GMSMapView`, overlays, camera, path, bounds, settings, projection,
+delegate and global function names: 105 of 105 checked names are present, and the geometry
+functions are tested against known answers (including Google's documented polyline example).
 
-- `GMSStrokeStyle` and polyline `spans`, so gradients and dash patterns on polylines.
-- `.satellite` and `.hybrid` show the day style.
-- Tile overlays, clusters, heatmaps and ground overlays.
-- Padding (`mapView.padding`) and indoor maps.
-- The `myLocationButton` setting is drawn, but the blue dot needs the user's permission. The app
-  must request `NSLocationWhenInUseUsageDescription` in its `Info.plist`.
-- Attribution is "© OpenStreetMap contributors · Siro Maps", in place of Google's logo. Keep it visible.
+Not implemented (these do not exist, so code using them will not compile):
+- `GMSGroundOverlay`, `GMSTileLayer` and `GMSURLTileLayer`, clustering, heatmaps.
+- `GMSGeocoder` and the `GMSPlaces` family. Siro's geocoder is in the Flutter package.
+- `GMSMapView` delegate callbacks for points of interest and the blue dot.
+- `GMSMapPoint` functions.
+
+Present but stored only (the call compiles and runs, the map does not change):
+- `isTrafficEnabled`, `isIndoorEnabled`, `indoorPicker`, `appearAnimation`, `infoWindowAnchor`,
+  `tracksViewChanges`, `consumesGesturesInView`, `GMSServices.provideAPIKey` (Siro needs no key).
+- `.satellite` and `.hybrid` show the day style, `.none` a plain background.
+- Gradients in `GMSStrokeStyle` are drawn in eight colour steps. `GMSMarker.iconView` is drawn
+  once into an image when it is set, so later changes to the view do not show.
+
+The attribution is "© OpenStreetMap contributors · Siro Maps" in place of Google's logo.
 
 ## Testing
 

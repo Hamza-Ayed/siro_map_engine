@@ -16,6 +16,64 @@ public class GMSPath: NSObject {
         super.init()
     }
 
+    /// A path from a Google encoded polyline (precision 5), or nil if the string is not valid.
+    public convenience init?(fromEncodedPath encoded: String) {
+        guard let coordinates = GMSPath.decode(encoded) else { return nil }
+        self.init(coordinates: coordinates)
+    }
+
+    public class func path(fromEncodedPath encoded: String) -> GMSPath? {
+        GMSPath(fromEncodedPath: encoded)
+    }
+
+    /// The path as a Google encoded polyline (precision 5).
+    public func encodedPath() -> String {
+        var result = ""
+        var lastLat = 0, lastLng = 0
+        func write(_ value: Int) {
+            var v = value < 0 ? ~(value << 1) : value << 1
+            while v >= 0x20 {
+                result.append(Character(UnicodeScalar((0x20 | (v & 0x1f)) + 63)!))
+                v >>= 5
+            }
+            result.append(Character(UnicodeScalar(v + 63)!))
+        }
+        for coordinate in coordinates {
+            let lat = Int((coordinate.latitude * 1e5).rounded())
+            let lng = Int((coordinate.longitude * 1e5).rounded())
+            write(lat - lastLat)
+            write(lng - lastLng)
+            lastLat = lat
+            lastLng = lng
+        }
+        return result
+    }
+
+    private static func decode(_ encoded: String) -> [CLLocationCoordinate2D]? {
+        let bytes = Array(encoded.utf8)
+        var index = 0, lat = 0, lng = 0
+        var out: [CLLocationCoordinate2D] = []
+        func next() -> Int? {
+            var result = 0, shift = 0
+            while index < bytes.count {
+                let b = Int(bytes[index]) - 63
+                index += 1
+                guard b >= 0 else { return nil }
+                result |= (b & 0x1f) << shift
+                shift += 5
+                if b < 0x20 { return (result & 1) != 0 ? ~(result >> 1) : result >> 1 }
+            }
+            return nil
+        }
+        while index < bytes.count {
+            guard let dLat = next(), let dLng = next() else { return nil }
+            lat += dLat
+            lng += dLng
+            out.append(CLLocationCoordinate2D(latitude: Double(lat) / 1e5, longitude: Double(lng) / 1e5))
+        }
+        return out
+    }
+
     /// The number of coordinates in the path.
     public func count() -> UInt {
         UInt(coordinates.count)
@@ -99,6 +157,16 @@ public class GMSCoordinateBounds: NSObject {
 
     public func includingCoordinate(_ coordinate: CLLocationCoordinate2D) -> GMSCoordinateBounds {
         GMSCoordinateBounds(coordinates: [southWest, northEast, coordinate])
+    }
+
+    public func includingPath(_ path: GMSPath) -> GMSCoordinateBounds {
+        GMSCoordinateBounds(coordinates: [southWest, northEast] + path.coordinates)
+    }
+
+    /// Whether the two rectangles share any area.
+    public func intersects(_ other: GMSCoordinateBounds) -> Bool {
+        southWest.latitude <= other.northEast.latitude && northEast.latitude >= other.southWest.latitude
+            && southWest.longitude <= other.northEast.longitude && northEast.longitude >= other.southWest.longitude
     }
 
     public func includingBounds(_ other: GMSCoordinateBounds) -> GMSCoordinateBounds {

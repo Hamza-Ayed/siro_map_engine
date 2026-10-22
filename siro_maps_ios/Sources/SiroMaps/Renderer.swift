@@ -93,7 +93,13 @@ internal final class Renderer {
             case let polyline as GMSPolyline:
                 guard let path = polyline.path?.coordinates else { break }
                 let coordinates = polyline.geodesic ? geodesicLine(path) : path
-                appendLine(coordinates, id: id, kind: "polyline", color: polyline.strokeColor, width: polyline.strokeWidth, to: &lines)
+                if let spans = polyline.spans, !spans.isEmpty {
+                    for piece in styledPieces(of: coordinates, spans: spans) {
+                        appendLine(piece.coordinates, id: id, kind: "polyline", color: piece.color, width: polyline.strokeWidth, to: &lines)
+                    }
+                } else {
+                    appendLine(coordinates, id: id, kind: "polyline", color: polyline.strokeColor, width: polyline.strokeWidth, to: &lines)
+                }
             case let polygon as GMSPolygon:
                 guard let outer = polygon.path?.coordinates, outer.count >= 3 else { break }
                 let holes = (polygon.holes ?? []).map { $0.coordinates }.filter { $0.count >= 3 }
@@ -207,6 +213,65 @@ internal final class Renderer {
             "color": cssColor(fill),
         ]
         return feature
+    }
+
+    /// Splits a line into pieces, one per span. A solid span is one piece; a gradient is drawn as eight steps.
+    /// Spans count path segments, and the last one runs to the end of the line.
+    private func styledPieces(of coordinates: [CLLocationCoordinate2D], spans: [GMSStyleSpan]) -> [(coordinates: [CLLocationCoordinate2D], color: UIColor)] {
+        let total = Double(coordinates.count - 1)
+        guard total > 0 else { return [] }
+        var pieces: [(coordinates: [CLLocationCoordinate2D], color: UIColor)] = []
+        var position = 0.0
+        for (index, span) in spans.enumerated() {
+            guard position < total else { break }
+            let isLast = index == spans.count - 1
+            let end = isLast ? total : min(position + max(span.segments, 0), total)
+            guard end > position else { continue }
+            if let endColor = span.style.endColor {
+                let steps = 8
+                for step in 0..<steps {
+                    let from = position + (end - position) * Double(step) / Double(steps)
+                    let to = position + (end - position) * Double(step + 1) / Double(steps)
+                    let color = Renderer.mix(span.style.color, endColor, (Double(step) + 0.5) / Double(steps))
+                    pieces.append((slice(coordinates, from: from, to: to), color))
+                }
+            } else {
+                pieces.append((slice(coordinates, from: position, to: end), span.style.color))
+            }
+            position = end
+        }
+        return pieces
+    }
+
+    /// The part of a line between two fractional segment positions.
+    private func slice(_ coordinates: [CLLocationCoordinate2D], from: Double, to: Double) -> [CLLocationCoordinate2D] {
+        func point(at position: Double) -> CLLocationCoordinate2D {
+            let index = min(Int(position), coordinates.count - 1)
+            let fraction = position - Double(index)
+            guard fraction > 0, index + 1 < coordinates.count else { return coordinates[index] }
+            let a = coordinates[index], b = coordinates[index + 1]
+            return CLLocationCoordinate2D(
+                latitude: a.latitude + (b.latitude - a.latitude) * fraction,
+                longitude: a.longitude + (b.longitude - a.longitude) * fraction
+            )
+        }
+        var out = [point(at: from)]
+        var vertex = Int(from.rounded(.down)) + 1
+        while Double(vertex) < to {
+            out.append(coordinates[vertex])
+            vertex += 1
+        }
+        out.append(point(at: to))
+        return out
+    }
+
+    private static func mix(_ a: UIColor, _ b: UIColor, _ t: Double) -> UIColor {
+        var (r1, g1, b1, a1): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        var (r2, g2, b2, a2): (CGFloat, CGFloat, CGFloat, CGFloat) = (0, 0, 0, 0)
+        a.getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        b.getRed(&r2, green: &g2, blue: &b2, alpha: &a2)
+        let f = CGFloat(t)
+        return UIColor(red: r1 + (r2 - r1) * f, green: g1 + (g2 - g1) * f, blue: b1 + (b2 - b1) * f, alpha: a1 + (a2 - a1) * f)
     }
 
     /// The symbol anchor closest to a unit-coordinate ground anchor.

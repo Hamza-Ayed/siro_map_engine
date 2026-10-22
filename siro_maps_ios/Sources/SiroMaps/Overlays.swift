@@ -81,6 +81,29 @@ public final class GMSMarker: GMSOverlay {
         didSet { overlayChanged() }
     }
 
+    /// Where the info window attaches to the icon. Stored; the window is drawn above the pin.
+    public var infoWindowAnchor = CGPoint(x: 0.5, y: 0.0)
+
+    /// Stored for compatibility. `iconView` is drawn once, as an image, when it is set.
+    public var tracksViewChanges = true
+    public var tracksInfoWindowChanges = false
+
+    /// How the marker appears when added. Stored; markers appear at once.
+    public var appearAnimation: GMSMarkerAnimation = .none
+
+    /// A view to use as the icon. It is drawn into an image when set, so later changes to the view do not show.
+    public var iconView: UIView? {
+        didSet {
+            guard let view = iconView else { return }
+            view.layoutIfNeeded()
+            let size = view.bounds.size == .zero ? view.intrinsicContentSize : view.bounds.size
+            guard size.width > 0, size.height > 0 else { return }
+            icon = UIGraphicsImageRenderer(size: size).image { _ in
+                view.drawHierarchy(in: CGRect(origin: .zero, size: size), afterScreenUpdates: true)
+            }
+        }
+    }
+
     public override init() {
         super.init()
         isTappable = true
@@ -132,6 +155,11 @@ public final class GMSPolyline: GMSOverlay {
 
     /// Whether the line follows great circles between points, not straight lines on the flat map.
     public var geodesic = false {
+        didSet { overlayChanged() }
+    }
+
+    /// Colours for parts of the line. Each span covers `segments` path segments; the last one runs to the end.
+    public var spans: [GMSStyleSpan]? {
         didSet { overlayChanged() }
     }
 
@@ -213,5 +241,57 @@ public final class GMSCircle: GMSOverlay {
         self.position = position
         self.radius = radius
         super.init()
+    }
+}
+
+/// How a marker appears, as Google's `GMSMarkerAnimation`.
+public enum GMSMarkerAnimation: UInt {
+    case none = 0
+    case pop = 1
+}
+
+/// The colour of part of a polyline, as Google's `GMSStrokeStyle`.
+public final class GMSStrokeStyle: NSObject {
+
+    internal let color: UIColor
+    internal let endColor: UIColor?
+
+    private init(color: UIColor, endColor: UIColor?) {
+        self.color = color
+        self.endColor = endColor
+        super.init()
+    }
+
+    public class func solidColor(_ color: UIColor) -> GMSStrokeStyle {
+        GMSStrokeStyle(color: color, endColor: nil)
+    }
+
+    public class func gradient(from: UIColor, to: UIColor) -> GMSStrokeStyle {
+        GMSStrokeStyle(color: from, endColor: to)
+    }
+}
+
+/// A length of a polyline drawn in one style, as Google's `GMSStyleSpan`.
+public final class GMSStyleSpan: NSObject {
+
+    public let style: GMSStrokeStyle
+    public let segments: Double
+
+    public init(style: GMSStrokeStyle, segments: Double) {
+        self.style = style
+        self.segments = segments
+        super.init()
+    }
+
+    public convenience init(style: GMSStrokeStyle) {
+        self.init(style: style, segments: 1)
+    }
+
+    public convenience init(color: UIColor) {
+        self.init(style: .solidColor(color), segments: 1)
+    }
+
+    public convenience init(color: UIColor, segments: Double) {
+        self.init(style: .solidColor(color), segments: segments)
     }
 }

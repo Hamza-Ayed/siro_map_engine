@@ -32,6 +32,20 @@ public final class GMSUISettings: NSObject {
         didSet { map?.updateMyLocationButton() }
     }
 
+    /// Stored for compatibility. Siro has no indoor maps.
+    public var indoorPicker: Bool = true
+
+    /// Stored for compatibility. Siro's gestures always work in the map view.
+    public var consumesGesturesInView: Bool = true
+
+    /// Turns every gesture on or off at once.
+    public func setAllGesturesEnabled(_ enabled: Bool) {
+        zoomGestures = enabled
+        scrollGestures = enabled
+        rotateGestures = enabled
+        tiltGestures = enabled
+    }
+
     /// Stored for parity with Google. Scrolling during a rotate or zoom is always allowed.
     public var allowScrollGesturesDuringRotateOrZoom: Bool = true
 

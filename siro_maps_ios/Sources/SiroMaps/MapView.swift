@@ -49,7 +49,12 @@ public class GMSMapView: UIView {
 
     /// The marker whose info window is open. Setting it opens or closes the window.
     public var selectedMarker: GMSMarker? {
-        didSet { updateInfoWindow() }
+        didSet {
+            updateInfoWindow()
+            if let closed = oldValue, closed !== selectedMarker {
+                delegate?.mapView?(self, didCloseInfoWindowOf: closed)
+            }
+        }
     }
 
     /// Shows the user's position. Asks for location permission when first turned on.
@@ -150,6 +155,7 @@ public class GMSMapView: UIView {
 
     /// Centres the map on the user's position, keeping the zoom.
     @objc private func recenterOnUser() {
+        if delegate?.didTapMyLocationButton?(for: self) == true { return }
         guard let coordinate = mlnMapView.userLocation?.location?.coordinate else { return }
         mlnMapView.setCenter(coordinate, animated: true)
     }
@@ -180,7 +186,58 @@ public class GMSMapView: UIView {
         }
     }
 
+    // MARK: - More of Google's map API
+
+    /// Stored for compatibility. Siro has no traffic layer.
+    public var isTrafficEnabled = false
+
+    /// Stored for compatibility. Siro has no indoor maps.
+    public var isIndoorEnabled = false
+
+    /// Shows or hides the 3D buildings of the style.
+    public var isBuildingsEnabled = true {
+        didSet { applyBuildings() }
+    }
+
+    private func applyBuildings() {
+        guard let style = mlnMapView.style else { return }
+        for id in ["building-3d", "building-3d-osm"] {
+            style.layer(withIdentifier: id)?.isVisible = isBuildingsEnabled
+        }
+    }
+
+    /// The user's last known location, or nil if my-location is off or there is no fix yet.
+    public var myLocation: CLLocation? {
+        isMyLocationEnabled ? mlnMapView.userLocation?.location : nil
+    }
+
+    public func animate(toZoom zoom: Float) {
+        animate(with: .zoomTo(zoom))
+    }
+
+    public func animate(toLocation location: CLLocationCoordinate2D) {
+        animate(with: .setTarget(location))
+    }
+
+    public func animate(toBearing bearing: CLLocationDirection) {
+        let current = camera
+        animate(to: GMSCameraPosition(target: current.target, zoom: current.zoom, bearing: bearing, viewingAngle: current.viewingAngle))
+    }
+
+    public func animate(toViewingAngle viewingAngle: Double) {
+        let current = camera
+        animate(to: GMSCameraPosition(target: current.target, zoom: current.zoom, bearing: current.bearing, viewingAngle: viewingAngle))
+    }
+
+    /// The camera that fits `bounds` inside the map, leaving `insets` free, as Google's `camera(for:insets:)`.
+    public func camera(for bounds: GMSCoordinateBounds, insets: UIEdgeInsets) -> GMSCameraPosition? {
+        guard bounds.isValid else { return nil }
+        let size = CGSize(width: max(1, self.bounds.width - insets.left - insets.right), height: max(1, self.bounds.height - insets.top - insets.bottom))
+        return GMSCameraUpdate.fit(bounds, with: size).resolve(camera, self)
+    }
+
     // MARK: - Overlays
+
 
     /// Removes every overlay from the map, as Google's `clear()`.
     public func clear() {
@@ -316,6 +373,7 @@ public class GMSMapView: UIView {
             view = GMSInfoWindowView(title: marker.title, snippet: marker.snippet)
         }
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(infoWindowTapped)))
+        view.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(infoWindowLongPressed(_:))))
         addSubview(view)
         infoWindow = view
         positionInfoWindow()
@@ -327,6 +385,11 @@ public class GMSMapView: UIView {
         let size = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         // The window sits above the pin, which is about 44 points tall.
         view.frame = CGRect(x: point.x - size.width / 2, y: point.y - size.height - 44, width: size.width, height: size.height)
+    }
+
+    @objc private func infoWindowLongPressed(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began, let marker = selectedMarker else { return }
+        delegate?.mapView?(self, didLongPressInfoWindowOf: marker)
     }
 
     @objc private func infoWindowTapped() {
@@ -341,6 +404,7 @@ extension GMSMapView: MLNMapViewDelegate {
 
     public func mapView(_ mapView: MLNMapView, didFinishLoading style: MLNStyle) {
         renderer.attach(to: style)
+        applyBuildings()
     }
 
     public func mapView(_ mapView: MLNMapView, regionWillChangeAnimated animated: Bool) {
