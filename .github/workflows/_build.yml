@@ -53,6 +53,18 @@ jobs:
       # so no CocoaPods toolchain setup is required for iOS.
 
       # --- Builds ---
+      # The Siro engine AAR is not on Maven Central. It is attached to the GitHub release
+      # native-android-13.7.1-siro.1 and placed where mavenLocal() looks for it.
+      - if: inputs.platform == 'android'
+        name: Fetch the Siro engine AAR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V=13.7.1-siro.1
+          D="$HOME/.m2/repository/com/siro/native/siro-native-android-opengl-debug/$V"
+          mkdir -p "$D"
+          gh release download native-android-$V -R "$GITHUB_REPOSITORY" \
+            -p "siro-native-android-opengl-debug-$V.aar" -p "siro-native-android-opengl-debug-$V.pom" -D "$D" --clobber
       - if: inputs.platform == 'android'
         name: Build example APK
         run: flutter build apk
