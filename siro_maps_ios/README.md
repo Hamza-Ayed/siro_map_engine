@@ -1,6 +1,6 @@
 # Siro Maps for iOS
 
-The Google Maps SDK for iOS API, on Siro's MapLibre engine. Apps move from `GoogleMaps` to
+An API compatible with the Google Maps SDK for iOS, on Siro's MapLibre engine. Not affiliated with or endorsed by Google. Apps move from `GoogleMaps` to
 `SiroMaps` by changing the import. Classes and methods keep Google's names and signatures
 (`GMSMapView`, `GMSMarker`, `GMSPolyline`, `GMSPolygon`, `GMSCircle`, `GMSCameraUpdate`,
 `GMSMapViewDelegate`, and so on).
@@ -23,7 +23,7 @@ targets: [
 Requirements: iOS 13 or later, Swift 5.9 or later. The package pins MapLibre 6.28.0 from the
 official distribution, the same version the `siro_gl` Flutter plugin uses.
 
-## Migrate from Google Maps
+## Migrate from Google Maps SDK
 
 1. Replace `import GoogleMaps` with `import SiroMaps`.
 2. Remove `GMSServices.provideAPIKey(...)`. Siro's styles need no key.

@@ -1,6 +1,6 @@
 # Siro Maps for Android
 
-The Google Maps SDK for Android API, on Siro's MapLibre engine. Apps move from
+An API compatible with the Google Maps SDK for Android, on Siro's MapLibre engine. Not affiliated with or endorsed by Google. Apps move from
 `com.google.android.gms.maps` to `com.siro.maps` by changing imports. Classes and
 methods keep Google's names and signatures.
 
@@ -26,7 +26,7 @@ dependencies {
 
 Minimum Android version: **23** (the engine's manifest requires it; Google's SDK goes to 21).
 
-## Migrate from Google Maps
+## Migrate from Google Maps SDK
 
 1. Replace the dependency, `com.google.android.gms:play-services-maps` with
    `com.siro.maps:siro-maps-android`.

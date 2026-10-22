@@ -1,5 +1,5 @@
 // swift-tools-version: 5.9
-// Siro Maps for iOS: the Google Maps SDK for iOS API, on Siro's MapLibre engine.
+// Siro Maps for iOS: an API compatible with the Google Maps SDK for iOS, on Siro's MapLibre engine. Not affiliated with Google.
 //
 // Apps move from GoogleMaps to SiroMaps by changing imports; the classes and
 // methods keep Google's names and signatures.

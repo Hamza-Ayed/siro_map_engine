@@ -6,14 +6,14 @@ import 'package:siro_gl_compat/siro_gl_compat.dart';
 import '../../page.dart';
 import '../../shared/siro_api.dart';
 
-/// Google Maps Flutter API on Siro's engine: a route, a polygon, a circle, a
+/// Siro Maps, with the google_maps_flutter-compatible API, on Siro's engine: a route, a polygon, a circle, a
 /// marker and a search bar, with the same widget and types as
 /// google_maps_flutter.
 class GoogleCompatExample extends ExamplePage {
   const GoogleCompatExample({super.key})
     : super(
         const Icon(Icons.layers),
-        'Google Maps API on Siro',
+        'Siro Maps (Google-compatible API)',
         category: ExampleCategory.basics,
       );
 

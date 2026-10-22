@@ -1,4 +1,4 @@
-// Siro Maps for Android: the Google Maps SDK for Android API, on Siro's engine.
+// Siro Maps for Android: an API compatible with the Google Maps SDK for Android, on Siro's engine. Not affiliated with Google.
 //
 // Apps move from com.google.android.gms.maps to com.siro.maps by changing the
 // imports; the classes and methods keep the same names and signatures.

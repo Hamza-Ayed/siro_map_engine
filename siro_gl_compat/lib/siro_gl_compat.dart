@@ -1,4 +1,5 @@
-/// A Google Maps Flutter compatible API on top of Siro GL.
+/// Siro Maps for Flutter: an API compatible with google_maps_flutter, on top of Siro GL.
+/// Not affiliated with or endorsed by Google.
 ///
 /// To move an app from google_maps_flutter, change only the import:
 ///
