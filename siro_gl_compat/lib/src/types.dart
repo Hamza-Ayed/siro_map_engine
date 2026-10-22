@@ -106,6 +106,36 @@ class Polyline {
   final int zIndex;
   final VoidCallback? onTap;
 
+  /// A copy with the given fields replaced, as in google_maps_flutter.
+  Polyline copyWith({
+    bool? consumeTapEventsParam,
+    Color? colorParam,
+    Cap? endCapParam,
+    bool? geodesicParam,
+    JointType? jointTypeParam,
+    List<LatLng>? pointsParam,
+    List<PatternItem>? patternsParam,
+    Cap? startCapParam,
+    bool? visibleParam,
+    int? widthParam,
+    int? zIndexParam,
+    VoidCallback? onTapParam,
+  }) => Polyline(
+    polylineId: polylineId,
+    consumeTapEvents: consumeTapEventsParam ?? consumeTapEvents,
+    color: colorParam ?? color,
+    endCap: endCapParam ?? endCap,
+    geodesic: geodesicParam ?? geodesic,
+    jointType: jointTypeParam ?? jointType,
+    points: pointsParam ?? points,
+    patterns: patternsParam ?? patterns,
+    startCap: startCapParam ?? startCap,
+    visible: visibleParam ?? visible,
+    width: widthParam ?? width,
+    zIndex: zIndexParam ?? zIndex,
+    onTap: onTapParam ?? onTap,
+  );
+
   @override
   bool operator ==(Object other) =>
       other is Polyline &&
@@ -159,6 +189,32 @@ class Polygon {
   final bool visible;
   final int zIndex;
   final VoidCallback? onTap;
+
+  /// A copy with the given fields replaced, as in google_maps_flutter.
+  Polygon copyWith({
+    bool? consumeTapEventsParam,
+    Color? fillColorParam,
+    bool? geodesicParam,
+    List<LatLng>? pointsParam,
+    List<List<LatLng>>? holesParam,
+    Color? strokeColorParam,
+    int? strokeWidthParam,
+    bool? visibleParam,
+    int? zIndexParam,
+    VoidCallback? onTapParam,
+  }) => Polygon(
+    polygonId: polygonId,
+    consumeTapEvents: consumeTapEventsParam ?? consumeTapEvents,
+    fillColor: fillColorParam ?? fillColor,
+    geodesic: geodesicParam ?? geodesic,
+    points: pointsParam ?? points,
+    holes: holesParam ?? holes,
+    strokeColor: strokeColorParam ?? strokeColor,
+    strokeWidth: strokeWidthParam ?? strokeWidth,
+    visible: visibleParam ?? visible,
+    zIndex: zIndexParam ?? zIndex,
+    onTap: onTapParam ?? onTap,
+  );
 
   static bool _holesEqual(List<List<LatLng>> a, List<List<LatLng>> b) {
     if (a.length != b.length) return false;
@@ -221,6 +277,30 @@ class Circle {
   final bool visible;
   final int zIndex;
   final VoidCallback? onTap;
+
+  /// A copy with the given fields replaced, as in google_maps_flutter.
+  Circle copyWith({
+    bool? consumeTapEventsParam,
+    Color? fillColorParam,
+    LatLng? centerParam,
+    double? radiusParam,
+    Color? strokeColorParam,
+    int? strokeWidthParam,
+    bool? visibleParam,
+    int? zIndexParam,
+    VoidCallback? onTapParam,
+  }) => Circle(
+    circleId: circleId,
+    consumeTapEvents: consumeTapEventsParam ?? consumeTapEvents,
+    fillColor: fillColorParam ?? fillColor,
+    center: centerParam ?? center,
+    radius: radiusParam ?? radius,
+    strokeColor: strokeColorParam ?? strokeColor,
+    strokeWidth: strokeWidthParam ?? strokeWidth,
+    visible: visibleParam ?? visible,
+    zIndex: zIndexParam ?? zIndex,
+    onTap: onTapParam ?? onTap,
+  );
 
   @override
   bool operator ==(Object other) =>
@@ -286,6 +366,42 @@ class Marker {
   final ValueChanged<LatLng>? onDragStart;
   final ValueChanged<LatLng>? onDrag;
   final ValueChanged<LatLng>? onDragEnd;
+
+  /// A copy with the given fields replaced, as in google_maps_flutter.
+  Marker copyWith({
+    double? alphaParam,
+    Offset? anchorParam,
+    bool? consumeTapEventsParam,
+    bool? draggableParam,
+    bool? flatParam,
+    BitmapDescriptor? iconParam,
+    InfoWindow? infoWindowParam,
+    LatLng? positionParam,
+    double? rotationParam,
+    bool? visibleParam,
+    double? zIndexParam,
+    VoidCallback? onTapParam,
+    ValueChanged<LatLng>? onDragStartParam,
+    ValueChanged<LatLng>? onDragParam,
+    ValueChanged<LatLng>? onDragEndParam,
+  }) => Marker(
+    markerId: markerId,
+    alpha: alphaParam ?? alpha,
+    anchor: anchorParam ?? anchor,
+    consumeTapEvents: consumeTapEventsParam ?? consumeTapEvents,
+    draggable: draggableParam ?? draggable,
+    flat: flatParam ?? flat,
+    icon: iconParam ?? icon,
+    infoWindow: infoWindowParam ?? infoWindow,
+    position: positionParam ?? position,
+    rotation: rotationParam ?? rotation,
+    visible: visibleParam ?? visible,
+    zIndex: zIndexParam ?? zIndex,
+    onTap: onTapParam ?? onTap,
+    onDragStart: onDragStartParam ?? onDragStart,
+    onDrag: onDragParam ?? onDrag,
+    onDragEnd: onDragEndParam ?? onDragEnd,
+  );
 
   @override
   bool operator ==(Object other) =>

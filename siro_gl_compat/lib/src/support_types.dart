@@ -76,6 +76,19 @@ class InfoWindow {
   final Offset anchor;
   final VoidCallback? onTap;
 
+  /// A copy with the given fields replaced, as in google_maps_flutter.
+  InfoWindow copyWith({
+    String? titleParam,
+    String? snippetParam,
+    Offset? anchorParam,
+    VoidCallback? onTapParam,
+  }) => InfoWindow(
+    title: titleParam ?? title,
+    snippet: snippetParam ?? snippet,
+    anchor: anchorParam ?? anchor,
+    onTap: onTapParam ?? onTap,
+  );
+
   @override
   bool operator ==(Object other) =>
       other is InfoWindow &&
@@ -90,7 +103,12 @@ class InfoWindow {
 /// The icon of a [Marker]: the default pin tinted by hue, or your own image.
 @immutable
 class BitmapDescriptor {
-  const BitmapDescriptor._({this.hue, this.bytes, this.scale, this.multiplier});
+  const BitmapDescriptor._({
+    this.hue,
+    this.imageBytes,
+    this.scale,
+    this.multiplier,
+  });
 
   static const double hueRed = 0;
   static const double hueOrange = 30;
@@ -111,13 +129,43 @@ class BitmapDescriptor {
   /// An image from PNG bytes, drawn at [multiplier] times its own size. A Siro
   /// extension, not part of Google's API: it maps straight to the engine's icon size.
   static BitmapDescriptor scaledBytes(Uint8List byteData, double multiplier) =>
-      BitmapDescriptor._(bytes: byteData, multiplier: multiplier);
+      BitmapDescriptor._(imageBytes: byteData, multiplier: multiplier);
+
+  /// An image from PNG bytes, as `BitmapDescriptor.bytes` in google_maps_flutter.
+  /// [width] or [height], in logical pixels, sets the size; with both, [width] wins.
+  static BitmapDescriptor bytes(
+    Uint8List byteData, {
+    double? imagePixelRatio,
+    double? width,
+    double? height,
+  }) => BitmapDescriptor._(imageBytes: byteData, scale: width);
+
+  /// An image from an asset, as `BitmapDescriptor.fromAssetImage` in google_maps_flutter.
+  static Future<BitmapDescriptor> fromAssetImage(
+    ImageConfiguration configuration,
+    String assetName, {
+    AssetBundle? bundle,
+    String? package,
+    bool mipmaps = true,
+  }) async {
+    final data = await (bundle ?? rootBundle).load(assetName);
+    return BitmapDescriptor._(imageBytes: data.buffer.asUint8List());
+  }
+
+  /// An image from an asset path, as `BitmapDescriptor.fromAsset` in google_maps_flutter.
+  static Future<BitmapDescriptor> fromAsset(
+    String assetName, {
+    String? package,
+  }) async {
+    final data = await rootBundle.load(assetName);
+    return BitmapDescriptor._(imageBytes: data.buffer.asUint8List());
+  }
 
   /// An image from PNG bytes. [size] scales the image to that many logical
   /// pixels wide, keeping its aspect ratio; the image's own size is used otherwise.
   static BitmapDescriptor fromBytes(Uint8List byteData, {Size? size}) =>
       BitmapDescriptor._(
-        bytes: byteData,
+        imageBytes: byteData,
         scale: size?.width,
       );
 
@@ -129,7 +177,7 @@ class BitmapDescriptor {
   }) async {
     final data = await rootBundle.load(assetName);
     return BitmapDescriptor._(
-      bytes: data.buffer.asUint8List(),
+      imageBytes: data.buffer.asUint8List(),
       scale: size?.width,
     );
   }
@@ -138,7 +186,7 @@ class BitmapDescriptor {
   final double? hue;
 
   /// The PNG bytes of an image icon, or null for the default pin.
-  final Uint8List? bytes;
+  final Uint8List? imageBytes;
 
   /// The width in logical pixels an image icon is drawn at, or null for its own size.
   final double? scale;
@@ -154,11 +202,11 @@ class BitmapDescriptor {
   bool operator ==(Object other) =>
       other is BitmapDescriptor &&
       other.hue == hue &&
-      listEquals(other.bytes, bytes);
+      listEquals(other.imageBytes, imageBytes);
 
   @override
   int get hashCode =>
-      Object.hash(hue, bytes == null ? 0 : Object.hashAll(bytes!));
+      Object.hash(hue, imageBytes == null ? 0 : Object.hashAll(imageBytes!));
 }
 
 extension on Color {

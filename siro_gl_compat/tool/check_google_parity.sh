@@ -16,7 +16,9 @@ dependencies:
     sdk: flutter
   google_maps_flutter: any
 YAML
-sed "s#package:siro_gl_compat/siro_gl_compat.dart#package:google_maps_flutter/google_maps_flutter.dart#" \
-  "$HERE/test/google_style/trip_screen.dart" > "$WORK/lib/trip_screen.dart"
-(cd "$WORK" && flutter pub get >/dev/null && dart analyze lib/trip_screen.dart)
-echo "OK: the screen compiles against google_maps_flutter with only the import changed."
+for source in "$HERE"/test/google_style/*.dart; do
+  sed "s#package:siro_gl_compat/siro_gl_compat.dart#package:google_maps_flutter/google_maps_flutter.dart#" \
+    "$source" > "$WORK/lib/$(basename "$source")"
+done
+(cd "$WORK" && flutter pub get >/dev/null && dart analyze lib)
+echo "OK: every file in test/google_style compiles against google_maps_flutter with only the import changed."

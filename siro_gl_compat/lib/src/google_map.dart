@@ -99,6 +99,8 @@ class GoogleMap extends StatefulWidget {
     required this.initialCameraPosition,
     this.onMapCreated,
     this.onStyleLoaded,
+    this.mapId,
+    this.cloudMapId,
     this.gestureRecognizers,
     this.compassEnabled = true,
     this.mapToolbarEnabled = true,
@@ -139,6 +141,12 @@ class GoogleMap extends StatefulWidget {
 
   final CameraPosition initialCameraPosition;
   final MapCreatedCallback? onMapCreated;
+
+  /// Accepted so code written for google_maps_flutter compiles. Siro has no cloud map styles.
+  final String? mapId;
+
+  /// Accepted for compatibility, like [mapId].
+  final String? cloudMapId;
 
   /// Called each time a style finishes loading, including after a style change.
   final VoidCallback? onStyleLoaded;
@@ -576,7 +584,7 @@ class _GoogleMapState extends State<GoogleMap> {
   }
 
   Future<void> _addMarker(SiroMapController map, Marker marker) async {
-    final bytes = marker.icon.bytes;
+    final bytes = marker.icon.imageBytes;
     if (bytes != null) {
       final name = 'siro_marker_${Object.hashAll(bytes)}';
       if (_addedImages.add(name)) await map.addImage(name, bytes);
