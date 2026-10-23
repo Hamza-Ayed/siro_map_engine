@@ -61,10 +61,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           V=13.7.1-siro.1
-          D="$HOME/.m2/repository/com/siro/native/siro-native-android-opengl-debug/$V"
+          D="$HOME/.m2/repository/io/github/hamza-ayed/siro/siro-native-android-opengl-debug/$V"
           mkdir -p "$D"
           gh release download native-android-$V -R "$GITHUB_REPOSITORY" \
             -p "siro-native-android-opengl-debug-$V.aar" -p "siro-native-android-opengl-debug-$V.pom" -D "$D" --clobber
+          sed -i 's#<groupId>com.siro.native</groupId>#<groupId>io.github.hamza-ayed.siro</groupId>#' "$D/siro-native-android-opengl-debug-$V.pom"
       - if: inputs.platform == 'android'
         name: Build example APK
         run: flutter build apk

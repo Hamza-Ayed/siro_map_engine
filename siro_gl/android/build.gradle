@@ -71,7 +71,7 @@ android {
         // The native engine comes in "debug" (unoptimized C++) and "release" (optimized). Use
         // release to measure speed: ORG_GRADLE_PROJECT_siroNativeVariant=release flutter build apk
         def siroNativeVariant = project.findProperty('siroNativeVariant') ?: 'debug'
-        implementation "com.siro.native:siro-native-android-opengl-${siroNativeVariant}:13.7.1-siro.1"
+        implementation "io.github.hamza-ayed.siro:siro-native-android-opengl-${siroNativeVariant}:13.7.1-siro.1"
         implementation 'com.squareup.okhttp3:okhttp:5.4.0'
         implementation 'com.google.android.gms:play-services-base:18.10.1'
         implementation 'com.google.android.gms:play-services-location:21.4.0'

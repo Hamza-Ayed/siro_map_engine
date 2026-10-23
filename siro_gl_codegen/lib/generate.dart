@@ -196,7 +196,7 @@ String readAndroidSdkVersion() {
       File(
         '${Directory.current.parent.path}/siro_gl/android/build.gradle',
       ).readAsStringSync();
-  // The plugin depends on Siro's engine (com.siro.native) or, historically, on upstream MapLibre.
+  // The plugin depends on Siro's engine (io.github.hamza-ayed.siro) or, historically, on upstream MapLibre.
   final match = RegExp(
     r'(?:org\.maplibre\.gl:android-sdk|com\.siro\.native:siro-native-android-opengl)[^:"\s]*:(\d+(?:\.\d+)*)',
   ).firstMatch(gradle);
