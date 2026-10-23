@@ -9,15 +9,15 @@ An API compatible with the Google Maps SDK for iOS, on Siro's MapLibre engine. N
 
 ## Install
 
-Add the package in Xcode, or in `Package.swift`:
+Add the package in Xcode (File ▸ Add Package Dependencies, paste `https://github.com/Hamza-Ayed/siro-maps-ios`, version `1.0.0-beta.1`), or in `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(path: "../packages/siro_map_engine/siro_maps_ios"),
+    .package(url: "https://github.com/Hamza-Ayed/siro-maps-ios", from: "1.0.0-beta.1"),
 ],
 targets: [
     .target(name: "MyApp", dependencies: [
-        .product(name: "SiroMaps", package: "siro_maps_ios"),
+        .product(name: "SiroMaps", package: "siro-maps-ios"),
     ]),
 ]
 ```
