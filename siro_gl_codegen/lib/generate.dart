@@ -198,7 +198,7 @@ String readAndroidSdkVersion() {
       ).readAsStringSync();
   // The plugin depends on Siro's engine (io.github.hamza-ayed.siro) or, historically, on upstream MapLibre.
   final match = RegExp(
-    r'(?:org\.maplibre\.gl:android-sdk|com\.siro\.native:siro-native-android-opengl)[^:"\s]*:(\d+(?:\.\d+)*)',
+    r'(?:org\.maplibre\.gl:android-sdk|io\.github\.hamza-ayed\.siro:siro-native-android-opengl)[^:"\s]*:(\d+(?:\.\d+)*)',
   ).firstMatch(gradle);
   if (match == null) {
     throw StateError(
