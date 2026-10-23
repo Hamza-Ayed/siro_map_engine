@@ -7,8 +7,8 @@ import 'package:siro_gl/siro_gl.dart';
 import '../../page.dart';
 import '../../shared/shared.dart';
 
-/// 3D terrain on the native Android engine, on the Intaleq style and the
-/// Intaleq server's elevation tiles. The map finds the user by GPS, and
+/// 3D terrain on the native Android engine, on the Siro style and the
+/// Siro server's elevation tiles. The map finds the user by GPS, and
 /// `setTerrain` raises it there. iOS has no terrain binding yet, so the page
 /// says so instead of drawing.
 class AndroidTerrainPage extends ExamplePage {
@@ -31,7 +31,7 @@ class _AndroidTerrainBody extends StatefulWidget {
 }
 
 class _AndroidTerrainBodyState extends State<_AndroidTerrainBody> {
-  /// Terrarium elevation tiles from the Intaleq server. They are the AWS
+  /// Terrarium elevation tiles from the Siro server. They are the AWS
   /// terrain tiles (SRTM based) cached on our server.
   static const _demTiles =
       'https://map-saas.intaleqapp.com/api/tactical/dem/{z}/{x}/{y}.png';
