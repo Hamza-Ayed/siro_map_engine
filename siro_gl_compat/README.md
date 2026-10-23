@@ -4,12 +4,11 @@
 
 ## التثبيت / Install
 
-Not published yet. For local use, depend on the path:
+Published on [pub.dev](https://pub.dev/packages/siro_gl_compat) as the Beta `1.0.0-beta.1`:
 
 ```yaml
 dependencies:
-  siro_gl_compat:
-    path: ../siro_map_engine/siro_gl_compat
+  siro_gl_compat: ^1.0.0-beta.1
 ```
 
 ## الاستخدام / Usage

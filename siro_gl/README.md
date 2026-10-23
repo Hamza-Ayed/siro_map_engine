@@ -21,14 +21,13 @@ Version `1.0.0-dev`, based on `flutter-maplibre-gl` 0.27.1. Changes are in [CHAN
 
 ## التثبيت / Installation
 
-لم ننشر الحزمة بعد (المرحلة 8 بطلب صاحب المشروع). للتجربة المحلية استخدم مسار الحزمة:
+الحزمة منشورة على [pub.dev](https://pub.dev/packages/siro_gl) كنسخة Beta `1.0.0-beta.1`:
 
-The package is not published yet (phase 8 needs the owner's approval). For local use, depend on the path:
+The package is published on [pub.dev](https://pub.dev/packages/siro_gl) as the Beta `1.0.0-beta.1`:
 
 ```yaml
 dependencies:
-  siro_gl:
-    path: ../siro_map_engine/siro_gl
+  siro_gl: ^1.0.0-beta.1
 ```
 
 ## الاستخدام / Usage
