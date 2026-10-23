@@ -1,5 +1,7 @@
 # Siro Maps for Android
 
+**Status: Beta.** The API surface is in place. Known gaps are listed below.
+
 An API compatible with the Google Maps SDK for Android, on Siro's MapLibre engine. Not affiliated with or endorsed by Google. Apps move from
 `com.google.android.gms.maps` to `com.siro.maps` by changing imports. Classes and
 methods keep Google's names and signatures.

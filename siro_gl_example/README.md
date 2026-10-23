@@ -1,16 +1,19 @@
-# maplibre_gl_example
+# Siro GL examples
 
-Demonstrates how to use the maplibre_gl plugin.
+Sample app for `siro_gl` and `siro_gl_compat`. It has 33 examples in 6 categories: basics, camera, interaction, annotations, layers and sources, and advanced.
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run --dart-define=SIRO_PUBLIC_KEY=<your publishable key>
+```
 
-A few resources to get you started if this is your first Flutter project:
+The key is needed only by the route and search examples. Other examples run without it. Never commit the key.
 
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
+## Verified
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+- Android: itel A665L (physical device). All 33 examples opened, and a scripted run tapped their buttons. No crash was seen. The Google-compatible example's search and route worked with the key. Logcat capture was empty, so crash detection relied on the app staying in the foreground.
+- iOS: iPhone 17 Pro simulator (iOS 26.0), per `siro_maps_ios`. Not run on a physical iPhone.
+
+Known limits are in each package's README: [siro_gl](../siro_gl/README.md), [siro_gl_compat](../siro_gl_compat/README.md), [siro_maps_android](../siro_maps_android/README.md) and [siro_maps_ios](../siro_maps_ios/README.md).

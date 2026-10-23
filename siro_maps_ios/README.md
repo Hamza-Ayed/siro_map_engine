@@ -1,5 +1,7 @@
 # Siro Maps for iOS
 
+**Status: Beta.** The API surface is in place. Known gaps are listed below.
+
 An API compatible with the Google Maps SDK for iOS, on Siro's MapLibre engine. Not affiliated with or endorsed by Google. Apps move from `GoogleMaps` to
 `SiroMaps` by changing the import. Classes and methods keep Google's names and signatures
 (`GMSMapView`, `GMSMarker`, `GMSPolyline`, `GMSPolygon`, `GMSCircle`, `GMSCameraUpdate`,

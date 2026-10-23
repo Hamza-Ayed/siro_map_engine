@@ -8,9 +8,11 @@
 
 ## الحالة / Status
 
+**Beta.** الفجوات المعروفة موجودة في README كل حزمة. / Known gaps are listed in each package's README.
+
 | المنصة / Platform | المحرك / Engine | الحالة / Status |
 |---|---|---|
-| Android | MapLibre Android 13.5.0 | يبني ✅، التشغيل على emulator لم يتم بعد |
+| Android | MapLibre Android 13.5.0 | يبني ويعمل على جهاز فعلي (itel A665L) ✅ |
 | iOS | MapLibre iOS 6.28.0 | يبني ويعرض الخريطة على المحاكي ✅ |
 | Web | maplibre-gl-js (الإصدار في `siro_gl_web/lib/src/js_loader.dart`) | يبني ويعرض الخريطة في Chrome ✅ |
 
