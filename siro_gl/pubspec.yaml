@@ -1,8 +1,8 @@
 name: siro_gl
 description: "Native MapLibre maps for Flutter: Mapbox Vector Tile (MVT) and PMTiles sources, custom styles, GeoJSON layers and offline regions on Android, iOS and Web."
-version: 0.27.1
-repository: https://github.com/maplibre/flutter-maplibre-gl
-issue_tracker: https://github.com/maplibre/flutter-maplibre-gl/issues
+version: 1.0.0-beta.1
+repository: https://github.com/Hamza-Ayed/siro_map_engine
+issue_tracker: https://github.com/Hamza-Ayed/siro_map_engine/issues
 documentation: https://maplibre.org/flutter-maplibre-gl/
 funding:
   - https://github.com/sponsors/maplibre
@@ -36,8 +36,8 @@ dependencies:
   collection: ^1.19.1
   flutter:
     sdk: flutter
-  siro_gl_platform_interface: ^0.27.1
-  siro_gl_web: ^0.27.1
+  siro_gl_platform_interface: ^1.0.0-beta.1
+  siro_gl_web: ^1.0.0-beta.1
 
 dev_dependencies:
   flutter_test:

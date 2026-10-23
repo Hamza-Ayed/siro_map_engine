@@ -1,7 +1,8 @@
 name: siro_gl_compat
 description: Siro Maps for Flutter, with an API compatible with google_maps_flutter. Not affiliated with or endorsed by Google.
-version: 0.1.0
-publish_to: none
+repository: https://github.com/Hamza-Ayed/siro_map_engine
+issue_tracker: https://github.com/Hamza-Ayed/siro_map_engine/issues
+version: 1.0.0-beta.1
 resolution: workspace
 
 environment:
@@ -12,8 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.6.0
-  siro_gl:
-    path: ../siro_gl
+  siro_gl: ^1.0.0-beta.1
 
 dev_dependencies:
   flutter_test:
