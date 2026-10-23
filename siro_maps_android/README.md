@@ -8,23 +8,17 @@ methods keep Google's names and signatures.
 
 ## Install
 
-The library is published to Maven Local for now:
-
-```bash
-./gradlew publishReleasePublicationToMavenLocal
-```
-
-Then, in the app:
+The library is on Maven Central (Beta, `1.0.0-beta.1`). Maven Central is the default repository for Gradle, so no extra repository is needed:
 
 ```gradle
-repositories {
-    mavenLocal()
-}
-
 dependencies {
-    implementation 'com.siro.maps:siro-maps-android:1.0.0'
+    implementation 'io.github.hamza-ayed.siro:siro-maps-android:1.0.0-beta.1'
 }
 ```
+
+The engine it needs, `io.github.hamza-ayed.siro:siro-native-android-opengl-debug:13.7.1-siro.1`, is pulled in automatically.
+
+To build the library locally without Maven Central: `./gradlew publishToMavenLocal`.
 
 Minimum Android version: **23** (the engine's manifest requires it; Google's SDK goes to 21).
 

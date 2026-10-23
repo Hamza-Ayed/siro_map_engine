@@ -6,6 +6,7 @@ plugins {
     id 'com.android.library' version '8.13.2'
     id 'org.jetbrains.kotlin.android' version '2.4.10'
     id 'com.vanniktech.maven.publish' version '0.37.0'
+    id 'signing'
 }
 
 android {
@@ -37,6 +38,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
 
+// Sign with the local GPG key. The key name and passphrase come from ~/.gradle/gradle.properties.
+signing {
+    useGpgCmd()
+}
+
 // Maven coordinates: io.github.hamza-ayed.siro:siro-maps-android.
 // Local check: ./gradlew publishToMavenLocal
 // Maven Central (needs a Central token and a GPG key, see docs/PUBLISHING_PLAN_AR.md):
@@ -45,7 +51,7 @@ mavenPublishing {
     configure(new com.vanniktech.maven.publish.AndroidSingleVariantLibrary('release', true, true))
     publishToMavenCentral()
     // Sign only when a GPG key is configured, so the local publish runs without one.
-    if (hasProperty('signingInMemoryKey') || hasProperty('signing.keyId')) {
+    if (findProperty('signingInMemoryKey') || findProperty('signing.gnupg.keyName')) {
         signAllPublications()
     }
     coordinates('io.github.hamza-ayed.siro', 'siro-maps-android', '1.0.0-beta.1')
