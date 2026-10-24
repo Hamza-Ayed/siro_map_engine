@@ -7,7 +7,7 @@
 لا تفتح issue عامة لثغرة أمنية. أرسل التفاصيل (الخطوات، النسخة، أثر الثغرة) إلى:
 Do not open a public issue for a security problem. Send the details (steps, version, impact) to:
 
-> **security@intaleqapp.com** (Hamza Ayed — Founding Tech Architect & Ecosystem Lead)
+> **support@intaleqapp.com** (Hamza Ayed — Founding Tech Architect & Ecosystem Lead)
 
 **المكوّنات الخارجية / Third-party components**
 

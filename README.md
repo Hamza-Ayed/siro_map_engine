@@ -4,7 +4,7 @@
 [![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD--3--Clause-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Flutter%20%7C%20Android%20%7C%20iOS%20%7C%20Web-brightgreen.svg)]()
 [![Architect](https://img.shields.io/badge/Architect-Hamza%20Ayed-orange.svg)](https://intaleqapp.com/hamza.html)
-[![Sovereign Infrastructure](https://img.shields.io/badge/Sovereign-100%25%20Independent-darkgreen.svg)](https://map-saas.intaleqapp.com)
+[![Sovereign Infrastructure](https://img.shields.io/badge/Sovereign-100%25%20Independent-darkgreen.svg)](https://map.intaleqapp.com)
 
 **Siro Map Engine (SiroGL)** هو محرك خرائط متقدم وفائق الخفة ومستقل سيادياً، تم بناؤه وتطويره بواسطة **حمزة عايد** وفريق **منصة سيرو (Siro Platform)**. يوفّر المحرك بنية تحتية جغرافية متكاملة تدعم العرض المتجهي ثنائي وثلاثي الأبعاد (2D/3D Vector Rendering)، والتضاريس الجبلية المعقدة (3D Terrain DEM Mesh)، والمباني المجسمة (3D Extrusions)، مع توافق كامل 1:1 مع واجهات برمجة تطبيقات Google Maps (Drop-in Parity) على كافة المنصات.
 
@@ -175,8 +175,9 @@ struct MyApp: App {
 
 تم تطوير وتوجيه هذا المحرك كجزء من الرؤية السيادية للبنية التحتية الجغرافية والتنقل الذكي في الشرق الأوسط:
 * **المعماري والمؤسس التقني**: حمزة عايد (Hamza Ayed)
-* **الموقع الإلكتروني**: [map-saas.intaleqapp.com](https://map-saas.intaleqapp.com)
+* **لوحة تحكم المطورين (Console)**: [map-dashboard.intaleqapp.com](https://map-dashboard.intaleqapp.com)
+* **بوابة الخرائط الحية (Live Map)**: [map.intaleqapp.com](https://map.intaleqapp.com)
 * **دراسة الحالة الهندسية والملف التنفيذي**: [intaleqapp.com/hamza.html](https://intaleqapp.com/hamza.html)
-* **الاتصال التقني والأمني**: `security@intaleqapp.com`
+* **الدعم الفني والاستفسارات**: `support@intaleqapp.com`
 
 </div>
