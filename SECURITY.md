@@ -7,10 +7,7 @@
 لا تفتح issue عامة لثغرة أمنية. أرسل التفاصيل (الخطوات، النسخة، أثر الثغرة) إلى:
 Do not open a public issue for a security problem. Send the details (steps, version, impact) to:
 
-> **[عنوان الأمان: يحدده صاحب المشروع / security contact: to be set by the project owner]**
-
-ما في عنوان أمان منشور بعد. لازم يتعبّى قبل أي إصدار (R-02).
-No security contact is published yet. It must be filled in before any release (R-02).
+> **security@intaleqapp.com** (Hamza Ayed — Founding Tech Architect & Ecosystem Lead)
 
 **المكوّنات الخارجية / Third-party components**
 

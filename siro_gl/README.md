@@ -42,7 +42,7 @@ class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SiroMap(
-      styleString: 'https://demotiles.maplibre.org/style.json',
+      styleString: 'https://map-saas.intaleqapp.com/styles/v1/standard.json',
       initialCameraPosition: const CameraPosition(
         target: LatLng(31.9539, 35.9106),
         zoom: 11,

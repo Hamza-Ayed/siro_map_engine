@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: "Q&A - GitHub Discussions"
-    url: https://github.com/maplibre/flutter-maplibre-gl/discussions/categories/q-a
-    about: "If you have a question about using MapLibre on Flutter"
-  - name: "Join on Slack"
-    url: https://slack.openstreetmap.us/
-    about: "Join #maplibre-flutter on the OpenStreetMap Slack"
+    url: https://github.com/Hamza-Ayed/siro_map_engine/discussions
+    about: "Ask questions, share architectures, or discuss Siro Map Engine"
+  - name: "Siro Commercial Support"
+    url: https://map-saas.intaleqapp.com
+    about: "Sovereign Map Infrastructure & Commercial Integration"

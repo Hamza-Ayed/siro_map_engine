@@ -25,7 +25,7 @@ We welcome contributions of all kinds: bug fixes, new features, documentation im
 
 ---
 ## Before You Start
-- Search existing [issues](https://github.com/maplibre/flutter-maplibre-gl/issues) & [PRs](https://github.com/maplibre/flutter-maplibre-gl/pulls) to avoid duplication.
+- Search existing [issues](https://github.com/Hamza-Ayed/siro_map_engine/issues) & [PRs](https://github.com/Hamza-Ayed/siro_map_engine/pulls) to avoid duplication.
 - For larger features, open a brief proposal issue or discussion first to align scope & design.
 - Keep PRs focused: small, reviewable units are merged faster.
 
