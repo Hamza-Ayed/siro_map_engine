@@ -73,7 +73,7 @@ android {
         def siroNativeVariant = project.findProperty('siroNativeVariant') ?: 'debug'
         implementation "io.github.hamza-ayed.siro:siro-native-android-opengl-${siroNativeVariant}:13.7.1-siro.1"
         implementation 'com.squareup.okhttp3:okhttp:5.4.0'
-        implementation 'com.google.android.gms:play-services-base:18.10.1'
+        implementation 'com.google.android.gms:play-services-base:18.11.1'
         implementation 'com.google.android.gms:play-services-location:21.4.0'
     }
 }
